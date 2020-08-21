@@ -1,5 +1,0 @@
-package StadtLandFluss
-
-class scala {
-  
-}
