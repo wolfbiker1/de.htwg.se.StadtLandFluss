@@ -1,4 +1,4 @@
-package StadtLandFluss
+package de.htwg.se.stadtlandfluss
 
 object SLF {
   def main(args: Array[String]): Unit = {
