@@ -1,6 +1,6 @@
 package de.htwg.se.stadtlandfluss
 
-import de.htwg.se.stadtlandflus.model.Player
+import de.htwg.se.stadtlandfluss.model.Player
 
 object SLF {
   def main(args: Array[String]): Unit = {
