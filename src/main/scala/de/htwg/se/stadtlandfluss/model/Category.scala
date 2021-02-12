@@ -3,17 +3,17 @@ package de.htwg.se.stadtlandfluss.model
 case class Category(size:Int){
     def createRandom(num: Int): Grid = {
         var grid = new Grid(size)
-        for {index <- 1 to num} {
-            grid = setRandomcategory(grid)
-        }
+
         grid
     }
 
-    def setRandomcategory(grid: Grid): Grid ={
-        val headline: Vector[Vector[String]] = Vector(land,fluss, automarken,farben);
-        for (i <- 0 until headline.length){
-§
+    def setRandomcategory(grid: Grid): Unit= {
+        val headline: Vector[String] = Vector("land", "fluss", "automarken", "farben");
+        for {i <- 0 until headline.length} {
+            grid.set(0,i,headline(i))
+
         }
+
     }
 
     /*
