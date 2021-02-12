@@ -1,7 +1,58 @@
 package de.htwg.se.stadtlandfluss.model
 
-case class Category(){
+case class Category(size:Int){
+    def createRandom(num: Int): Grid = {
+        var grid = new Grid(size)
+        for {index <- 1 to num} {
+            grid = setRandomcategory(grid)
+        }
+        grid
+    }
 
+    def setRandomcategory(grid: Grid): Grid ={
+        val headline: Vector[Vector[String]] = Vector(land,fluss, automarken,farben);
+        for (i <- 0 until headline.length){
+§
+        }
+    }
+
+    /*
+    for( categories.rows <- 0 to grid.size)
+        {
+          for( category.cell <- 0 to category.rows)
+        {
+        * if (grid.cell = 1)
+            category.cell(1,): Vector[String] = land
+           if (grid.rows = 2)
+               category.cell(1,grid.cell): Vector[String] = fluss
+            *
+            if (grid.rows = 1)
+            grid.cell(1,grid.cell): Vector[String] = automarken
+            if (grid.rows = 1)
+            grid.cell(1,grid.cell): Vector[String] = farben
+        }
+       }
+    *
+    * */
+
+    /*
+   * for( grid.rows <- 0 to grid.size)
+       {
+         for( grid.cell <- 0 to grid.rows)
+       {
+       * if (grid.rows = 1)
+           grid.cell(1,grid.cell): Vector[String] = land
+          if (grid.rows = 2)
+           grid.cell(1,grid.cell): Vector[String] = fluss
+           *
+           if (grid.rows = 1)
+           grid.cell(1,grid.cell): Vector[String] = automarken
+           if (grid.rows = 1)
+           grid.cell(1,grid.cell): Vector[String] = farben
+       }
+      }
+   *
+   * */
        val land = Vector("Afghanistan","Ägypten", "Albanien", "Algerien", "Andorra", "Angola", "Antigua und Barbuda", "Äquatorialguinea", "Argentinien", "Armenien", "Aserbaidschan", "Äthiopien",
     "Australien","Bahamas" , "Bahrain", "Bangladesch","Barbados", "Belgien", "Belize","Benin", "Bhutan", "Bolivien", "Bosnien und Herzegowina", "Botsuana", "Brasilien", "Brunei Darussalam", "Bulgarien", "Burkina Faso", "Burundi", "Chile", "China", "Cookinseln", "Costa Rica", "Côte d'Ivoire", "Dänemark", "Deutschland", "Dominica", "Dominikanische Republik", "Dschibuti", "Ecuador", "El Salvador", "Eritrea", "Estland", "Fidschi", "Finnland", "Frankreich", "Gabun", "Gambia", "Georgien","Ghana",
     "Grenada", "Griechenland", "Guatemala", "Guinea", "Guinea-Bissau", "Guyana", "Haiti", "Honduras", "Indien", "Indonesien", "Irak",
