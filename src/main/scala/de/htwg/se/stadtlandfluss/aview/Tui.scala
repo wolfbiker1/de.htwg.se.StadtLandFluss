@@ -1,6 +1,6 @@
 package de.htwg.se.stadtlandfluss.aview
 
-import de.htwg.se.stadtlandfluss.model.{Grid, GridCreator}
+import de.htwg.se.stadtlandfluss.model.{Grid, GridCreator, Solver}
 
 class Tui {
 
@@ -9,7 +9,8 @@ class Tui {
       case "q" => grid
       case "n" => new GridCreator(9).createGrid(3)
       case "s" =>
-        grid
+        new Solver().solveGame(grid)
+
       case _ => {
         grid
         }

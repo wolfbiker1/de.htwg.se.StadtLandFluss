@@ -1,7 +1,7 @@
 package de.htwg.se.stadtlandfluss.model
 
 class GridCreator(size: Int) {
-  val categories: List[String] = List("foo", "bar", "baz", "foo", "bar", "baz")
+  val categories: List[String] = List("automarke", "land", "fluss", "farbe")
 
   def createGrid(num: Int): Grid = {
     var grid = new Grid(size)
