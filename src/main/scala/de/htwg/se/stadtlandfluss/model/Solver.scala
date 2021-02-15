@@ -23,22 +23,35 @@ case class Solver() {
   val farbe: Vector[String] = Vector("ufeffaltrosa", "aquamarinblau", "beige", "biskuit", "blassgrün", "blasstürkis", "blau", "blauviolett", "braun", "bunt", "chiffongelb", "creme", "cyan", "distel", "dunkelblau", "dunkelgrün", "dunkeltürkis", "elfenbein", "frühlingsgrün", "gelb", "gelbbraun", "gelbgrün", "gold", "goldrutengelb", "grau", "grün", "grüngelb", "hautfarben", "hellblau", "hellgrau", "hellgrün", "hellrosa", "himmelblau", "honigmelone", "indigo", "indischrot", "kastanie", "khaki", "königsblau", "korallenrot", "lachsfarben", "lavendel", "leinen", "lila", "limone", "limonengrün", "magenta", "mandelweiß", "minze", "mokassin", "muschel", "navajoweiß", "neon", "olivgrün", "orange", "orangerot", "papayacreme", "peru", "pfirsich", "pflaume", "rasengrün", "rauchfarben", "regenbogen", "rosa", "rot", "sandbraun", "schieferblau", "schiefergrau", "schneeweiß", "schwarz", "seegrün", "sienaerde", "silber", "stahlblau", "tomate", "transparent", "türkis", "veilchen", "violett", "weiß", "weizen");
 
 
-  val kategorien: Map[String, Vector[String]] = Map(
+  val categories: Map[String, Vector[String]] = Map(
     "automarke" -> automarke,
     "fluss" -> fluss,
     "land" -> land,
     "farbe" -> farbe)
 
   val r = scala.util.Random
-  def solveGame(grid: Grid): Grid = {
 
+  def getVector(category: String): Option[Vector[String]] = {
+    try {
+      categories.get(category)
+    } catch {
+      case e: Exception => None
+    }
+  }
+
+
+  def solveGame(grid: Grid): Grid = {
     var solvedGrid = grid
     for(row <- 1 until grid.height; column <- 0 until grid.width) {
       val category: String = grid.cell(0, column).toString
-      val categoryAsVector: IndexedSeq[Vector[String]] = kategorien.get(category).toIndexedSeq
-      val counterPerCategory: Int = categoryAsVector(0).size
+
+      val categoryAsVector: Vector[String] = categories.get(category) match {
+         case Some(i) => i
+         case None => Vector[String]()
+      }
+      val counterPerCategory: Int = categoryAsVector.size
       val randomCategoryId: Int = r.nextInt(counterPerCategory - 1)
-      val randomCategoryAsString: String = categoryAsVector(0)(randomCategoryId)
+      val randomCategoryAsString: String = categoryAsVector(randomCategoryId)
       solvedGrid = solvedGrid.set(row, column, randomCategoryAsString)
     }
     solvedGrid
