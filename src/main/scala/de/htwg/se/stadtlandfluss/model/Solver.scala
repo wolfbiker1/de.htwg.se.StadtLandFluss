@@ -32,24 +32,16 @@ case class Solver() {
   val r = scala.util.Random
   def solveGame(grid: Grid): Grid = {
 
-//    collect headlines
-    for(row <- 1 until grid.size; column <- 0 until grid.size) {
-
-//      println(row , ':', column)
-      //print(grid.cell(0, column))
+    var solvedGrid = grid
+    for(row <- 1 until grid.height; column <- 0 until grid.width) {
       val category: String = grid.cell(0, column).toString
       val categoryAsVector: IndexedSeq[Vector[String]] = kategorien.get(category).toIndexedSeq
-      if (categoryAsVector.size != 0) {
-        val counterPerCategory: Int = categoryAsVector(0).size
-        val randomCategoryId: Int = r.nextInt(counterPerCategory - 1)
-        val randomCategoryAsString: String = categoryAsVector(0)(randomCategoryId)
-//        println(categoryAsVector)
-        grid.set(row, column, randomCategoryAsString)
-        println(grid)
-      }
-
+      val counterPerCategory: Int = categoryAsVector(0).size
+      val randomCategoryId: Int = r.nextInt(counterPerCategory - 1)
+      val randomCategoryAsString: String = categoryAsVector(0)(randomCategoryId)
+      solvedGrid = solvedGrid.set(row, column, randomCategoryAsString)
     }
-    grid
+    solvedGrid
   }
 
 }

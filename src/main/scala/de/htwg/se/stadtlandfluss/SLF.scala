@@ -7,7 +7,7 @@ import de.htwg.se.stadtlandfluss.model.GridCreator
 import scala.io.StdIn.readLine
 
 object SLF {
-  var grid = new Grid(9)
+  var grid = new Grid(4, 4)
   val tui = new Tui
   def main(args: Array[String]): Unit = {
     var input: String = ""

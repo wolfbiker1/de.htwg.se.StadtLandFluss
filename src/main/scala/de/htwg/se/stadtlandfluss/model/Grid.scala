@@ -2,10 +2,11 @@ package de.htwg.se.stadtlandfluss.model
 
 
 case class Grid(private val cells:Matrix[Cell]) {
-  def this(size:Int) = this(new Matrix[Cell](size, Cell("")))
+  def this(height: Int, width: Int) = this(new Matrix[Cell](height, width, Cell("")))
 
-  val size:Int = cells.size
-  val blocknum: Int = 5
+  val width: Int = cells.width
+  val height: Int = cells.height
+
 
   // get method for Cell at position x, y
   def cell(row:Int, col:Int):Cell = cells.cell(row, col)
@@ -14,16 +15,30 @@ case class Grid(private val cells:Matrix[Cell]) {
   def set(row:Int, col:Int, value: String):Grid = {copy(cells.replaceCell(row, col, Cell(value)))}
 
   override def toString: String = {
-    val lineseparator = ("*-" + ("--")) * blocknum + "+\n"
-    val line = ("| " + ("x ")) * blocknum + "|\n"
-    var box = "\n" + (lineseparator + (line)) * blocknum + lineseparator
-    for {
-      row <- 0 until size
-      col <- 0 until size
-    } {
-        box = box.replaceFirst("x", cell(row, col).toString)
+
+    var max = 0
+    for (col <- 0 until width) {
+      max = Math.max(cell(0, col).toString.length, max)
     }
 
+    max += 5
+
+    var separator = "-"
+    for (id <- 0 until max) {
+      separator ++= "-"
+    }
+
+    val lineSeparator = ("+-" + separator) * width + "+\n"
+    val line = ("| " + ("x ")) * width + "|\n"
+    var box = "\n" + (lineSeparator + line) *  height
+    for {
+      row <- 0 until height
+      col <- 0 until width
+    } {
+        val currentLength = cell(row, col).toString.length
+        val toInsert: String = if (currentLength < max) { cell(row, col).toString + (" " * (max-currentLength))} else cell(row, col).toString
+        box = box.replaceFirst("x", toInsert)
+    }
     box
   }
 }

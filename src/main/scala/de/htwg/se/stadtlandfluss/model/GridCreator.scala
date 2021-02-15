@@ -1,11 +1,11 @@
 package de.htwg.se.stadtlandfluss.model
 
-class GridCreator(size: Int) {
-  val categories: List[String] = List("automarke", "land", "fluss", "farbe")
+class GridCreator(width: Int, height: Int) {
+  val categories: List[String] = List("automarke", "land", "fluss", "farbe", "automarke", "land", "fluss", "farbe", "automarke")
 
-  def createGrid(num: Int): Grid = {
-    var grid = new Grid(size)
-    for {index <- 0 to num} {
+  def createGrid(rows: Int, columnsCount: Int): Grid = {
+    var grid = new Grid(height, width)
+    for {index <- 0 until columnsCount} {
       grid = setCell(grid, index)
     }
     grid
