@@ -10,11 +10,19 @@ object SLF {
   var grid = new Grid(4, 4)
   val tui = new Tui
   def main(args: Array[String]): Unit = {
+    println("How many Rounds?")
+    var x:Int= 0
+
     var input: String = ""
+    x= readLine().toInt
     do {
-      println("Grid : " + grid.toString)
+
+
+      println("normal Grid : " + grid.toString)
+
       input = readLine()
-      grid = tui.processInputLine(input, grid)
+
+      grid = tui.processInputLine(x,input, grid)
     } while (input != "q")
   }
 }
