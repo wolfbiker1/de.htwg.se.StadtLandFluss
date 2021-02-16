@@ -14,12 +14,13 @@ class Tui {
       case "s" =>
         new Solver().solveGame(grid)
 
-      case _ => { input.toList.filter(c => c != ' ').map(c => c.toString.toInt) match {
-        case row :: column :: value :: Nil => grid.set(row, column, value.toString)
+      case _ => { input.split(",|;|:|-").toList match {
 
+        case column :: value :: Nil => grid.set(1,column.toInt, value)
+        case value :: Nil => grid.set(8,4,value)
         case _ => grid
       }
-        grid
+
         }
       }
 
