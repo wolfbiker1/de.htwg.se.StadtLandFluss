@@ -4,13 +4,13 @@ import de.htwg.se.stadtlandfluss.model.{Grid, GridCreator, Solver}
 
 class Tui {
 
-  def processInputLine(x:Int,input: String, grid:Grid):Grid = {
+  def processInputLine(input: String, grid:Grid):Grid = {
 
 
 
     input match {
       case "q" => grid
-      case "n" =>new GridCreator(4, x).createGrid(x, 4)
+      case s"n-$i"=>new GridCreator(4, i.toInt).createGrid(i.toInt, 4)
       case "s" =>
         new Solver().solveGame(grid)
 

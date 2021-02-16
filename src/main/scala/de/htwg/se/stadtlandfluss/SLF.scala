@@ -11,10 +11,10 @@ object SLF {
   val tui = new Tui
   def main(args: Array[String]): Unit = {
     println("How many Rounds?")
-    var x:Int= 0
+
 
     var input: String = ""
-    x= readLine().toInt
+
     do {
 
 
@@ -22,7 +22,7 @@ object SLF {
 
       input = readLine()
 
-      grid = tui.processInputLine(x,input, grid)
+      grid = tui.processInputLine(input, grid)
     } while (input != "q")
   }
 }
