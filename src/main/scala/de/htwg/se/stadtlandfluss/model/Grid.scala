@@ -1,7 +1,7 @@
 package de.htwg.se.stadtlandfluss.model
 
 
-case class Grid(private val cells:Matrix[Cell]) {
+case class Grid(private val cells: Matrix[Cell]) {
   def this(height: Int, width: Int) = this(new Matrix[Cell](height, width, Cell("")))
 
   val width: Int = cells.width
@@ -9,10 +9,12 @@ case class Grid(private val cells:Matrix[Cell]) {
 
 
   // get method for Cell at position x, y
-  def cell(row:Int, col:Int):Cell = cells.cell(row, col)
+  def cell(row: Int, col: Int): Cell = cells.cell(row, col)
 
   // set function is a wrapper for Matrix.replaceCell
-  def set(row:Int, col:Int, value: String):Grid = {copy(cells.replaceCell(row, col, Cell(value)))}
+  def set(row: Int, col: Int, value: String): Grid = {
+    copy(cells.replaceCell(row, col, Cell(value)))
+  }
 
   override def toString: String = {
 
@@ -30,14 +32,16 @@ case class Grid(private val cells:Matrix[Cell]) {
 
     val lineSeparator = ("+-" + separator) * width + "+\n"
     val line = ("| " + ("x ")) * width + "|\n"
-    var box = "\n" + (lineSeparator + line) *  height
+    var box = "\n" + (lineSeparator + line) * height
     for {
       row <- 0 until height
       col <- 0 until width
     } {
-        val currentLength = cell(row, col).toString.length
-        val toInsert: String = if (currentLength < max) { cell(row, col).toString + (" " * (max-currentLength))} else cell(row, col).toString
-        box = box.replaceFirst("x", toInsert)
+      val currentLength = cell(row, col).toString.length
+      val toInsert: String = if (currentLength < max) {
+        cell(row, col).toString + (" " * (max - currentLength))
+      } else cell(row, col).toString
+      box = box.replaceFirst("x", toInsert)
     }
     box
   }

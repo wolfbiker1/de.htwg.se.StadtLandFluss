@@ -11,7 +11,7 @@ class GridCreator(width: Int, height: Int) {
     grid
   }
 
-  private def setCell(grid:Grid, column: Int): Grid = {
+  private def setCell(grid: Grid, column: Int): Grid = {
     grid.set(0, column, categories(column))
   }
 }
