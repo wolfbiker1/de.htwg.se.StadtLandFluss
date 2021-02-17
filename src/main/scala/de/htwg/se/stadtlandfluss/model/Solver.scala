@@ -1,7 +1,6 @@
 package de.htwg.se.stadtlandfluss.model
 
 
-
 case class Solver() {
 
   val land: Vector[String] = Vector("Afghanistan","Ägypten", "Albanien", "Algerien", "Andorra", "Angola", "Antigua und Barbuda", "Äquatorialguinea", "Argentinien", "Armenien", "Aserbaidschan", "Äthiopien",
@@ -40,7 +39,7 @@ case class Solver() {
   }
 
 
-  def solveGame(grid: Grid): Grid = {
+  def solveGame(grid: Grid):Grid = {
     var solvedGrid = grid
     for(row <- 1 until grid.height; column <- 0 until grid.width) {
       val category: String = grid.cell(0, column).toString

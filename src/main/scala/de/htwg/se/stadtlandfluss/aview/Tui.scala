@@ -1,28 +1,35 @@
 package de.htwg.se.stadtlandfluss.aview
 
+import de.htwg.se.stadtlandfluss.controller.Controller
 import de.htwg.se.stadtlandfluss.model.{Grid, GridCreator, Solver}
+import de.htwg.se.stadtlandfluss.util.Observer
 
-class Tui {
+class Tui(controller: Controller) extends Observer{
+  controller.add(this)
+  val width = 4
+  val height= 8
+  val randomCells = width*height
 
-  def processInputLine(input: String, grid:Grid):Grid = {
+  def processInputLine(input: String):Unit = {
 
 
 
     input match {
-      case "q" => grid
-      case s"n-$i"=>new GridCreator(4, i.toInt).createGrid(i.toInt, 4)
+      case "q" =>
+      case s"n-$i"=>controller.createRandomGrid(4,i.toInt,i.toInt,4 )
       case "s" =>
-        new Solver().solveGame(grid)
 
+        controller.solve
       case _ => { input.split(",|;|:|-").toList match {
 
-        case column :: value :: Nil => grid.set(1,column.toInt, value)
-        case value :: Nil => grid.set(8,4,value)
-        case _ => grid
+        case column :: value :: Nil => controller.set(1,column.toInt, value)
+        case value :: Nil => controller.set(8,4,value)
+        case _ =>
       }
 
         }
       }
 
   }
+  override def update: Unit = { println(controller.gridToString);}
 }
