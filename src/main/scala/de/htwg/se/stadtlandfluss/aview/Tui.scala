@@ -6,10 +6,8 @@ import de.htwg.se.stadtlandfluss.util.Observer
 
 class Tui(controller: Controller) extends Observer{
   controller.add(this)
-  val width = 4
-  val height= 8
-  val randomCells = width*height
-val grid2 = new Grid(4,4)
+
+
   def processInputLine(input: String):Unit = {
 
 
