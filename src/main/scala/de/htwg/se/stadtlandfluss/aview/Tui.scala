@@ -9,7 +9,7 @@ class Tui(controller: Controller) extends Observer{
   val width = 4
   val height= 8
   val randomCells = width*height
-
+val grid2 = new Grid(4,4)
   def processInputLine(input: String):Unit = {
 
 
@@ -18,8 +18,7 @@ class Tui(controller: Controller) extends Observer{
       case "q" =>
       case s"n-$i"=>controller.createRandomGrid(4,i.toInt,i.toInt,4 )
       case "s" =>
-
-        controller.solve
+        controller.solve( )
       case _ => { input.split(",|;|:|-").toList match {
 
         case column :: value :: Nil => controller.set(1,column.toInt, value)
