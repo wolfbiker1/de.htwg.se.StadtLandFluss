@@ -17,19 +17,14 @@ case class Grid(private val cells: Matrix[Cell]) {
   }
 
   override def toString: String = {
-
     var max = 0
     for (col <- 0 until width) {
-      max = Math.max(cell(0, col).toString.length, max)
-    }
-
+      max = Math.max(cell(0, col).toString.length, max)  }
     max += 5
 
     var separator = "-"
     for (id <- 0 until max) {
-      separator ++= "-"
-    }
-
+      separator ++= "-"  }
     val lineSeparator = ("+-" + separator) * width + "+\n"
     val line = ("| " + ("x ")) * width + "|\n"
     var box = "\n" + (lineSeparator + line) * height
@@ -44,6 +39,4 @@ case class Grid(private val cells: Matrix[Cell]) {
       box = box.replaceFirst("x", toInsert)
     }
     box
-  }
-}
-
+  } }
