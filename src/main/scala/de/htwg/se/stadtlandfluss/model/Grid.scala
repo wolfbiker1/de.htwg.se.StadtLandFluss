@@ -15,31 +15,24 @@ case class Grid(private val cells:Matrix[Cell]) {
   def set(row:Int, col:Int, value: String):Grid = {copy(cells.replaceCell(row, col, Cell(value)))}
 
   override def toString: String = {
-
     var max = 0
     for (col <- 0 until width) {
-      max = Math.max(cell(0, col).toString.length, max)
-    }
-
+      max = Math.max(cell(0, col).toString.length, max)  }
     max += 5
 
     var separator = "-"
     for (id <- 0 until max) {
-      separator ++= "-"
-    }
-
+      separator ++= "-"  }
     val lineSeparator = ("+-" + separator) * width + "+\n"
     val line = ("| " + ("x ")) * width + "|\n"
     var box = "\n" + (lineSeparator + line) *  height
     for {
       row <- 0 until height
       col <- 0 until width
-    } {
+    }
+    {
         val currentLength = cell(row, col).toString.length
         val toInsert: String = if (currentLength < max) { cell(row, col).toString + (" " * (max-currentLength))} else cell(row, col).toString
-        box = box.replaceFirst("x", toInsert)
-    }
+        box = box.replaceFirst("x", toInsert) }
     box
-  }
-}
-
+  } }
