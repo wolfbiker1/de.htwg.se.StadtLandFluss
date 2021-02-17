@@ -2,3 +2,6 @@
 
 
 [![Coverage Status](https://coveralls.io/repos/github/wolfbiker1/de.htwg.se.StadtLandFluss/badge.svg)](https://coveralls.io/github/wolfbiker1/de.htwg.se.StadtLandFluss)
+
+
+[![forthebadge](https://forthebadge.com/images/badges/ages-18.svg)]()
