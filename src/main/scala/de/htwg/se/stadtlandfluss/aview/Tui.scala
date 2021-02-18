@@ -16,14 +16,14 @@ class Tui(controller: Controller) extends Observer{
         controller.solve()
       case _ => {
         input.split(",|;|:|-").toList match {
-
-          case column :: value :: Nil => controller.set(1, column.toInt, value)
-          case value :: Nil => controller.set(8, 4, value)
+          case row:: column :: value :: Nil => controller.set(row.toInt-1, column.toInt-1, value)
+          case column :: value :: Nil => controller.set(1, column.toInt-1, value)
+          case value :: Nil => controller.set(8-1, 4-1, value)
           case _ =>
         }
       }
     }
 
   }
-  override def update: Unit = { println(controller.gridToString);}
+  override def update: Boolean = { println(controller.gridToString);true}
 }
