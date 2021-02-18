@@ -4,7 +4,8 @@ import de.htwg.se.stadtlandfluss.model.Cell
 import org.scalatest._
 
 class CellSpec extends WordSpec with Matchers {
-
+  var c = Cell("")
+  Cell.unapply(c).get should be("")
   "A Cell" when {
     "not set to any value " should {
       val emptyCell = Cell("")

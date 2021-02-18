@@ -4,6 +4,8 @@ import de.htwg.se.stadtlandfluss.model.{Cell, Matrix}
 import org.scalatest.{Matchers, WordSpec}
 
 class MatrixSpec extends WordSpec with Matchers {
+  val m = new Matrix[Cell](1, 1, Cell(""))
+  Matrix.unapply(m).get should be equals(Vector(Vector()))
   "A Matrix is a tailor-made immutable data type that contains a two-dimentional Vector of Cells. A Matrix" when {
     "empty " should {
       "be created by using a dimention and a sample cell" in {
