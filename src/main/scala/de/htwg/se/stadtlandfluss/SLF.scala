@@ -13,10 +13,11 @@ object SLF {
   controller.notifyObservers
 
   val tui = new Tui(controller)
+
   def main(args: Array[String]): Unit = {
     var input: String = ""
     do {
-  input = readLine()
+      input = readLine()
 
       tui.processInputLine(input)
     } while (input != "q")
