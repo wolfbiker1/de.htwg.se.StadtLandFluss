@@ -15,7 +15,6 @@ case class Grid(private val cells: Matrix[Cell]) {
   def set(row: Int, col: Int, value: String): Grid = {
     copy(cells.replaceCell(row, col, Cell(value)))
   }
-
   override def toString: String = {
     var max = 0
     for (col <- 0 until width) {
