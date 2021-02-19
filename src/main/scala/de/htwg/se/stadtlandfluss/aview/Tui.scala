@@ -14,10 +14,10 @@ class Tui(controller: Controller) extends Observer{
       case s"n-$i" => controller.createRandomGrid(4, i.toInt, i.toInt, 4)
       case "s" =>
         controller.solve()
-      case s"p-$f-$l" => {
-        val p = new Builder()
-        p.buildPlayerFirstname(f)
-        p.buildPlayerLastname(l)
+      case s"p-$f-$l-$a" => {
+        val b = Builder()
+        val y = b.buildPlayerFirstname(s"$f").buildPlayerLastname(s"$l").buildPlayerAge(a.toInt).build()
+        println(y)
 
       }
       case _ => {
