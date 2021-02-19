@@ -1,9 +1,9 @@
 package de.htwg.se.stadtlandfluss.aview
 
 import de.htwg.se.stadtlandfluss.controller.Controller
-import de.htwg.se.stadtlandfluss.model.{Grid, GridCreator, Solver}
 import de.htwg.se.stadtlandfluss.util.Observer
 import de.htwg.se.stadtlandfluss.model.Builder
+
 class Tui(controller: Controller) extends Observer{
   controller.add(this)
 
@@ -16,9 +16,9 @@ class Tui(controller: Controller) extends Observer{
         controller.solve()
       case s"p-$f-$l-$a" => {
         val b = Builder()
-        val y = b.buildPlayerFirstname(s"$f").buildPlayerLastname(s"$l").buildPlayerAge(a.toInt).build()
+        val y = b.setPlayerFirstname(s"$f").setPlayerLastname(s"$l").setPlayerAge(a.toInt).build()
+        // just testing
         println(y)
-
       }
       case _ => {
         input.split(",|;|:|-").toList match {
