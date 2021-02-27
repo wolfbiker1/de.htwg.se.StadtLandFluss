@@ -17,8 +17,6 @@ class Tui(controller: Controller) extends Observer{
       case s"p-$f-$l-$a" => {
         val b = Builder()
         val y = b.setPlayerFirstname(s"$f").setPlayerLastname(s"$l").setPlayerAge(a.toInt).build()
-        // just testing
-        println(y)
       }
       case _ => {
         input.split(",|;|:|-").toList match {
