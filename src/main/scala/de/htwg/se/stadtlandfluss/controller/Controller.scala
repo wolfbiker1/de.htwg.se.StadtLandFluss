@@ -1,10 +1,11 @@
 package de.htwg.se.stadtlandfluss.controller
 
 import de.htwg.se.stadtlandfluss.model.{Grid, GridCreator, Solver}
-import de.htwg.se.stadtlandfluss.util.Observable
+import de.htwg.se.stadtlandfluss.util.{Observable, UndoManager}
 
 class Controller private (var grid: Grid) extends Observable {
-
+ 
+  private val undoManager = new UndoManager
   def createEmptyGrid(width: Int, height: Int): Unit = {
     grid = new Grid(width, height)
     notifyObservers
@@ -19,12 +20,27 @@ class Controller private (var grid: Grid) extends Observable {
   def gridToString: String = grid.toString
 
   def set(row: Int, col: Int, value: String): Unit = {
-    grid = grid.set(row, col, value)
+    undoManager.doStep(new SetCommand(row, col, value, this))
     notifyObservers
   }
 
   def solve() = {
     grid = new Solver().solveGame(grid)
+    notifyObservers
+  }
+
+
+  def _solve: Unit = {
+    notifyObservers
+  }
+
+  def undo: Unit = {
+    undoManager.undoStep
+    notifyObservers
+  }
+
+  def redo: Unit = {
+    undoManager.redoStep
     notifyObservers
   }
 }

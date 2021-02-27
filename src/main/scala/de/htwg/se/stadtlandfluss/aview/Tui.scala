@@ -12,6 +12,7 @@ class Tui(controller: Controller) extends Observer {
     input match {
       case "q" =>
       case s"n-$i" => controller.createRandomGrid(4, i.toInt, i.toInt, 4)
+      case "z" => controller.undo
       case "s" =>
         controller.solve()
       case _ => {
@@ -25,5 +26,8 @@ class Tui(controller: Controller) extends Observer {
     }
 
   }
-  override def update: Boolean = { println(controller.gridToString);true}
+  override def update: Boolean = {
+    println(controller.gridToString)
+    true
+  }
 }
