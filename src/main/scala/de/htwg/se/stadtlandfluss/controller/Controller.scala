@@ -1,10 +1,11 @@
 package de.htwg.se.stadtlandfluss.controller
 
 import de.htwg.se.stadtlandfluss.model.{Grid, GridCreator, Solver, Builder}
+import de.htwg.se.stadtlandfluss.controller.GameStatus._
 import de.htwg.se.stadtlandfluss.util.{Observable, UndoManager}
 
 class Controller private (var grid: Grid) extends Observable {
- 
+  var gameStatus: GameStatus = IDLE
   private val undoManager = new UndoManager
   def createEmptyGrid(width: Int, height: Int): Unit = {
     grid = new Grid(width, height)
@@ -19,11 +20,11 @@ class Controller private (var grid: Grid) extends Observable {
   def addPlayer(credentials: List[String]): Unit = {
     val builder = new Builder()
     val player = builder
-                 .setPlayerFirstname(credentials(1))
-                 .setPlayerLastname(credentials(2))
-                 .setPlayerAge(credentials(3).toInt)
-                 .build()
-   // todo: store results somewhere
+      .setPlayerFirstname(credentials(1))
+      .setPlayerLastname(credentials(2))
+      .setPlayerAge(credentials(3).toInt)
+      .build()
+    // todo: store results somewhere
   }
 
   def gridToString: String = grid.toString

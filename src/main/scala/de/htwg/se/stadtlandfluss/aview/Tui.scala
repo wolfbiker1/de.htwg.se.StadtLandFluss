@@ -1,7 +1,9 @@
 package de.htwg.se.stadtlandfluss.aview
 
 import de.htwg.se.stadtlandfluss.controller._
+import de.htwg.se.stadtlandfluss.model.{Grid, GridCreator, Solver}
 import de.htwg.se.stadtlandfluss.util.Observer
+
 
 class Tui(controller: Controller) extends Observer {
   controller.add(this)
@@ -32,6 +34,9 @@ class Tui(controller: Controller) extends Observer {
 
   override def update: Boolean = {
     println(controller.gridToString)
+    controller.gameStatus = GameStatus.IDLE
+    println(GameStatus.message(controller.gameStatus))
+
     true
   }
 }
