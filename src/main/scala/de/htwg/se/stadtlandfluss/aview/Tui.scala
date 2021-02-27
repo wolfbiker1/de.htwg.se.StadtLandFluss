@@ -1,10 +1,10 @@
 package de.htwg.se.stadtlandfluss.aview
 
-import de.htwg.se.stadtlandfluss.controller.Controller
+import de.htwg.se.stadtlandfluss.controller._
 import de.htwg.se.stadtlandfluss.model.{Grid, GridCreator, Solver}
 import de.htwg.se.stadtlandfluss.util.Observer
 
-class Tui(controller: Controller) extends Observer{
+class Tui(controller: Controller) extends Observer {
   controller.add(this)
 
   def processInputLine(input: String):Unit = {
