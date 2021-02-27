@@ -3,7 +3,8 @@ package de.htwg.se.stadtlandfluss.controller
 import de.htwg.se.stadtlandfluss.model.{Grid, GridCreator, Solver}
 import de.htwg.se.stadtlandfluss.util.Observable
 
-class Controller(var grid: Grid) extends Observable {
+class Controller private (var grid: Grid) extends Observable {
+
   def createEmptyGrid(width: Int, height: Int): Unit = {
     grid = new Grid(width, height)
     notifyObservers
@@ -26,6 +27,10 @@ class Controller(var grid: Grid) extends Observable {
     grid = new Solver().solveGame(grid)
     notifyObservers
   }
+}
 
+object Controller {
+  val controller = new Controller(new Grid(4, 4))
+  def getController: Controller = controller
 }
 

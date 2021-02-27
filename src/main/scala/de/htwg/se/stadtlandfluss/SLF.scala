@@ -1,15 +1,12 @@
 package de.htwg.se.stadtlandfluss
 
 import de.htwg.se.stadtlandfluss.aview.Tui
-import de.htwg.se.stadtlandfluss.controller.Controller
-import de.htwg.se.stadtlandfluss.model.Grid
-import de.htwg.se.stadtlandfluss.model.GridCreator
+import de.htwg.se.stadtlandfluss.controller._
 
 import scala.io.StdIn.readLine
 
 object SLF {
-  var grid = new Grid(4, 4)
-  val controller = new Controller(grid)
+  val controller = Controller.getController
   controller.notifyObservers
 
   val tui = new Tui(controller)
