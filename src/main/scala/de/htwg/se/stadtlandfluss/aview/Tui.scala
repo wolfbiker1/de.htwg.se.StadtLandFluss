@@ -1,10 +1,11 @@
 package de.htwg.se.stadtlandfluss.aview
 
-import de.htwg.se.stadtlandfluss.controller.Controller
+import de.htwg.se.stadtlandfluss.controller._
+import de.htwg.se.stadtlandfluss.model.{Grid, GridCreator, Solver}
 import de.htwg.se.stadtlandfluss.util.Observer
 import de.htwg.se.stadtlandfluss.model.Builder
 
-class Tui(controller: Controller) extends Observer{
+class Tui(controller: Controller) extends Observer {
   controller.add(this)
 
   def processInputLine(input: String):Unit = {
@@ -12,6 +13,7 @@ class Tui(controller: Controller) extends Observer{
     input match {
       case "q" =>
       case s"n-$i" => controller.createRandomGrid(4, i.toInt, i.toInt, 4)
+      case "z" => controller.undo
       case "s" =>
         controller.solve()
       case s"p-$f-$l-$a" => {
@@ -29,5 +31,8 @@ class Tui(controller: Controller) extends Observer{
     }
 
   }
-  override def update: Boolean = { println(controller.gridToString);true}
+  override def update: Boolean = {
+    println(controller.gridToString)
+    true
+  }
 }
