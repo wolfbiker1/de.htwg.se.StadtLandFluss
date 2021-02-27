@@ -3,6 +3,7 @@ package de.htwg.se.stadtlandfluss.aview
 import de.htwg.se.stadtlandfluss.controller._
 import de.htwg.se.stadtlandfluss.model.{Grid, GridCreator, Solver}
 import de.htwg.se.stadtlandfluss.util.Observer
+import de.htwg.se.stadtlandfluss.model.Builder
 
 class Tui(controller: Controller) extends Observer {
   controller.add(this)
@@ -15,6 +16,10 @@ class Tui(controller: Controller) extends Observer {
       case "z" => controller.undo
       case "s" =>
         controller.solve()
+      case s"p-$f-$l-$a" => {
+        val b = Builder()
+        val y = b.setPlayerFirstname(s"$f").setPlayerLastname(s"$l").setPlayerAge(a.toInt).build()
+      }
       case _ => {
         input.split(",|;|:|-").toList match {
           case row:: column :: value :: Nil => controller.set(row.toInt-1, column.toInt-1, value)
