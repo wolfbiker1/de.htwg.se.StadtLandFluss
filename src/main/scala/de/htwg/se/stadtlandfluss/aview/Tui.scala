@@ -8,7 +8,7 @@ import de.htwg.se.stadtlandfluss.model.Builder
 class Tui(controller: Controller) extends Observer {
   controller.add(this)
 
-  def processInputLine(input: String):Unit = {
+  def processInputLine(input: String): Unit = {
 
     input match {
       case "q" =>
@@ -22,15 +22,14 @@ class Tui(controller: Controller) extends Observer {
       }
       case _ => {
         input.split(",|;|:|-").toList match {
-          case row:: column :: value :: Nil => controller.set(row.toInt-1, column.toInt-1, value)
-          case column :: value :: Nil => controller.set(1, column.toInt-1, value)
-          case value :: Nil => controller.set(8-1, 4-1, value)
+          case column :: value :: Nil => controller.set(1, column.toInt - 1, value)
           case _ =>
         }
       }
     }
 
   }
+
   override def update: Boolean = {
     println(controller.gridToString)
     true
