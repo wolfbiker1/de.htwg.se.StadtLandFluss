@@ -7,7 +7,7 @@ import org.scalatest.{Matchers, WordSpec}
 class TuiSpec  extends WordSpec with Matchers{
 
   "A Sudoku Tui" should {
-    val controller = new Controller(new Grid(8,4))
+    val controller = Controller.getController
     val tui = new Tui(controller)
     "do nothing on input 'q'" in {
       tui.processInputLine("q")

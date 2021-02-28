@@ -9,7 +9,7 @@ class ControllerSpec extends WordSpec with Matchers {
   "A Controller" when {
     "observed by an Observer" should {
       val smallGrid = new Grid(4,4)
-      val controller = new Controller(smallGrid)
+      val controller = Controller.getController
       val observer = new Observer {
         var updated: Boolean = false
         def isUpdated: Boolean = updated
