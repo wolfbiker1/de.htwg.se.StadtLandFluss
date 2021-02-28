@@ -1,9 +1,7 @@
 package de.htwg.se.stadtlandfluss.aview
 
 import de.htwg.se.stadtlandfluss.controller._
-import de.htwg.se.stadtlandfluss.model.{Grid, GridCreator, Solver}
 import de.htwg.se.stadtlandfluss.util.Observer
-import de.htwg.se.stadtlandfluss.model.Builder
 
 class Tui(controller: Controller) extends Observer {
   controller.add(this)
