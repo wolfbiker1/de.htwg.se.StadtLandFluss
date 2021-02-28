@@ -14,6 +14,7 @@ class Tui(controller: Controller) extends Observer {
       case "q" =>
       case s"n-$i" => controller.createRandomGrid(4, i.toInt, i.toInt, 4)
       case "z" => controller.undo
+      case "e" => controller.evaluate()
       case "s" =>
         controller.solve()
       case s"p-$f-$l-$a" => {

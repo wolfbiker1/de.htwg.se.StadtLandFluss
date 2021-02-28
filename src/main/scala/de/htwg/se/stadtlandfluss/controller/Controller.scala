@@ -1,6 +1,6 @@
 package de.htwg.se.stadtlandfluss.controller
 
-import de.htwg.se.stadtlandfluss.model.{Grid, GridCreator, Solver}
+import de.htwg.se.stadtlandfluss.model.{Grid, GridCreator, Solver, evaluatorCol}
 import de.htwg.se.stadtlandfluss.util.{Observable, UndoManager}
 
 class Controller private (var grid: Grid) extends Observable {
@@ -29,6 +29,9 @@ class Controller private (var grid: Grid) extends Observable {
     notifyObservers
   }
 
+  def evaluate(): Vector[Int] = {
+    new evaluatorCol().evaluateGame(grid)
+  }
 
   def _solve: Unit = {
     notifyObservers
