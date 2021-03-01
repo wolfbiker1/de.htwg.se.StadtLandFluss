@@ -18,9 +18,9 @@ class evaluatorCol extends evaluateStrategyTemplate {
         player0 += 2
         player1 += 2
       } else if (categories(category).contains(resultEven) && !categories(category).contains(resultOdd)) {
-        player0 += 2
+        player0 += 0
       } else if (!categories(category).contains(resultEven) && categories(category).contains(resultOdd)) {
-        player1 += 2
+        player1 += 0
       }
     }
     println("is done")
