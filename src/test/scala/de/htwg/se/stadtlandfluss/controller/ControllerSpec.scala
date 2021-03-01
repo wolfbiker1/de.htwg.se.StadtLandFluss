@@ -8,7 +8,6 @@ class ControllerSpec extends WordSpec with Matchers {
 
   "A Controller" when {
     "observed by an Observer" should {
-      val smallGrid = new Grid(4,4)
       val controller = Controller.getController
       val observer = new Observer {
         var updated: Boolean = false
@@ -22,6 +21,12 @@ class ControllerSpec extends WordSpec with Matchers {
         controller.grid.width should be(4)
         controller.grid.height should be(4)
       }
+      "notify its Observer after selecting Rounds " in {
+        controller.rounds(4,4)
+        observer.updated should be(true)
+        controller.grid.width should be(4)
+        controller.grid.height should be(4)
+      }
 
       "notify its Observer after setting a cell" in {
         controller.set(1,1,"")
@@ -30,5 +35,18 @@ class ControllerSpec extends WordSpec with Matchers {
       }
 
     }
+  }
+  "empty" should {
+    val controller = Controller.getController
+    "handle undo/redo correctly on an empty undo-stack" in {
+      controller.grid.cell(0, 0).isSet should be(false)
+      controller.undo
+      controller.grid.cell(0, 0).isSet should be(false)
+      controller.redo
+      controller.grid.cell(0, 0).isSet should be(false)
+
+    }
+
+
   }
 }
