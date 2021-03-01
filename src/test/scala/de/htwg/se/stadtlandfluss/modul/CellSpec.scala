@@ -26,5 +26,4 @@ class CellSpec extends WordSpec with Matchers {
       }
     }
   }
-
 }

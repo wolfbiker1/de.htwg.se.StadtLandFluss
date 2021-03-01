@@ -40,10 +40,6 @@ class Controller private (var grid: Grid) extends Observable {
   }
 
 
-  def _solve: Unit = {
-    notifyObservers
-  }
-
   def undo: Unit = {
     undoManager.undoStep
     notifyObservers
