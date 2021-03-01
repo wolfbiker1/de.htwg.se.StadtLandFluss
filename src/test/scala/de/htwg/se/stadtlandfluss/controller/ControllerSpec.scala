@@ -36,17 +36,5 @@ class ControllerSpec extends WordSpec with Matchers {
 
     }
   }
-  "empty" should {
-    val controller = Controller.getController
-    "handle undo/redo correctly on an empty undo-stack" in {
-      controller.grid.cell(0, 0).isSet should be(false)
-      controller.undo
-      controller.grid.cell(0, 0).isSet should be(false)
-      controller.redo
-      controller.grid.cell(0, 0).isSet should be(false)
 
-    }
-
-
-  }
 }
