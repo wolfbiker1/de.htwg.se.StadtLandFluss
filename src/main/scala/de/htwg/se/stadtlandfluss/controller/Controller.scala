@@ -1,6 +1,6 @@
 package de.htwg.se.stadtlandfluss.controller
 
-import de.htwg.se.stadtlandfluss.model.{Grid, GridCreator, Solver}
+import de.htwg.se.stadtlandfluss.model.{Grid, GridCreator, Solver, Builder}
 import de.htwg.se.stadtlandfluss.util.{Observable, UndoManager}
 
 class Controller private (var grid: Grid) extends Observable {
@@ -16,6 +16,15 @@ class Controller private (var grid: Grid) extends Observable {
     notifyObservers
   }
 
+  def addPlayer(credentials: List[String]): Unit = {
+    val builder = new Builder()
+    val player = builder
+                 .setPlayerFirstname(credentials(1))
+                 .setPlayerLastname(credentials(2))
+                 .setPlayerAge(credentials(3).toInt)
+                 .build()
+   // todo: store results somewhere
+  }
 
   def gridToString: String = grid.toString
 
