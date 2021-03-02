@@ -15,6 +15,7 @@ class Tui(controller: Controller) extends Observer {
       case s"n-$userInput" => {
         toInt(userInput) match {
           case Some(value) =>
+            controller.setUpRandomCharacters(value)
             controller.createRandomGrid(controller.getNumberOfColumns, value)
           case None =>
             // fail silently...

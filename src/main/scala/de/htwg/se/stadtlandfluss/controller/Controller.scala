@@ -45,6 +45,10 @@ class Controller private(var grid: Grid) extends Observable {
       notifyObservers
   }
 
+  def setUpRandomCharacters(numOfRounds: Int): Unit = {
+    Round.setUpRandomCharacters(numOfRounds)
+  }
+
   def isReady(): Unit = {
     if (Round.getPlayerMap.size < 2) {
       systemStatus = NOTREADY
