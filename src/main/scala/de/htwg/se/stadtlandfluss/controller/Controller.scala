@@ -3,8 +3,10 @@ package de.htwg.se.stadtlandfluss.controller
 import de.htwg.se.stadtlandfluss.model.{Grid, GridCreator, Solver, Builder, Round}
 import de.htwg.se.stadtlandfluss.controller.GameStatus._
 import de.htwg.se.stadtlandfluss.util.{Observable, UndoManager}
+import scala.swing.Publisher
 
-class Controller private(var grid: Grid) extends Observable {
+
+class Controller private(var grid: Grid) extends Observable with Publisher {
   var gameStatus: GameStatus = IDLE
   var playerStatus: PlayerStatus = NA
   private val undoManager = new UndoManager
