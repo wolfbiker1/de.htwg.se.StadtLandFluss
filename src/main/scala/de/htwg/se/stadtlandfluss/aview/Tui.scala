@@ -1,7 +1,6 @@
 package de.htwg.se.stadtlandfluss.aview
 
 import de.htwg.se.stadtlandfluss.controller._
-import de.htwg.se.stadtlandfluss.model.{Grid, GridCreator, Solver}
 import de.htwg.se.stadtlandfluss.util.Observer
 
 import scala.util.Try
@@ -24,11 +23,9 @@ class Tui(controller: Controller) extends Observer {
       case "z" => controller.undo
       case "s" =>
         controller.solve()
-      case s"p-$f-$l-$a" => {
+      case s"p-$firstName-$lastName-$age" => {
         val playerInfo = input.split(",|;|:|-").toList
-        playerInfo match {
-          case "p" :: firstname :: lastname :: age :: Nil => controller.addPlayer(playerInfo)
-        }
+        controller.addPlayer(playerInfo)
       }
       case _ => {
         input.split(",|;|:|-").toList match {
@@ -42,15 +39,7 @@ class Tui(controller: Controller) extends Observer {
 
   def toInt(s: String): Option[Int] = {
     Try(s.toInt).toOption
-//    val i = Try(s.toInt).toOption
-//    i match {
-//      case Some(value) =>
-//        value
-//      case None =>
-//        0
-//    }
   }
-
 
   override def update: Boolean = {
     println(controller.gridToString)

@@ -12,7 +12,7 @@ class BuilderSpec extends WordSpec with Matchers {
         val b = new Builder
         b.setPlayerFirstname("hans") should be(Builder())
         b.setPlayerLastname("wurst") should be(Builder())
-        b.setPlayerAge(42) should be(Builder())
+        b.setPlayerAge("42") should be(Builder())
         b.build() should be(Player("hans", "wurst", 42))
       }
     }
