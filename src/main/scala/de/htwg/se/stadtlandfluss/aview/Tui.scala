@@ -7,7 +7,7 @@ import de.htwg.se.stadtlandfluss.util.Observer
 
 class Tui(controller: Controller) extends Observer {
   controller.add(this)
-
+  println(GameStatus.message(controller.gameStatus))
   def processInputLine(input: String): Unit = {
 
     input match {
@@ -24,7 +24,7 @@ class Tui(controller: Controller) extends Observer {
       }
       case _ => {
         input.split(",|;|:|-").toList match {
-          case column :: value :: Nil => controller.set(1, column.toInt - 1, value)
+          case column :: value :: Nil => controller.set(controller.getRound(), column.toInt - 1, value)
           case _ =>
         }
       }
@@ -34,9 +34,8 @@ class Tui(controller: Controller) extends Observer {
 
   override def update: Boolean = {
     println(controller.gridToString)
-    controller.gameStatus = GameStatus.IDLE
     println(GameStatus.message(controller.gameStatus))
-
+    println(GameStatus.playerMessage(controller.playerStatus))
     true
   }
 }
