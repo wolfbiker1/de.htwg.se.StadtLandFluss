@@ -8,7 +8,6 @@ class ControllerSpec extends WordSpec with Matchers {
 
   "A Controller" when {
     "observed by an Observer" should {
-      val smallGrid = new Grid(4,4)
       val controller = Controller.getController
       val observer = new Observer {
         var updated: Boolean = false
@@ -17,7 +16,11 @@ class ControllerSpec extends WordSpec with Matchers {
       }
       controller.add(observer)
       "notify its Observer after creation" in {
-        controller.createEmptyGrid(4,4)
+        observer.updated should be(true)
+        controller.grid.width should be(4)
+        controller.grid.height should be(4)
+      }
+      "notify its Observer after selecting Rounds " in {
         observer.updated should be(true)
         controller.grid.width should be(4)
         controller.grid.height should be(4)
@@ -28,7 +31,12 @@ class ControllerSpec extends WordSpec with Matchers {
         observer.updated should be(true)
         controller.grid.cell(1,1).value should be ("")
       }
+      "adds a player" in {
+        val playerInfo = "p-hans-wurst-42".split(",|;|:|-").toList
+        controller.addPlayer(playerInfo)
+      }
 
     }
   }
+
 }
