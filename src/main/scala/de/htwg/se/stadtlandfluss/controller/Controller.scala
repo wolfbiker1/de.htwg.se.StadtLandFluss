@@ -1,8 +1,10 @@
 package de.htwg.se.stadtlandfluss.controller
 
-import de.htwg.se.stadtlandfluss.model.{Grid, GridCreator, Solver, Builder, Round}
+import de.htwg.se.stadtlandfluss.model.{Builder, Grid, GridCreator, Round, Solver}
 import de.htwg.se.stadtlandfluss.controller.GameStatus._
 import de.htwg.se.stadtlandfluss.util.{Observable, UndoManager}
+
+import scala.reflect.internal.util.TableDef.Column
 import scala.swing.Publisher
 
 
@@ -49,6 +51,7 @@ class Controller private(var grid: Grid) extends Publisher {
     currentRound
   }
 
+
   def solve() = {
     grid = new Solver().solveGame(grid)
     gameStatus = SOLVED
@@ -67,6 +70,13 @@ class Controller private(var grid: Grid) extends Publisher {
     gameStatus = REDO
     publish(new CellChanged)
   }
+
+  /*
+   * Wrapper methods to get access to data from gui component
+   */
+  def getCell(row: Int, column: Int) = grid.cell(row, column)
+  def getAmountOfColumns = grid.width
+  def getAmountOfRows = grid.height
 }
 
 object Controller {
