@@ -5,19 +5,27 @@ import de.htwg.se.stadtlandfluss.controller.GameStatus._
 import de.htwg.se.stadtlandfluss.util.{Observable, UndoManager}
 
 class Controller private(var grid: Grid) extends Observable {
+
+  /*
+   * Gamestates
+   */
   var gameStatus: GameStatus = IDLE
   var playerStatus: PlayerStatus = NA
+  var systemStatus: SystemStatus = NOTREADY
+
+
+  /*
+   * Local definitions
+   */
   private val undoManager = new UndoManager
+  private val numberOfColumns = 4
 
-  def createEmptyGrid(width: Int, height: Int): Unit = {
-    grid = new Grid(width, height)
+  def createRandomGrid(width: Int, height: Int): Unit = {
+    grid = new GridCreator(width, height).createGrid()
     notifyObservers
   }
 
-  def createRandomGrid(width: Int, height: Int, randomCells: Int, heights: Int): Unit = {
-    grid = new GridCreator(width, height).createGrid(randomCells, heights)
-    notifyObservers
-  }
+  def getNumberOfColumns() = numberOfColumns
 
   def addPlayer(credentials: List[String]): Unit = {
     val builder = new Builder()
@@ -27,16 +35,21 @@ class Controller private(var grid: Grid) extends Observable {
       .setPlayerAge(credentials(3).toInt)
       .build()
     Round.setCache(player)
-    println(Round.getCache)
-    // todo: store results somewhere
   }
 
   def gridToString: String = grid.toString
 
   def set(row: Int, col: Int, value: String): Unit = {
-    undoManager.doStep(new SetCommand(row, col, value, this))
-    gameStatus = SET
-    notifyObservers
+      undoManager.doStep(new SetCommand(row, col, value, this))
+      gameStatus = SET
+      notifyObservers
+  }
+
+  def isReady(): Unit = {
+    if (Round.getCache.size < 2) {
+      systemStatus = NOTREADY
+    }
+    systemStatus = READY
   }
 
   def getRound(): Int = {

@@ -9,10 +9,9 @@ class Tui(controller: Controller) extends Observer {
   controller.add(this)
   println(GameStatus.message(controller.gameStatus))
   def processInputLine(input: String): Unit = {
-
     input match {
       case "q" =>
-      case s"n-$i" => controller.createRandomGrid(4, i.toInt, i.toInt, 4)
+      case s"n-$userInput" => controller.createRandomGrid(controller.getNumberOfColumns, userInput.toInt)
       case "z" => controller.undo
       case "s" =>
         controller.solve()
@@ -31,6 +30,8 @@ class Tui(controller: Controller) extends Observer {
     }
 
   }
+
+
 
   override def update: Boolean = {
     println(controller.gridToString)
