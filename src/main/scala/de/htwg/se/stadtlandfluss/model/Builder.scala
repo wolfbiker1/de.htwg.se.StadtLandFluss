@@ -2,6 +2,8 @@ package de.htwg.se.stadtlandfluss.model
 
 import de.htwg.se.stadtlandfluss.util.PlayerPlan
 
+import scala.util.Try
+
 case class Builder() extends PlayerPlan {
   var firstname: String = ""
   var lastname: String = ""
@@ -17,9 +19,18 @@ case class Builder() extends PlayerPlan {
     this
   }
 
-  override def setPlayerAge(_age: Int): Builder = {
-    age = _age
+  override def setPlayerAge(_age: String): Builder = {
+    toInt(_age) match {
+      case Some(value) =>
+        age = value
+      case None =>
+       // fail silently...
+    }
     this
+  }
+
+  def toInt(s: String): Option[Int] = {
+    Try(s.toInt).toOption
   }
 
   def build(): Player = {

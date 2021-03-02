@@ -28,13 +28,13 @@ class Controller private(var grid: Grid) extends Observable {
   def getNumberOfColumns() = numberOfColumns
 
   def addPlayer(credentials: List[String]): Unit = {
-    val builder = new Builder()
+    val builder = Builder()
     val player = builder
       .setPlayerFirstname(credentials(1))
       .setPlayerLastname(credentials(2))
-      .setPlayerAge(credentials(3).toInt)
+      .setPlayerAge(credentials(3))
       .build()
-    Round.setCache(player)
+    Round.setPlayer(player)
   }
 
   def gridToString: String = grid.toString
@@ -46,7 +46,7 @@ class Controller private(var grid: Grid) extends Observable {
   }
 
   def isReady(): Unit = {
-    if (Round.getCache.size < 2) {
+    if (Round.getPlayerMap.size < 2) {
       systemStatus = NOTREADY
     }
     systemStatus = READY

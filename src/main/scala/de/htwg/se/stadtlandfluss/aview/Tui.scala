@@ -4,6 +4,8 @@ import de.htwg.se.stadtlandfluss.controller._
 import de.htwg.se.stadtlandfluss.model.{Grid, GridCreator, Solver}
 import de.htwg.se.stadtlandfluss.util.Observer
 
+import scala.util.Try
+
 
 class Tui(controller: Controller) extends Observer {
   controller.add(this)
@@ -11,7 +13,14 @@ class Tui(controller: Controller) extends Observer {
   def processInputLine(input: String): Unit = {
     input match {
       case "q" =>
-      case s"n-$userInput" => controller.createRandomGrid(controller.getNumberOfColumns, userInput.toInt)
+      case s"n-$userInput" => {
+        toInt(userInput) match {
+          case Some(value) =>
+            controller.createRandomGrid(controller.getNumberOfColumns, value)
+          case None =>
+            // fail silently...
+        }
+      }
       case "z" => controller.undo
       case "s" =>
         controller.solve()
@@ -31,6 +40,16 @@ class Tui(controller: Controller) extends Observer {
 
   }
 
+  def toInt(s: String): Option[Int] = {
+    Try(s.toInt).toOption
+//    val i = Try(s.toInt).toOption
+//    i match {
+//      case Some(value) =>
+//        value
+//      case None =>
+//        0
+//    }
+  }
 
 
   override def update: Boolean = {
