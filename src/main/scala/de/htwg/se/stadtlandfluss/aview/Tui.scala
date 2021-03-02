@@ -5,8 +5,10 @@ import de.htwg.se.stadtlandfluss.model.{Grid, GridCreator, Solver}
 import de.htwg.se.stadtlandfluss.util.Observer
 
 
-class Tui(controller: Controller) extends Observer {
-  controller.add(this)
+import scala.swing.Reactor
+
+class Tui(controller: Controller) extends Reactor {
+  listenTo(controller)
   println(GameStatus.message(controller.gameStatus))
   def processInputLine(input: String): Unit = {
 
@@ -29,13 +31,16 @@ class Tui(controller: Controller) extends Observer {
         }
       }
     }
-
   }
 
-  override def update: Boolean = {
+  reactions += {
+    case event: GridSizeChanged => printTui
+    case event: CellChanged     => printTui
+  }
+
+  def printTui: Unit = {
     println(controller.gridToString)
     println(GameStatus.message(controller.gameStatus))
-    println(GameStatus.playerMessage(controller.playerStatus))
-    true
+    println(GameStatus.message(controller.playerStatus))
   }
 }

@@ -6,19 +6,19 @@ import de.htwg.se.stadtlandfluss.util.{Observable, UndoManager}
 import scala.swing.Publisher
 
 
-class Controller private(var grid: Grid) extends Observable with Publisher {
+class Controller private(var grid: Grid) extends Publisher {
   var gameStatus: GameStatus = IDLE
   var playerStatus: PlayerStatus = NA
   private val undoManager = new UndoManager
 
   def createEmptyGrid(width: Int, height: Int): Unit = {
     grid = new Grid(width, height)
-    notifyObservers
+    publish(new CellChanged)
   }
 
   def createRandomGrid(width: Int, height: Int, randomCells: Int, heights: Int): Unit = {
     grid = new GridCreator(width, height).createGrid(randomCells, heights)
-    notifyObservers
+    publish(new CellChanged)
   }
 
   def addPlayer(credentials: List[String]): Unit = {
@@ -36,7 +36,7 @@ class Controller private(var grid: Grid) extends Observable with Publisher {
   def set(row: Int, col: Int, value: String): Unit = {
     undoManager.doStep(new SetCommand(row, col, value, this))
     gameStatus = SET
-    notifyObservers
+    publish(new CellChanged)
   }
 
   def getRound(): Int = {
@@ -52,20 +52,20 @@ class Controller private(var grid: Grid) extends Observable with Publisher {
   def solve() = {
     grid = new Solver().solveGame(grid)
     gameStatus = SOLVED
-    notifyObservers
+    publish(new CellChanged)
   }
 
 
   def undo: Unit = {
     undoManager.undoStep
     gameStatus = UNDO
-    notifyObservers
+    publish(new CellChanged)
   }
 
   def redo: Unit = {
     undoManager.redoStep
     gameStatus = REDO
-    notifyObservers
+    publish(new CellChanged)
   }
 }
 
