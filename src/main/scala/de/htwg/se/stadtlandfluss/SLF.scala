@@ -11,7 +11,7 @@ object SLF {
   controller.publish(new CellChanged)
 
   val tui = new Tui(controller)
-  val gui = new SwingGui(controller)
+  val gui = new SwingGui()
 
   def main(args: Array[String]): Unit = {
     var input: String = ""

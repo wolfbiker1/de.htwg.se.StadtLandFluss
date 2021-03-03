@@ -1,6 +1,5 @@
 package de.htwg.se.stadtlandfluss.controller
 
-
 import scala.swing.event.Event
 
 class CellChanged extends Event

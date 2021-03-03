@@ -40,6 +40,9 @@ case class Grid(private val cells: Matrix[Cell]) {
       } else cell(row, col).toString
       box = box.replaceFirst("x", toInsert)
     }
+    box += lineSeparator + "\n"
+    box += "Current Letter: " + Round.getCharacterForRound(Round.getRound(this))
+    box += "\n"
     box
   }
 }
