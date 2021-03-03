@@ -1,21 +1,22 @@
 package de.htwg.se.stadtlandfluss.aview.gui
 
 import scala.swing._
+import scala.swing.Swing.LineBorder
 import de.htwg.se.stadtlandfluss.controller._
+
+import scala.swing.event.{ButtonClicked, Event}
 
 class SwingGui(controller: Controller) extends Frame {
   listenTo(controller)
-  title = "FOOBAR"
+  centerOnScreen()
+  title = "Stadt Land -fluss"
 
   //
   val tableOfInputFields = Array.ofDim[InputField](controller.getAmountOfColumns, controller.getAmountOfRows)
 
 
   val cp = new InputField(0, 0, controller)
-  reactions += {
-    case event: CellChanged => redraw
-    case event: CandidatesChanged => redraw
-  }
+
 
   /*
    * Attach a menue bar
@@ -23,7 +24,8 @@ class SwingGui(controller: Controller) extends Frame {
    */
   menuBar = new MenuBar {
     contents += new Menu("File") {
-      contents += new MenuItem(Action("New") {})
+      contents += new MenuItem(Action("New"){controller.createEmptyGrid(4,4 )} )
+      contents += new MenuItem(Action("Random"){controller.createRandomGrid(4, 6, 6, 4)})
       contents += new MenuItem(Action("Quit") {
         System.exit(0)
       })
@@ -56,15 +58,75 @@ class SwingGui(controller: Controller) extends Frame {
  *
  */
   def gameSettings = new FlowPanel {
-      contents += new Label("A label")
-      contents += Swing.HStrut(30)
-      contents += new Button("A Button")
-      contents += new Button("Another Button")
-      contents += Button("Close") {
-        sys.exit(0)
+
+    contents += Swing.HStrut(30)
+    contents += new Button("3 Kategorien")
+    contents += new Button("4 Kategorien")
+
+    contents += Button("Close") {
+      sys.exit(0)
+
+    }
+
+
+  }
+  def gridPanel = new GridPanel(controller.getAmountOfColumns, controller.getAmountOfRows) {
+    border = LineBorder(java.awt.Color.BLACK, 2)
+    background = java.awt.Color.BLACK
+    for {
+      outerRow <- 1 until controller.getAmountOfRows
+      outerColumn <- 0 until controller.getAmountOfColumns
+    } {
+      contents += new GridPanel(controller.getAmountOfColumns, controller.getAmountOfRows) {
+        border = LineBorder(java.awt.Color.BLACK, 2)
+        for {
+          innerRow <- 1 until controller.getAmountOfRows
+          innerColumn <- 0 until controller.getAmountOfColumns
+        } {
+          val x = outerRow * controller.getAmountOfRows + innerRow
+          val y = outerColumn * controller.getAmountOfColumns + innerColumn
+          val cellPanel = new InputField(x, y, controller)
+          tableOfInputFields(x)(y) = cellPanel
+          contents += cellPanel
+          listenTo(cellPanel)
+        }
       }
+    }
+    val statusline = new TextField(controller.statusText, 20)
+
+  }
+  def game_start(): Unit = {
+    val amount_panel = new FlowPanel {
+      contents += new Label("How many players ?")
+      val button3 = new Button("3 Players") {
+        name = "3"
+      }
+      val button4 = new Button("4 Players") {
+        name = "4"
+      }
+      val button5 = new Button("5 Players"){
+        name = "5"
+      }
+      val button6 = new Button("6 Players"){
+        name = "6"
+      }
+      contents+=button3
+      contents+=button4
+      contents+=button5
+      contents+=button6
+    }
+    listenTo(amount_panel.button3)
+    listenTo(amount_panel.button4)
+    listenTo(amount_panel.button5)
+    listenTo(amount_panel.button6)
+
+    contents = amount_panel
+
   }
 
+  reactions += {
+    case ButtonClicked(b) => println(b.text + " has been clicked!")
+  }
 
   // stick them together...
   contents = new BorderPanel {
@@ -75,6 +137,7 @@ class SwingGui(controller: Controller) extends Frame {
     title = cp.getCellContent(0, 0)
     repaint
   }
+
 
   visible = true
 }

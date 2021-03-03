@@ -52,6 +52,7 @@ class Controller private(var grid: Grid) extends Publisher {
   }
 
 
+
   def solve() = {
     grid = new Solver().solveGame(grid)
     gameStatus = SOLVED
@@ -77,6 +78,7 @@ class Controller private(var grid: Grid) extends Publisher {
   def getCell(row: Int, column: Int) = grid.cell(row, column)
   def getAmountOfColumns = grid.width
   def getAmountOfRows = grid.height
+  def statusText:String = GameStatus.message(gameStatus)
 }
 
 object Controller {
