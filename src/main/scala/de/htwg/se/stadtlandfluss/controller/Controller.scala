@@ -23,11 +23,11 @@ class Controller private(var grid: Grid) extends Publisher {
   private val numberOfColumns = 4
 
   def createRandomGrid(width: Int, height: Int): Unit = {
-    if (Round.playersAreSet()) {
+   // if (Round.playersAreSet()) {
       grid = new GridCreator(width, height).createGrid()
-    } else {
-      gameStatus = PERROR
-    }
+//    } else {
+//      gameStatus = PERROR
+//    }
     publish(new CellChanged)
   }
 
@@ -101,8 +101,13 @@ class Controller private(var grid: Grid) extends Publisher {
     gameStatus = REDO
     publish(new CellChanged)
   }
-}
 
+def getCell(row: Int, column: Int) = grid.cell(row, column)
+def getAmountOfColumns = grid.width
+def getAmountOfRows = grid.height
+def statusText:String = GameStatus.message(gameStatus)
+
+}
 object Controller {
   val controller = new Controller(new Grid(4, 4))
 
