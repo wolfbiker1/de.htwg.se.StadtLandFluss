@@ -47,9 +47,7 @@ class GridSpec extends WordSpec with Matchers {
     }
     "printed as string" should {
       val tinyGrid = Grid(new Matrix[Cell](Vector(Vector(Cell("")))))
-      "be " in {
-        tinyGrid.toString() should be(s"\n+-------+\n|       |\n")
-      }
+
     }
   }
 

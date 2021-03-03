@@ -4,10 +4,10 @@ import de.htwg.se.stadtlandfluss.model.Player
 import org.scalatest._
 
 class PlayerSpec extends WordSpec with Matchers{
-  val p = Player("foo", "bar", 42)
-  Player.unapply(p).get should be("foo", "bar", 42)
+  val p = Player("foo", "bar", 42,1)
+  Player.unapply(p).get should be("foo", "bar", 42,1)
   "A Player" when { "new" should {
-    val player = Player("foo", "bar", 42)
+    val player = Player("foo", "bar", 42,1)
     "have a name"  in {
       player.toString should be("foo bar 42")
     }
