@@ -1,40 +1,74 @@
 package de.htwg.se.stadtlandfluss.controller
 
-import de.htwg.se.stadtlandfluss.model.{Grid, GridCreator, Solver, Builder, Round}
+import de.htwg.se.stadtlandfluss.model.{Builder, Grid, GridCreator, Player, Round, Solver, EvaluatorCol, EvaluatorRow}
 import de.htwg.se.stadtlandfluss.controller.GameStatus._
 import de.htwg.se.stadtlandfluss.util.{Observable, UndoManager}
 
 class Controller private(var grid: Grid) extends Observable {
+
+  /*
+   * Gamestates
+   */
   var gameStatus: GameStatus = IDLE
   var playerStatus: PlayerStatus = NA
+  var systemStatus: SystemStatus = NOTREADY
+
+
+  /*
+   * Local definitions
+   */
   private val undoManager = new UndoManager
+  private val numberOfColumns = 4
 
-  def createEmptyGrid(width: Int, height: Int): Unit = {
-    grid = new Grid(width, height)
+  def createRandomGrid(width: Int, height: Int): Unit = {
+    if (Round.playersAreSet()) {
+      grid = new GridCreator(width, height).createGrid()
+    } else {
+      gameStatus = PERROR
+    }
     notifyObservers
   }
 
-  def createRandomGrid(width: Int, height: Int, randomCells: Int, heights: Int): Unit = {
-    grid = new GridCreator(width, height).createGrid(randomCells, heights)
-    notifyObservers
-  }
+  def getNumberOfColumns() = numberOfColumns
 
   def addPlayer(credentials: List[String]): Unit = {
-    val builder = new Builder()
+    val builder = Builder()
     val player = builder
       .setPlayerFirstname(credentials(1))
       .setPlayerLastname(credentials(2))
-      .setPlayerAge(credentials(3).toInt)
+      .setPlayerAge(credentials(3))
       .build()
-    // todo: store results somewhere
+    Round.setPlayer(player)
   }
 
   def gridToString: String = grid.toString
 
   def set(row: Int, col: Int, value: String): Unit = {
-    undoManager.doStep(new SetCommand(row, col, value, this))
-    gameStatus = SET
+      undoManager.doStep(new SetCommand(row, col, value.toUpperCase, this))
+      gameStatus = SET
+      notifyObservers
+  }
+
+  def setUpRandomCharacters(numOfRounds: Int): Unit = {
+    Round.setUpRandomCharacters(numOfRounds)
+  }
+
+  def evaluate(isCol: Boolean): Unit = {
+    val evaluator = if (isCol) new EvaluatorCol else new EvaluatorRow
+    if (evaluator.evaluateGame(grid, Round.getPlayerMap) == 0) {
+      playerStatus = ITSP1
+    } else {
+      playerStatus = ITSP2
+    }
+    gameStatus = SOLVED
     notifyObservers
+  }
+
+  def isReady(): Unit = {
+    if (Round.getPlayerMap.size < 2) {
+      systemStatus = NOTREADY
+    }
+    systemStatus = READY
   }
 
   def getRound(): Int = {

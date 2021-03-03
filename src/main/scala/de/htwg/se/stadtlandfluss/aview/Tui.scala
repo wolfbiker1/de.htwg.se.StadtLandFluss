@@ -1,26 +1,34 @@
 package de.htwg.se.stadtlandfluss.aview
 
 import de.htwg.se.stadtlandfluss.controller._
-import de.htwg.se.stadtlandfluss.model.{Grid, GridCreator, Solver}
 import de.htwg.se.stadtlandfluss.util.Observer
+
+import scala.util.Try
 
 
 class Tui(controller: Controller) extends Observer {
   controller.add(this)
   println(GameStatus.message(controller.gameStatus))
   def processInputLine(input: String): Unit = {
-
     input match {
       case "q" =>
-      case s"n-$i" => controller.createRandomGrid(4, i.toInt, i.toInt, 4)
+      case s"n-$userInput" => {
+        toInt(userInput) match {
+          case Some(value) =>
+            controller.setUpRandomCharacters(value)
+            controller.createRandomGrid(controller.getNumberOfColumns, value)
+          case None =>
+            // fail silently...
+        }
+      }
       case "z" => controller.undo
+      case "eCol" => controller.evaluate(true)
+      case "eRow" => controller.evaluate(false)
       case "s" =>
         controller.solve()
-      case s"p-$f-$l-$a" => {
+      case s"p-$firstName-$lastName-$age" => {
         val playerInfo = input.split(",|;|:|-").toList
-        playerInfo match {
-          case "p" :: firstname :: lastname :: age :: Nil => controller.addPlayer(playerInfo)
-        }
+        controller.addPlayer(playerInfo)
       }
       case _ => {
         input.split(",|;|:|-").toList match {
@@ -30,6 +38,10 @@ class Tui(controller: Controller) extends Observer {
       }
     }
 
+  }
+
+  def toInt(s: String): Option[Int] = {
+    Try(s.toInt).toOption
   }
 
   override def update: Boolean = {
