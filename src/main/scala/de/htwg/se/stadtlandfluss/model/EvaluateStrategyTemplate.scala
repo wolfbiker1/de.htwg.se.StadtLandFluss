@@ -1,6 +1,6 @@
 package de.htwg.se.stadtlandfluss.model
 
-trait evaluateStrategyTemplate {
+trait EvaluateStrategyTemplate {
   val land: Vector[String] = Vector("Afghanistan", "Ägypten", "Albanien", "Algerien", "Andorra", "Angola", "Antigua und Barbuda", "Äquatorialguinea", "Argentinien", "Armenien", "Aserbaidschan", "Äthiopien",
     "Australien", "Bahamas", "Bahrain", "Bangladesch", "Barbados", "Belgien", "Belize", "Benin", "Bhutan", "Bolivien", "Bosnien und Herzegowina", "Botsuana", "Brasilien", "Brunei Darussalam", "Bulgarien", "Burkina Faso", "Burundi", "Chile", "China", "Cookinseln", "Costa Rica", "Côte d'Ivoire", "Dänemark", "Deutschland", "Dominica", "Dominikanische Republik", "Dschibuti", "Ecuador", "El Salvador", "Eritrea", "Estland", "Fidschi", "Finnland", "Frankreich", "Gabun", "Gambia", "Georgien", "Ghana",
     "Grenada", "Griechenland", "Guatemala", "Guinea", "Guinea-Bissau", "Guyana", "Haiti", "Honduras", "Indien", "Indonesien", "Irak",
@@ -35,5 +35,6 @@ trait evaluateStrategyTemplate {
       case e: Exception => None
     }
   }
-  def evaluateGame(grid: Grid) : Vector[Int]
+
+  def evaluateGame(grid: Grid, playerMap: Map[Int, Player]):  Int
 }

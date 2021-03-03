@@ -1,6 +1,6 @@
 package de.htwg.se.stadtlandfluss.controller
 
-import de.htwg.se.stadtlandfluss.model.{Builder, Grid, GridCreator, Round, Solver, evaluatorCol}
+import de.htwg.se.stadtlandfluss.model.{Builder, Grid, GridCreator, Player, Round, Solver, EvaluatorCol, EvaluatorRow}
 import de.htwg.se.stadtlandfluss.controller.GameStatus._
 import de.htwg.se.stadtlandfluss.util.{Observable, UndoManager}
 
@@ -21,7 +21,11 @@ class Controller private(var grid: Grid) extends Observable {
   private val numberOfColumns = 4
 
   def createRandomGrid(width: Int, height: Int): Unit = {
-    grid = new GridCreator(width, height).createGrid()
+    if (Round.playersAreSet()) {
+      grid = new GridCreator(width, height).createGrid()
+    } else {
+      gameStatus = PERROR
+    }
     notifyObservers
   }
 
@@ -40,7 +44,7 @@ class Controller private(var grid: Grid) extends Observable {
   def gridToString: String = grid.toString
 
   def set(row: Int, col: Int, value: String): Unit = {
-      undoManager.doStep(new SetCommand(row, col, value, this))
+      undoManager.doStep(new SetCommand(row, col, value.toUpperCase, this))
       gameStatus = SET
       notifyObservers
   }
@@ -49,8 +53,15 @@ class Controller private(var grid: Grid) extends Observable {
     Round.setUpRandomCharacters(numOfRounds)
   }
 
-  def evaluate(): Vector[Int] = {
-    new evaluatorCol().evaluateGame(grid)
+  def evaluate(isCol: Boolean): Unit = {
+    val evaluator = if (isCol) new EvaluatorCol else new EvaluatorRow
+    if (evaluator.evaluateGame(grid, Round.getPlayerMap) == 0) {
+      playerStatus = ITSP1
+    } else {
+      playerStatus = ITSP2
+    }
+    gameStatus = SOLVED
+    notifyObservers
   }
 
   def isReady(): Unit = {

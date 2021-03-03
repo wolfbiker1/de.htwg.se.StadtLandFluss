@@ -22,7 +22,8 @@ class Tui(controller: Controller) extends Observer {
         }
       }
       case "z" => controller.undo
-      case "e" => controller.evaluate()
+      case "eCol" => controller.evaluate(true)
+      case "eRow" => controller.evaluate(false)
       case "s" =>
         controller.solve()
       case s"p-$firstName-$lastName-$age" => {

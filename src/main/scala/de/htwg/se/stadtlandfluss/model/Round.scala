@@ -14,15 +14,25 @@ object Round {
     playerMap = playerMap.updated(playerMap.size, p)
   }
 
+  def playersAreSet() : Boolean = {
+    playerMap.size == 2
+  }
+
   def getCharacterForRound(currentRound: Int): Char = {
     randomCharacters(currentRound)
   }
 
   def setUpRandomCharacters(numOfRounds: Int): Unit = {
     val r = scala.util.Random
-    for (i <- 0 until numOfRounds) {
-      randomCharacters = randomCharacters.updated(i, r.nextPrintableChar())
+    val chars = ('A' to 'Z').toList
+    for (i <- 1 until numOfRounds) {
+      var charToInsert: Char = chars(r.nextInt(25))
+      while (randomCharacters.contains(charToInsert)) {
+        charToInsert = chars(r.nextInt(25))
+      }
+      randomCharacters = randomCharacters.updated(i, charToInsert)
     }
+    println(randomCharacters)
   }
 
   def getRound(grid: Grid): Int = {

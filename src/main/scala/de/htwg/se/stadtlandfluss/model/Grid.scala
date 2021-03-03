@@ -30,14 +30,13 @@ case class Grid(private val cells: Matrix[Cell]) {
     val lineSeparator = ("+-" + separator) * width + "+\n"
     val line = ("| " + ("x ")) * width + "|\n"
     var box = "\n" + (lineSeparator + line) * height
-    for {
-      row <- 0 until height
-      col <- 0 until width
-    } {
+    for (row <- 0 until height; col <- 0 until width) {
       val currentLength = cell(row, col).toString.length
       val toInsert: String = if (currentLength < max) {
         cell(row, col).toString + (" " * (max - currentLength))
-      } else cell(row, col).toString
+      } else {
+        cell(row, col).toString
+      }
       box = box.replaceFirst("x", toInsert)
     }
     box += lineSeparator + "\n"

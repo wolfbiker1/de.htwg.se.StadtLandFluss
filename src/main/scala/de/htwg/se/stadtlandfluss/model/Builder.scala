@@ -8,6 +8,7 @@ case class Builder() extends PlayerPlan {
   var firstname: String = ""
   var lastname: String = ""
   var age: Int = 0
+  var points: Int = 0
 
   override def setPlayerFirstname(_firstname: String): Builder = {
     firstname = _firstname
@@ -34,7 +35,7 @@ case class Builder() extends PlayerPlan {
   }
 
   def build(): Player = {
-    Player(firstname, lastname, age)
+    Player(firstname, lastname, age, points)
   }
 
 }
