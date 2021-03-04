@@ -10,26 +10,40 @@ import scala.swing.event._
 class InputField(row: Int, column: Int, controller: Controller) extends FlowPanel {
 
   def getCellContent(row: Int, columns: Int): String = {
-    println(controller.getCell(row, columns))
-    "foo!"
+    val current = controller.getCell(row, columns).toString
+    if (current.length == 0) {
+      return "not occupied"
+    }
+    current
   }
 
+  val label = new Label {
+      text = getCellContent(row, column)
+      font = new Font("Verdana", 1, 36)
+  }
 
-
-
-
-
+  val cell = new BoxPanel(Orientation.Vertical) {
+    contents += label
+    preferredSize = new Dimension(51, 51)
+    border = Swing.BeveledBorder(Swing.Raised)
+    listenTo(mouse.clicks)
+    listenTo(controller)
+    reactions += {
+      case e: CellChanged => {
+        repaint
+      }
+      case MouseClicked(src, pt, mod, clicks, pops) => {
+        println("foo")
+        repaint
+      }
+    }
+  }
   val givenCellColor = new Color(200, 200, 255)
   val cellColor = new Color(224, 224, 255)
   val highlightedCellColor = new Color(192, 255, 192)
 
 
-
 }
 
-//  val label =
-//    new Label {
-//      text = cellText(row, column)
-//      font = new Font("Verdana", 1, 36)
-//    }
+
 

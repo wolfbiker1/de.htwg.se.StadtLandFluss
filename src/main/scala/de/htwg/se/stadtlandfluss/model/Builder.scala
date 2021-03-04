@@ -25,6 +25,7 @@ case class Builder() extends PlayerPlan {
       case Some(value) =>
         age = value
       case None =>
+        age = 66
       // fail silently...
     }
     this
