@@ -37,12 +37,12 @@ class SwingGui(controller: Controller) extends Frame {
   }
 
   val amount_panel = new FlowPanel {
-    contents += new Label("How many players ?")
-    val button3 = new Button("1 Players") {
-      name = "3"
+    contents += new Label("Playerinfo ?")
+    val button3 = new Button("Player 1") {
+      name = "player1"
     }
-    val button4 = new Button("2 Players") {
-      name = "4"
+    val button4 = new Button("Player 2") {
+      name = "player2"
     }
     // confirm
     val confirm = new Button("Confirm") {
@@ -191,23 +191,29 @@ class SwingGui(controller: Controller) extends Frame {
   gridPanel.visible = false
 
   def addPlayer(): Unit = {
-
-    println(set_name_panel.textfieldFirstName.text)
     val firstName = set_name_panel.textfieldFirstName.text
     val lastName = set_name_panel.textfieldLastName.text
     val age = set_name_panel.textfieldAge.text
-    val p = List(firstName, lastName, age)
-    println(p)
+    val p = List("p", firstName, lastName, age)
     controller.addPlayer(p)
+  }
+
+  def clearTextFields(): Unit = {
+    set_name_panel.textfieldFirstName.text = ""
+    set_name_panel.textfieldLastName.text = ""
+    set_name_panel.textfieldAge.text = ""
   }
 
   reactions += {
     case ButtonClicked(b) => {
-      set_name_panel.visible = true
-      if (b.name == "4") {
-        gridPanel.visible = true
+
+      if (b.name == "player1" || b.name == "player2") {
+        set_name_panel.visible = true
+//        gridPanel.visible = true
       } else if (b.name == "confirm") {
         addPlayer()
+        clearTextFields()
+        set_name_panel.visible = false
       }
     }
     case event: gameStarted => game_start()
