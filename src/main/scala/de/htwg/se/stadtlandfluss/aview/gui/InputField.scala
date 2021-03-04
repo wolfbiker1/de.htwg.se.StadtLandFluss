@@ -32,4 +32,4 @@ class InputField(row: Int, column: Int, controller: Controller) extends FlowPane
 //      text = cellText(row, column)
 //      font = new Font("Verdana", 1, 36)
 //    }
-}
+

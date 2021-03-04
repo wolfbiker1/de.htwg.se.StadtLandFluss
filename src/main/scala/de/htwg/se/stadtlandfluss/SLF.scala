@@ -15,6 +15,7 @@ object SLF {
 
   def main(args: Array[String]): Unit = {
     var input: String = ""
+    controller.publish(new gameStarted)
     do {
       input = readLine()
 
