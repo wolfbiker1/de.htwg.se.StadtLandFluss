@@ -18,6 +18,7 @@ class InputField(row: Int, column: Int, controller: Controller) extends FlowPane
   }
 
   val label = new Label {
+    preferredSize = new Dimension(17, 17)
       text = getCellContent(row, column)
       font = new Font("Verdana", 1, 36)
   }

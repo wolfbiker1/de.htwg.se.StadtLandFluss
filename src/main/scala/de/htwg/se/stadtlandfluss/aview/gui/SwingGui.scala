@@ -14,8 +14,6 @@ class SwingGui(controller: Controller) extends Frame {
   override def closeOperation(): Unit = {
     System.exit(-1)
   }
-  var state: Event = new gameStarted
-  var table = Array.ofDim[InputField](controller.getAmountOfColumns, controller.getAmountOfRows)
 
 
   def game_start(): Unit = {
@@ -37,7 +35,7 @@ class SwingGui(controller: Controller) extends Frame {
   }
 
   val amount_panel = new FlowPanel {
-    contents += new Label("Playerinfo ?")
+
     val button3 = new Button("Player 1") {
       name = "player1"
     }
@@ -48,15 +46,37 @@ class SwingGui(controller: Controller) extends Frame {
     val confirm = new Button("Confirm") {
       name = "confirm"
     }
+    val selectRounds = new Button("Select Rounds") {
+      name = "selectRound"
+    }
+    val confirmRounds = new Button("Confirm Rounds") {
+      name = "confirmRound"
+    }
     contents += button3
     contents += button4
     contents += confirm
+    contents += selectRounds
+    contents += confirmRounds
   }
   // listeners
   listenTo(amount_panel.button3)
   listenTo(amount_panel.button4)
   listenTo(amount_panel.confirm)
+  listenTo(amount_panel.selectRounds)
+  listenTo(amount_panel.confirmRounds
+  )
+val setRounds = new FlowPanel {
 
+  val labelRounds = new Label("Rounds")
+  val textfieldRounds = new TextField("", 50)
+  contents += labelRounds
+  listenTo(labelRounds)
+  contents += textfieldRounds
+}
+
+
+  listenTo(setRounds.labelRounds)
+  listenTo(setRounds.textfieldRounds)
   val set_name_panel = new FlowPanel {
     val label = new Label("Player " + "X" + " whats your Name and age?")
 
@@ -96,20 +116,7 @@ class SwingGui(controller: Controller) extends Frame {
   }
 
 
-  def check_Amount(input: String): Int = {
-    if (!List("1", "1").contains(input)) {
-      println("There may only be 1 or 2 players!")
-      return -1
-    }
-    input.toInt
-  }
-  def getCellContent(row: Int, columns: Int): String = {
-    val current = controller.getCell(row, columns).toString
-    if (current.length == 0) {
-      return "________________"
-    }
-    current
-  }
+
 
   val gridPanel = new GridPanel(controller.getAmountOfRows, controller.getAmountOfColumns) {
         border = LineBorder(java.awt.Color.BLACK, 2)
@@ -123,7 +130,7 @@ class SwingGui(controller: Controller) extends Frame {
 //          val cellPanel = new InputField(row, column, controller)
 
           val label = new Label {
-            text = getCellContent(row, column)
+            //ext = getCellContent(row, column)
             font = new Font("Verdana", 1, 36)
           }
 
@@ -185,8 +192,9 @@ class SwingGui(controller: Controller) extends Frame {
     add(amount_panel, BorderPanel.Position.North)
     add(gridPanel, BorderPanel.Position.Center)
     add(set_name_panel, BorderPanel.Position.South)
+    add(setRounds, BorderPanel.Position.East)
   }
-
+  setRounds.visible = false
   set_name_panel.visible = false
   gridPanel.visible = false
 
@@ -197,24 +205,41 @@ class SwingGui(controller: Controller) extends Frame {
     val p = List("p", firstName, lastName, age)
     controller.addPlayer(p)
   }
+  def selectRound(): Unit  ={
+    val rounds = setRounds.textfieldRounds.text
 
+
+    controller.createRandomGrid(4,rounds.toInt)
+
+  }
   def clearTextFields(): Unit = {
     set_name_panel.textfieldFirstName.text = ""
     set_name_panel.textfieldLastName.text = ""
     set_name_panel.textfieldAge.text = ""
+
   }
 
+  def clearRound():Unit = {
+    setRounds.textfieldRounds.text= ""
+  }
   reactions += {
     case ButtonClicked(b) => {
 
       if (b.name == "player1" || b.name == "player2") {
         set_name_panel.visible = true
 //        gridPanel.visible = true
-      } else if (b.name == "confirm") {
+
+      } else if (b.name == "confirm" ) {
         addPlayer()
         clearTextFields()
         set_name_panel.visible = false
+      }else if (b.name =="selectRound"){
+        setRounds.visible= true
+      }else if (b.name =="confirmRound"){
+        selectRound()
+        clearRound()
       }
+
     }
     case event: gameStarted => game_start()
     case event: GridSizeChanged => resize(event.newSize)
