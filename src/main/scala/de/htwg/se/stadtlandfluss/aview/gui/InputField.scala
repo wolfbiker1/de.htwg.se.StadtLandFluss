@@ -39,9 +39,8 @@ class InputField(row: Int, column: Int, controller: Controller) extends FlowPane
       }
     }
   }
-  val givenCellColor = new Color(200, 200, 255)
-  val cellColor = new Color(224, 224, 255)
-  val highlightedCellColor = new Color(192, 255, 192)
+
+
 
 
 }
