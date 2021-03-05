@@ -10,33 +10,68 @@ class SwingGui(controller: Controller) extends Frame {
   listenTo(controller)
   centerOnScreen()
   this.title = "Stadt Land Fluss"
+  val statusLine = new TextField(controller.statusText, 20)
+
   override def closeOperation(): Unit = {
     System.exit(-1)
   }
 
-  class Foo extends TextField {
-    preferredSize = new Dimension(32, 32)
-  }
-
+  /*
+   * Methods
+   *
+   */
   def game_start(): Unit = {
   }
 
-  val amountPanel = new FlowPanel {
+  def addPlayer(): Unit = {
+    val firstName = setNamePanel.textfieldFirstName.text
+    val lastName = setNamePanel.textfieldLastName.text
+    val age = setNamePanel.textfieldAge.text
+    val p = List("p", firstName, lastName, age)
+    controller.addPlayer(p)
+  }
 
-    val btnPlayer1 = new Button("Player 1") {
+  def selectRound(): Unit = {
+    val rounds = setRoundsPanel.textfieldRounds.text
+    controller.createRandomGrid(4, rounds.toInt)
+  }
+
+  def clearTextFields(): Unit = {
+    setNamePanel.textfieldFirstName.text = ""
+    setNamePanel.textfieldLastName.text = ""
+    setNamePanel.textfieldAge.text = ""
+  }
+
+  def clearRound(): Unit = {
+    setRoundsPanel.textfieldRounds.text = ""
+  }
+
+  def flushPanel(): Unit = {
+    repaint()
+    this.pack()
+  }
+
+  /*
+   * Panels
+   *
+   */
+
+  val controlPanel = new FlowPanel {
+
+    val btnPlayer1: Button = new Button("Player 1") {
       name = "player1"
     }
-    val btnPlayer2 = new Button("Player 2") {
+    val btnPlayer2: Button = new Button("Player 2") {
       name = "player2"
     }
     // confirm
-    val btnConfirm = new Button("Confirm") {
+    val btnConfirm: Button = new Button("Confirm") {
       name = "confirm"
     }
-    val btnSelectRounds = new Button("Select Rounds") {
+    val btnSelectRounds: Button = new Button("Select Rounds") {
       name = "selectRound"
     }
-    val btnConfirmRounds = new Button("Confirm Rounds") {
+    val btnConfirmRounds: Button = new Button("Confirm Rounds") {
       name = "confirmRound"
     }
     btnConfirmRounds.enabled = false
@@ -46,15 +81,11 @@ class SwingGui(controller: Controller) extends Frame {
     contents += btnSelectRounds
     contents += btnConfirmRounds
   }
-  // listeners
-  listenTo(amountPanel.btnPlayer1)
-  listenTo(amountPanel.btnPlayer2)
-  listenTo(amountPanel.btnConfirm)
-  listenTo(amountPanel.btnSelectRounds)
-  listenTo(amountPanel.btnConfirmRounds
-  )
-  val setRounds = new FlowPanel {
-    val labelRounds = new Label("Rounds")
+
+
+
+  val setRoundsPanel = new FlowPanel {
+    val labelRounds: Label = new Label("Rounds")
     val textfieldRounds = new TextField("", 50)
     contents += labelRounds
     listenTo(labelRounds)
@@ -62,38 +93,31 @@ class SwingGui(controller: Controller) extends Frame {
   }
 
 
-  listenTo(setRounds.labelRounds)
-  listenTo(setRounds.textfieldRounds)
+
   val setNamePanel = new GridPanel(4, 1) {
+    background = new Color(46, 52, 64)
     //  name
-    val labelFirstName = new Label("Name:")
+    val labelFirstName: Label = new Label("<html><font color='#5e81ac'>Name:</font></html>")
+    labelFirstName.background = new Color(94, 129, 172)
     contents += labelFirstName
     val textfieldFirstName = new TextField("", 50)
+    textfieldFirstName.background = new Color(46, 52, 64)
     contents += textfieldFirstName
 
-    //  name
-    val labelLastName = new Label("LastName:")
+    //  lastname
+    val labelLastName = new Label("<html><font color='#5e81ac'>Last Name:</font></html>")
     contents += labelLastName
     val textfieldLastName = new TextField("", 50)
     contents += textfieldLastName
 
-    //  name
-    val age = new Label("Age:")
+    //  age
+    val age = new Label("<html><font color='#5e81ac'>Age:</font></html>")
     contents += age
     val textfieldAge = new TextField("", 50)
     contents += textfieldAge
   }
 
-  listenTo(setNamePanel.textfieldFirstName)
-  listenTo(setNamePanel.textfieldLastName)
-  listenTo(setNamePanel.textfieldAge)
-
-  //  def set_name(activePlayer_idx: Int): Unit = {
-  //    setNamePanel.label.text = "Player " + activePlayer_idx + " whats your Name ?"
-  //    contents = setNamePanel
-  //  }
-
-  val gridPanel = new GridPanel(controller.getAmountOfRows, controller.getAmountOfColumns) {
+  val gridPanel: GridPanel = new GridPanel(controller.getAmountOfRows, controller.getAmountOfColumns) {
     border = LineBorder(java.awt.Color.BLACK, 2)
     //        background = java.awt.Color.BLACK
     controller.setUpRandomCharacters(4)
@@ -136,68 +160,47 @@ class SwingGui(controller: Controller) extends Frame {
     }
   }
 
-  val statusLine = new TextField(controller.statusText, 20)
-
-
   val bp = new BoxPanel(Orientation.Vertical)
-  bp.contents += amountPanel
-  bp.contents += setNamePanel
-  bp.contents += gridPanel
   bp.visible = true
-  this.contents = bp
-//  contents = new BorderPanel {
-//    add(amountPanel, BorderPanel.Position.North)
-//    add(gridPanel, BorderPanel.Position.Center)
-//    add(setNamePanel, BorderPanel.Position.West)
-//    add(setRounds, BorderPanel.Position.East)
-//  }
-
-  setRounds.visible = false
-//  setNamePanel.visible = false
-//  gridPanel.visible = false
-
-  def addPlayer(): Unit = {
-    val firstName = setNamePanel.textfieldFirstName.text
-    val lastName = setNamePanel.textfieldLastName.text
-    val age = setNamePanel.textfieldAge.text
-    val p = List("p", firstName, lastName, age)
-    controller.addPlayer(p);
+  contents = new BorderPanel {
+    add(controlPanel, BorderPanel.Position.North)
+    add(gridPanel, BorderPanel.Position.Center)
+    add(bp, BorderPanel.Position.South)
   }
 
-  def selectRound(): Unit = {
-    val rounds = setRounds.textfieldRounds.text
-    controller.createRandomGrid(4, rounds.toInt)
-  }
+  /*
+   * Listeners
+   */
+  listenTo(controlPanel.btnPlayer1)
+  listenTo(controlPanel.btnPlayer2)
+  listenTo(controlPanel.btnConfirm)
+  listenTo(controlPanel.btnSelectRounds)
+  listenTo(controlPanel.btnConfirmRounds)
+  listenTo(setNamePanel.textfieldFirstName)
+  listenTo(setNamePanel.textfieldLastName)
+  listenTo(setNamePanel.textfieldAge)
+  listenTo(setRoundsPanel.labelRounds)
+  listenTo(setRoundsPanel.textfieldRounds)
 
-  def clearTextFields(): Unit = {
-    setNamePanel.textfieldFirstName.text = ""
-    setNamePanel.textfieldLastName.text = ""
-    setNamePanel.textfieldAge.text = ""
-
-  }
-
-  def clearRound(): Unit = {
-    setRounds.textfieldRounds.text = ""
-  }
 
   reactions += {
     case ButtonClicked(b) => {
-
       if (b.name == "player1" || b.name == "player2") {
-//        setNamePanel.visible = true
-        bp.contents -= amountPanel
-        this.pack()
+        bp.contents -= setRoundsPanel
+        bp.contents += setNamePanel
       } else if (b.name == "confirm") {
+        bp.contents -= setNamePanel
         addPlayer()
         clearTextFields()
-        setNamePanel.visible = false
       } else if (b.name == "selectRound") {
-        setRounds.visible = true
+        bp.contents += setRoundsPanel
+        bp.contents -= setNamePanel
       } else if (b.name == "confirmRound") {
+        bp.contents -= setRoundsPanel
         selectRound()
         clearRound()
       }
-
+      flushPanel()
     }
     case event: gameStarted => game_start()
     case event: CellChanged => redraw
