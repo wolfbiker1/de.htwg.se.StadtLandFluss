@@ -48,7 +48,7 @@ class SwingGui(controller: Controller) extends Frame {
 
   def flushPanel(): Unit = {
     repaint()
-    this.pack()
+    pack()
   }
 
   /*
@@ -162,6 +162,8 @@ class SwingGui(controller: Controller) extends Frame {
 
   val bp = new BoxPanel(Orientation.Vertical)
   bp.visible = true
+
+
   contents = new BorderPanel {
     add(controlPanel, BorderPanel.Position.North)
     add(gridPanel, BorderPanel.Position.Center)
