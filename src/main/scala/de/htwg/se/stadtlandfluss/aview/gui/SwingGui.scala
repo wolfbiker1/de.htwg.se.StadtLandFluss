@@ -1,12 +1,11 @@
 package de.htwg.se.stadtlandfluss.aview.gui
 
 import java.awt.Color
-import de.htwg.se.stadtlandfluss.controller.{CandidatesChanged, CellChanged, Controller, GridSizeChanged, PlayerAdded, gameStarted}
+import de.htwg.se.stadtlandfluss.controller.{CandidatesChanged, CellChanged, Controller, PlayerAdded, gameStarted}
 
-import scala.swing.Action.NoAction.mnemonic
 import scala.swing.Swing.LineBorder
 import scala.swing._
-import scala.swing.event.{ButtonClicked, Event, Key, KeyPressed, KeyTyped, MouseClicked, MousePressed}
+import scala.swing.event.{ButtonClicked, KeyPressed, MouseClicked, MousePressed}
 
 class SwingGui(controller: Controller) extends Frame {
   listenTo(controller)
@@ -178,7 +177,6 @@ def updateStatus: Unit ={
       boxForTextFields.contents += new TextField() {
         listenTo(mouse.clicks)
         listenTo(keys)
-        mnemonic = row * column
         this.enabled = false
         this.background =  new Color(59, 66, 82)
 
@@ -195,9 +193,6 @@ def updateStatus: Unit ={
                controller.set(row, s.name.toInt, this.text)
              }
            case MouseClicked(s, p, _, _, _) =>
-//            if (this.text.nonEmpty)
-//            controller.set(row, s.name.toInt, this.text)
-            //println(this.text)
         }
       }
       contents += boxForTextFields
@@ -231,11 +226,10 @@ def updateStatus: Unit ={
   listenTo(setRoundsPanel.textfieldRounds)
   listenTo(setRoundsPanel.btnRunGame)
   reactions += {
-    case MousePressed(_, p, _, _, _) => {
+    case MousePressed(_, p, _, _, _) =>
       println(p)
       this.closeOperation()
-    }
-    case ButtonClicked(b) => {
+    case ButtonClicked(b) =>
       if (b.name == "player1" || b.name == "player2") {
         panelSouth.contents -= setRoundsPanel
         panelSouth.contents += setNamePanel
@@ -251,7 +245,6 @@ def updateStatus: Unit ={
         selectRound()
         clearRound()
         panelSouth.contents -= setRoundsPanel
-//        panelCenter.contents += gridPanel
         panelCenter.visible = true
         game_start()
       } else if(b.name == "btnUndo") {
@@ -260,7 +253,6 @@ def updateStatus: Unit ={
         controller.solve()
       }
       flushPanel()
-    }
     case event: gameStarted => game_start()
     case event: CellChanged => redraw
     case event: CandidatesChanged => redraw
@@ -274,13 +266,8 @@ def updateStatus: Unit ={
 
   def redraw = {
     statusLine.text = controller.statusText
-    println("true..")
-//    gridPanel.contents.clear()
     panelCenter.contents.clear()
-//    panelCenter.contents -= gridPanel
     panelCenter.contents += gridPanel
     this.flushPanel()
-//    rebuild gridPanel
-//    idea: attach, detach, flush panel
   }
 }
