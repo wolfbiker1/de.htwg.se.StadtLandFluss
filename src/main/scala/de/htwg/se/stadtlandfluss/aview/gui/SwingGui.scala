@@ -1,12 +1,11 @@
 package de.htwg.se.stadtlandfluss.aview.gui
 
 import java.awt.Color
-
 import de.htwg.se.stadtlandfluss.controller.{CandidatesChanged, CellChanged, Controller, GridSizeChanged, PlayerAdded, gameStarted}
 
 import scala.swing.Swing.LineBorder
 import scala.swing._
-import scala.swing.event.{ButtonClicked, Event, Key, KeyTyped}
+import scala.swing.event.{ButtonClicked, Event, Key, KeyTyped, MouseClicked, MousePressed}
 
 class SwingGui(controller: Controller) extends Frame {
   listenTo(controller)
@@ -149,61 +148,59 @@ def updateStatus: Unit ={
   }
 
 
+  /*
+   * Main Game Board
+   */
   def gridPanel: GridPanel = new GridPanel(controller.getAmountOfRows, controller.getAmountOfColumns) {
     border = LineBorder(java.awt.Color.BLACK, 2)
-//    background = new Color(46, 52, 64)
-//    controller.setUpRandomCharacters(controller.getAmountOfRows)
-    val rounds = setRoundsPanel.textfieldRounds.text
-//    controller.createRandomGrid(4, controller.getAmountOfRows)
     val width = 4
-    println("->", controller.getAmountOfRows)
-    val height = controller.getAmountOfRows
-    val textfieldLastName = new TextField(" <text here> ", 50)
+    val height: Int = controller.getAmountOfRows
+
     for (row <- 0 until height; column <- 0 until width) {
-      val cellPanels = new InputField(row, column, controller)
+      val inputField = new InputField(row, column, controller)
 
-      val label = new Label {
-        text = cellPanels.getCellContent(row, column)
-//        text = s"<html><font color='red'>" + cellPanels.getCellContent(row, column) + "</font></html>"
-        font = new Font("Monospace", 1, 36)
-//        new Font()
-//        this.background = new Color(0, 0, 0)
-      }
-
-      val cellPanel = new BoxPanel(Orientation.Vertical) {
-//        background = new Color(46, 52, 64)
+      val boxForTextFields = new BoxPanel(Orientation.Vertical) {
+        listenTo(mouse.clicks)
         preferredSize = new Dimension(51, 51)
         border = Swing.BeveledBorder(Swing.Raised)
-        this.background = new Color(255, 255, 255)
-        if (row == 0) {
-          label.opaque = true
-          contents += label
-        } else {
-          val textfieldLastName = new TextField("", 50)
+        val textfieldLastName: TextField = new TextField(inputField.getCellContent(row, column), 50)
+        textfieldLastName.enabled = false
+        textfieldLastName.background =  new Color(59, 66, 82)
+
           if (controller.getRound() == row) {
             textfieldLastName.background =  new Color(76, 86, 106)
-          } else {
-            textfieldLastName.background =  new Color(59, 66, 82)
-          }
+            textfieldLastName.enabled = true
+
           textfieldLastName.foreground = new Color(236, 239, 244)
-
-          contents += textfieldLastName
-
-        }
+          }
+      }
+      boxForTextFields.contents += new TextField(inputField.getCellContent(row, column), 50) {
         listenTo(mouse.clicks)
-        listenTo(controller)
-
-        reactions += {
+        this.name = "row"
+        this.reactions +=  {
+          case MouseClicked(s, p, _, _, _) => {
+            println(s.name)
+            println("get")
+          }
           case e: CellChanged => {
             repaint
           }
         }
       }
-      contents += cellPanel
+      contents += boxForTextFields
+
+
+      reactions += {
+        case MouseClicked(_, p, _, _, _) => {
+          println(p)
+        }
+        case e: CellChanged => {
+          repaint
+        }
+      }
       updateStatus
     }
   }
-
   val panelSouth = new BoxPanel(Orientation.Vertical)
   panelSouth.visible = true
   val panelCenter = new BoxPanel(Orientation.Vertical)
@@ -228,9 +225,11 @@ def updateStatus: Unit ={
   listenTo(setRoundsPanel.labelRounds)
   listenTo(setRoundsPanel.textfieldRounds)
   listenTo(setRoundsPanel.btnRunGame)
-
   reactions += {
-
+    case MousePressed(_, p, _, _, _) => {
+      println(p)
+      this.closeOperation()
+    }
     case ButtonClicked(b) => {
       if (b.name == "player1" || b.name == "player2") {
         panelSouth.contents -= setRoundsPanel
@@ -265,5 +264,8 @@ def updateStatus: Unit ={
 
   def redraw = {
     statusLine.text = controller.statusText
+
+//    rebuild gridPanel
+//    idea: attach, detach, flush panel
   }
 }
