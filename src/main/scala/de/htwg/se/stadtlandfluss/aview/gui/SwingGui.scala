@@ -68,17 +68,17 @@ class SwingGui(controller: Controller) extends Frame {
   val controlPanel = new FlowPanel {
     background = new Color(46, 52, 64)
 
-    val btnPlayer1: Button = new Button("<html><font color='#5e81ac'> Player 1 </font></html>") {
+    val btnPlayer1: Button = new Button("<html><font color='#eceff4'> Player 1 </font></html>") {
       name = "player1"
-      this.background = new Color(5, 25, 100)
+      this.background = new Color(76, 86, 106)
     }
-    val btnPlayer2: Button = new Button("<html><font color='#5e81ac'> Player 2 </font></html>") {
+    val btnPlayer2: Button = new Button("<html><font color='#eceff4'> Player 2 </font></html>") {
       name = "player2"
-      this.background = new Color(5, 25, 100)
+      this.background = new Color(76, 86, 106)
     }
-    val btnSelectRounds: Button = new Button("<html><font color='#5e81ac'> Roundoptions </font></html>") {
+    val btnSelectRounds: Button = new Button("<html><font color='#eceff4'> Roundoptions </font></html>") {
       name = "selectRound"
-      this.background = new Color(5, 25, 100)
+      this.background = new Color(76, 86, 106)
     }
     contents += btnPlayer1
     contents += btnPlayer2
@@ -93,12 +93,12 @@ class SwingGui(controller: Controller) extends Frame {
     val labelRounds: Label = new Label("Rounds")
     val textfieldRounds = new TextField("", 50)
 
-    textfieldRounds.background = new Color(94, 129, 172)
+    textfieldRounds.background = new Color(216, 222, 233)
 
 
-    val btnRunGame: Button = new Button("Run Game") {
+    val btnRunGame: Button = new Button("<html><font color='#eceff4'> Run Game </font></html>") {
       name = "runGame"
-      this.background = new Color(5, 25, 100)
+      this.background = new Color(76, 86, 106)
     }
 
     contents += labelRounds
@@ -115,33 +115,33 @@ def updateStatus: Unit ={
   val setNamePanel = new GridPanel(5, 1) {
     background = new Color(46, 52, 64)
     //  name
-    val labelFirstName: Label = new Label("<html><font color='#5e81ac'>Name:</font></html>")
-    labelFirstName.background = new Color(5, 25, 100)
+    val labelFirstName: Label = new Label("<html><font color='#eceff4'>Name:</font></html>")
+    labelFirstName.background = new Color(216, 222, 233)
     contents += labelFirstName
     val textfieldFirstName = new TextField("", 50)
-    textfieldFirstName.background = new Color(94, 129, 172)
+    textfieldFirstName.background = new Color(216, 222, 233)
     contents += textfieldFirstName
     updateStatus
 
     //  lastname
-    val labelLastName = new Label("<html><font color='#5e81ac'>Last Name:</font></html>")
+    val labelLastName = new Label("<html><font color='#eceff4'>Last Name:</font></html>")
     contents += labelLastName
     val textfieldLastName = new TextField("", 50)
-    textfieldLastName.background = new Color(94, 129, 172)
+    textfieldLastName.background = new Color(216, 222, 233)
     contents += textfieldLastName
     updateStatus
 
     //  age
-    val age = new Label("<html><font color='#5e81ac'>Age:</font></html>")
+    val age = new Label("<html><font color='#eceff4'>Age:</font></html>")
     contents += age
     val textfieldAge = new TextField("", 50)
-    textfieldAge.background = new Color(94, 129, 172)
+    textfieldAge.background = new Color(216, 222, 233)
     contents += textfieldAge
 
     // confirm button
-    val btnConfirmPlayer: Button = new Button("<html><font color='#5e81ac'> Confirm </font></html>") {
+    val btnConfirmPlayer: Button = new Button("<html><font color='#eceff4'> Confirm </font></html>") {
       name = "confirmPlayer"
-      this.background = new Color(5, 25, 100)
+      this.background = new Color(76, 86, 106)
     }
     contents += btnConfirmPlayer
 
@@ -151,7 +151,7 @@ def updateStatus: Unit ={
 
   def gridPanel: GridPanel = new GridPanel(controller.getAmountOfRows, controller.getAmountOfColumns) {
     border = LineBorder(java.awt.Color.BLACK, 2)
-    background = new Color(46, 52, 64)
+//    background = new Color(46, 52, 64)
 //    controller.setUpRandomCharacters(controller.getAmountOfRows)
     val rounds = setRoundsPanel.textfieldRounds.text
 //    controller.createRandomGrid(4, controller.getAmountOfRows)
@@ -165,21 +165,28 @@ def updateStatus: Unit ={
       val label = new Label {
         text = cellPanels.getCellContent(row, column)
 //        text = s"<html><font color='red'>" + cellPanels.getCellContent(row, column) + "</font></html>"
-        font = new Font("Verdana", 1, 36)
+        font = new Font("Monospace", 1, 36)
 //        new Font()
-        background = new Color(46, 52, 64)
+//        this.background = new Color(0, 0, 0)
       }
 
       val cellPanel = new BoxPanel(Orientation.Vertical) {
 //        background = new Color(46, 52, 64)
         preferredSize = new Dimension(51, 51)
         border = Swing.BeveledBorder(Swing.Raised)
-
+        this.background = new Color(255, 255, 255)
         if (row == 0) {
+          label.opaque = true
           contents += label
         } else {
-          val textfieldLastName = new TextField(s"<html><font color='red'>" + "foobar"+ "</font></html>", 50)
-          textfieldLastName.background =  new Color(46, 52, 64)
+          val textfieldLastName = new TextField("", 50)
+          if (controller.getRound() == row) {
+            textfieldLastName.background =  new Color(76, 86, 106)
+          } else {
+            textfieldLastName.background =  new Color(59, 66, 82)
+          }
+          textfieldLastName.foreground = new Color(236, 239, 244)
+
           contents += textfieldLastName
 
         }
