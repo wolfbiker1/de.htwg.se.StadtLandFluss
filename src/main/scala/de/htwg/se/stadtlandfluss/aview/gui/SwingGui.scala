@@ -3,9 +3,10 @@ package de.htwg.se.stadtlandfluss.aview.gui
 import java.awt.Color
 import de.htwg.se.stadtlandfluss.controller.{CandidatesChanged, CellChanged, Controller, GridSizeChanged, PlayerAdded, gameStarted}
 
+import scala.swing.Action.NoAction.mnemonic
 import scala.swing.Swing.LineBorder
 import scala.swing._
-import scala.swing.event.{ButtonClicked, Event, Key, KeyTyped, MouseClicked, MousePressed}
+import scala.swing.event.{ButtonClicked, Event, Key, KeyPressed, KeyTyped, MouseClicked, MousePressed}
 
 class SwingGui(controller: Controller) extends Frame {
   listenTo(controller)
@@ -79,10 +80,21 @@ class SwingGui(controller: Controller) extends Frame {
       name = "selectRound"
       this.background = new Color(76, 86, 106)
     }
+    val btnUndo: Button = new Button("<html><font color='#eceff4'> Undo </font></html>") {
+      name = "btnUndo"
+      this.background = new Color(76, 86, 106)
+    }
+    val btnSolve: Button = new Button("<html><font color='#eceff4'> Solve </font></html>") {
+      name = "btnSolve"
+      this.background = new Color(76, 86, 106)
+    }
     contents += btnPlayer1
     contents += btnPlayer2
 //    contents += runGame
+
     contents += btnSelectRounds
+    contents += btnUndo
+    contents += btnSolve
   }
 
 
@@ -157,54 +169,45 @@ def updateStatus: Unit ={
     val height: Int = controller.getAmountOfRows
 
     for (row <- 0 until height; column <- 0 until width) {
+
       val inputField = new InputField(row, column, controller)
 
       val boxForTextFields = new BoxPanel(Orientation.Vertical) {
-        listenTo(mouse.clicks)
-        preferredSize = new Dimension(51, 51)
         border = Swing.BeveledBorder(Swing.Raised)
-        val textfieldLastName: TextField = new TextField(inputField.getCellContent(row, column), 50)
-        textfieldLastName.enabled = false
-        textfieldLastName.background =  new Color(59, 66, 82)
-
-          if (controller.getRound() == row) {
-            textfieldLastName.background =  new Color(76, 86, 106)
-            textfieldLastName.enabled = true
-
-          textfieldLastName.foreground = new Color(236, 239, 244)
-          }
       }
-      boxForTextFields.contents += new TextField(inputField.getCellContent(row, column), 50) {
+      boxForTextFields.contents += new TextField() {
         listenTo(mouse.clicks)
-        this.name = "row"
+        listenTo(keys)
+        mnemonic = row * column
+        this.enabled = false
+        this.background =  new Color(59, 66, 82)
+
+        if (controller.getRound() == row) {
+          this.background =  new Color(76, 86, 106)
+          this.enabled = true
+          this.foreground = new Color(236, 239, 244)
+        }
+        this.text = inputField.getCellContent(row, column)
+        this.name = column.toString + this.text
         this.reactions +=  {
-          case MouseClicked(s, p, _, _, _) => {
-            println(s.name)
-            println("get")
-          }
-          case e: CellChanged => {
-            repaint
-          }
+           case KeyPressed(s, c, _, _) =>
+             if (c.toString == "Enter") {
+               controller.set(row, s.name.toInt, this.text)
+             }
+           case MouseClicked(s, p, _, _, _) =>
+//            if (this.text.nonEmpty)
+//            controller.set(row, s.name.toInt, this.text)
+            //println(this.text)
         }
       }
       contents += boxForTextFields
-
-
-      reactions += {
-        case MouseClicked(_, p, _, _, _) => {
-          println(p)
-        }
-        case e: CellChanged => {
-          repaint
-        }
-      }
       updateStatus
     }
   }
   val panelSouth = new BoxPanel(Orientation.Vertical)
   panelSouth.visible = true
   val panelCenter = new BoxPanel(Orientation.Vertical)
-  panelCenter.visible = true
+  panelCenter.visible = false
 
   contents = new BorderPanel {
     add(controlPanel, BorderPanel.Position.North)
@@ -218,6 +221,8 @@ def updateStatus: Unit ={
   listenTo(controlPanel.btnPlayer1)
   listenTo(controlPanel.btnPlayer2)
   listenTo(controlPanel.btnSelectRounds)
+  listenTo(controlPanel.btnUndo)
+  listenTo(controlPanel.btnSolve)
   listenTo(setNamePanel.btnConfirmPlayer)
   listenTo(setNamePanel.textfieldFirstName)
   listenTo(setNamePanel.textfieldLastName)
@@ -246,13 +251,18 @@ def updateStatus: Unit ={
         selectRound()
         clearRound()
         panelSouth.contents -= setRoundsPanel
-        panelCenter.contents += gridPanel
+//        panelCenter.contents += gridPanel
+        panelCenter.visible = true
         game_start()
+      } else if(b.name == "btnUndo") {
+        controller.undo
+      } else if(b.name == "btnSolve") {
+        controller.solve()
       }
       flushPanel()
     }
     case event: gameStarted => game_start()
-//    case event: CellChanged => redraw
+    case event: CellChanged => redraw
     case event: CandidatesChanged => redraw
     case event: PlayerAdded => redraw
 
@@ -264,7 +274,12 @@ def updateStatus: Unit ={
 
   def redraw = {
     statusLine.text = controller.statusText
-
+    println("true..")
+//    gridPanel.contents.clear()
+    panelCenter.contents.clear()
+//    panelCenter.contents -= gridPanel
+    panelCenter.contents += gridPanel
+    this.flushPanel()
 //    rebuild gridPanel
 //    idea: attach, detach, flush panel
   }
