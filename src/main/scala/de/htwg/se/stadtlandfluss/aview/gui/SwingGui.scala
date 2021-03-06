@@ -2,10 +2,9 @@ package de.htwg.se.stadtlandfluss.aview.gui
 
 import java.awt.Color
 import de.htwg.se.stadtlandfluss.controller.{CandidatesChanged, CellChanged, Controller, PlayerAdded, gameStarted}
-
-import scala.swing.Swing.LineBorder
+import scala.swing.Swing.{BeveledBorder, LineBorder}
 import scala.swing._
-import scala.swing.event.{ButtonClicked, KeyPressed, MouseClicked, MousePressed}
+import scala.swing.event.{ButtonClicked, KeyPressed, MouseClicked}
 
 class SwingGui(controller: Controller) extends Frame {
   listenTo(controller)
@@ -70,26 +69,30 @@ class SwingGui(controller: Controller) extends Frame {
     val btnPlayer1: Button = new Button("<html><font color='#eceff4'> Player 1 </font></html>") {
       name = "player1"
       this.background = new Color(76, 86, 106)
+      this.border = BeveledBorder(Swing.Raised)
     }
     val btnPlayer2: Button = new Button("<html><font color='#eceff4'> Player 2 </font></html>") {
       name = "player2"
       this.background = new Color(76, 86, 106)
+      this.border = BeveledBorder(Swing.Raised)
     }
     val btnSelectRounds: Button = new Button("<html><font color='#eceff4'> Roundoptions </font></html>") {
       name = "selectRound"
       this.background = new Color(76, 86, 106)
+      this.border = BeveledBorder(Swing.Raised)
     }
     val btnUndo: Button = new Button("<html><font color='#eceff4'> Undo </font></html>") {
       name = "btnUndo"
       this.background = new Color(76, 86, 106)
+      this.border = BeveledBorder(Swing.Raised)
     }
-    val btnSolve: Button = new Button("<html><font color='#eceff4'> Solve </font></html>") {
+    val btnSolve: Button = new Button("<html><font color='#a3be8c'> Solve </font></html>") {
       name = "btnSolve"
       this.background = new Color(76, 86, 106)
+      this.border = BeveledBorder(Swing.Raised)
     }
     contents += btnPlayer1
     contents += btnPlayer2
-//    contents += runGame
 
     contents += btnSelectRounds
     contents += btnUndo
@@ -106,9 +109,10 @@ class SwingGui(controller: Controller) extends Frame {
     textfieldRounds.background = new Color(216, 222, 233)
 
 
-    val btnRunGame: Button = new Button("<html><font color='#eceff4'> Run Game </font></html>") {
+    val btnRunGame: Button = new Button("<html><font color='#bf616a'> Run Game </font></html>") {
       name = "runGame"
       this.background = new Color(76, 86, 106)
+      this.border = BeveledBorder(Swing.Raised)
     }
 
     contents += labelRounds
@@ -131,7 +135,6 @@ def updateStatus: Unit ={
     val textfieldFirstName = new TextField("", 50)
     textfieldFirstName.background = new Color(216, 222, 233)
     contents += textfieldFirstName
-    updateStatus
 
     //  lastname
     val labelLastName = new Label("<html><font color='#eceff4'>Last Name:</font></html>")
@@ -139,7 +142,6 @@ def updateStatus: Unit ={
     val textfieldLastName = new TextField("", 50)
     textfieldLastName.background = new Color(216, 222, 233)
     contents += textfieldLastName
-    updateStatus
 
     //  age
     val age = new Label("<html><font color='#eceff4'>Age:</font></html>")
@@ -152,9 +154,9 @@ def updateStatus: Unit ={
     val btnConfirmPlayer: Button = new Button("<html><font color='#eceff4'> Confirm </font></html>") {
       name = "confirmPlayer"
       this.background = new Color(76, 86, 106)
+      this.border = BeveledBorder(Swing.Raised)
     }
     contents += btnConfirmPlayer
-
     updateStatus
   }
 
@@ -188,13 +190,14 @@ def updateStatus: Unit ={
         this.text = inputField.getCellContent(row, column)
         this.name = column.toString + this.text
         this.reactions +=  {
-           case KeyPressed(s, c, _, _) =>
-             if (c.toString == "Enter") {
-               controller.set(row, s.name.toInt, this.text)
-             }
-           case MouseClicked(s, p, _, _, _) =>
+          case KeyPressed(s, c, _, _) =>
+            if (c.toString == "Enter") {
+              controller.set(row, s.name.toInt, this.text)
+            }
+          case MouseClicked(s, p, _, _, _) =>
         }
       }
+
       contents += boxForTextFields
       updateStatus
     }
@@ -225,10 +228,8 @@ def updateStatus: Unit ={
   listenTo(setRoundsPanel.labelRounds)
   listenTo(setRoundsPanel.textfieldRounds)
   listenTo(setRoundsPanel.btnRunGame)
+
   reactions += {
-    case MousePressed(_, p, _, _, _) =>
-      println(p)
-      this.closeOperation()
     case ButtonClicked(b) =>
       if (b.name == "player1" || b.name == "player2") {
         panelSouth.contents -= setRoundsPanel
