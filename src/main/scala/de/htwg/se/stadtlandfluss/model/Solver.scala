@@ -44,14 +44,24 @@ case class Solver() {
     for (row <- 1 until grid.height; column <- 0 until grid.width) {
       val category: String = grid.cell(0, column).toString
 
-      val categoryAsVector: Vector[String] = categories.get(category) match {
-        case Some(i) => i
-        case None => Vector[String]()
+      // depends on current letter
+      val currentChar: String = Round.getCharacterForRound(row).toString
+      println(currentChar)
+      val allWordsForCategory: Vector[String] = categories(category)
+      val allWordsForCategoryInUppercase: Vector[String] = for (upperCaseWord <- allWordsForCategory) yield upperCaseWord.toUpperCase()
+      val wordsForCurrentChar: Vector[String] = allWordsForCategoryInUppercase.filter(_.startsWith(currentChar))
+
+      val frequencyPerCategory: Int = wordsForCurrentChar.size
+
+      if (frequencyPerCategory != 0) {
+        val randomCategoryId: Int = r.nextInt(frequencyPerCategory)
+        val randomCategoryAsString: String = wordsForCurrentChar(randomCategoryId)
+        solvedGrid = solvedGrid.set(row, column, randomCategoryAsString)
+      } else {
+        solvedGrid = solvedGrid.set(row, column, "---")
       }
-      val counterPerCategory: Int = categoryAsVector.size
-      val randomCategoryId: Int = r.nextInt(counterPerCategory - 1)
-      val randomCategoryAsString: String = categoryAsVector(randomCategoryId)
-      solvedGrid = solvedGrid.set(row, column, randomCategoryAsString)
+
+
     }
     solvedGrid
   }
