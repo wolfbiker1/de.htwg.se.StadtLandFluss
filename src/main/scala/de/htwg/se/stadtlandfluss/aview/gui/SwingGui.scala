@@ -65,41 +65,25 @@ class SwingGui(controller: Controller) extends Frame {
    * Panels
    *
    */
-
   val controlPanel = new FlowPanel {
     background = new Color(46, 52, 64)
 
-    val btnPlayer1: Button = new Button("Player 1") {
+    val btnPlayer1: Button = new Button("<html><font color='#5e81ac'> Player 1 </font></html>") {
       name = "player1"
-//      btnPlayer1.background = new Color(5, 25, 100)
+      this.background = new Color(5, 25, 100)
     }
-    val btnPlayer2: Button = new Button("Player 2") {
+    val btnPlayer2: Button = new Button("<html><font color='#5e81ac'> Player 2 </font></html>") {
       name = "player2"
-      //btnPlayer2.background = new Color(5, 25, 100)
+      this.background = new Color(5, 25, 100)
     }
-    // confirm
-    val btnConfirm: Button = new Button("Confirm") {
-      name = "confirm"
-//      btnConfirm.background = new Color(5, 25, 100)
-    }
-    btnConfirm.background = new Color(5, 25, 100)
-    val btnSelectRounds: Button = new Button("Select Rounds") {
+    val btnSelectRounds: Button = new Button("<html><font color='#5e81ac'> Roundoptions </font></html>") {
       name = "selectRound"
-      //btnSelectRounds.background = new Color(5, 25, 100)
+      this.background = new Color(5, 25, 100)
     }
-    val btnConfirmRounds: Button = new Button("Confirm Rounds") {
-      name = "confirmRound"
-    //  btnConfirmRounds.background = new Color(5, 25, 100)
-    }
-    val play: Button = new Button("Play the best game"){
-      name= "play"
-    }
-    contents += btnConfirmRounds
     contents += btnPlayer1
     contents += btnPlayer2
-    contents += play
+//    contents += runGame
     contents += btnSelectRounds
-    contents += btnConfirmRounds
   }
 
 
@@ -110,10 +94,16 @@ class SwingGui(controller: Controller) extends Frame {
     val textfieldRounds = new TextField("", 50)
 
     textfieldRounds.background = new Color(94, 129, 172)
+
+
+    val btnRunGame: Button = new Button("Run Game") {
+      name = "runGame"
+      this.background = new Color(5, 25, 100)
+    }
+
     contents += labelRounds
-    listenTo(labelRounds)
     contents += textfieldRounds
-    controller.getRound()
+    contents += btnRunGame
     updateStatus
 
   }
@@ -122,7 +112,7 @@ def updateStatus: Unit ={
 }
 
 
-  val setNamePanel = new GridPanel(4, 1) {
+  val setNamePanel = new GridPanel(5, 1) {
     background = new Color(46, 52, 64)
     //  name
     val labelFirstName: Label = new Label("<html><font color='#5e81ac'>Name:</font></html>")
@@ -132,6 +122,7 @@ def updateStatus: Unit ={
     textfieldFirstName.background = new Color(94, 129, 172)
     contents += textfieldFirstName
     updateStatus
+
     //  lastname
     val labelLastName = new Label("<html><font color='#5e81ac'>Last Name:</font></html>")
     contents += labelLastName
@@ -139,15 +130,25 @@ def updateStatus: Unit ={
     textfieldLastName.background = new Color(94, 129, 172)
     contents += textfieldLastName
     updateStatus
+
     //  age
     val age = new Label("<html><font color='#5e81ac'>Age:</font></html>")
     contents += age
     val textfieldAge = new TextField("", 50)
     textfieldAge.background = new Color(94, 129, 172)
     contents += textfieldAge
+
+    // confirm button
+    val btnConfirmPlayer: Button = new Button("<html><font color='#5e81ac'> Confirm </font></html>") {
+      name = "confirmPlayer"
+      this.background = new Color(5, 25, 100)
+    }
+    contents += btnConfirmPlayer
+
     updateStatus
   }
- // val rounds = setRoundsPanel.textfieldRounds.text
+
+
   def gridPanel: GridPanel = new GridPanel(controller.getAmountOfRows, controller.getAmountOfColumns) {
     border = LineBorder(java.awt.Color.BLACK, 2)
     background = new Color(46, 52, 64)
@@ -182,8 +183,6 @@ def updateStatus: Unit ={
           contents += textfieldLastName
 
         }
-
-
         listenTo(mouse.clicks)
         listenTo(controller)
 
@@ -198,16 +197,15 @@ def updateStatus: Unit ={
     }
   }
 
-  val bp = new BoxPanel(Orientation.Vertical)
-  bp.visible = true
+  val panelSouth = new BoxPanel(Orientation.Vertical)
+  panelSouth.visible = true
   val panelCenter = new BoxPanel(Orientation.Vertical)
-  panelCenter.visible = false
+  panelCenter.visible = true
 
   contents = new BorderPanel {
     add(controlPanel, BorderPanel.Position.North)
     add(panelCenter, BorderPanel.Position.Center)
-    add(bp, BorderPanel.Position.South)
-
+    add(panelSouth, BorderPanel.Position.South)
   }
 
   /*
@@ -215,51 +213,34 @@ def updateStatus: Unit ={
    */
   listenTo(controlPanel.btnPlayer1)
   listenTo(controlPanel.btnPlayer2)
-  listenTo(controlPanel.btnConfirm)
-  listenTo(controlPanel.play)
   listenTo(controlPanel.btnSelectRounds)
-  listenTo(controlPanel.btnConfirmRounds)
+  listenTo(setNamePanel.btnConfirmPlayer)
   listenTo(setNamePanel.textfieldFirstName)
   listenTo(setNamePanel.textfieldLastName)
   listenTo(setNamePanel.textfieldAge)
   listenTo(setRoundsPanel.labelRounds)
   listenTo(setRoundsPanel.textfieldRounds)
-  //listenTo(statusLine)
-
+  listenTo(setRoundsPanel.btnRunGame)
 
   reactions += {
 
     case ButtonClicked(b) => {
       if (b.name == "player1" || b.name == "player2") {
-        bp.contents -= setRoundsPanel
-        bp.contents += setNamePanel
-        bp.contents += controlPanel.btnConfirm
-        bp.contents += statusLine
-      } else if (b.name == "confirm") {
-        bp.contents -= setNamePanel
-        updateStatus
+        panelSouth.contents -= setRoundsPanel
+        panelSouth.contents += setNamePanel
+        panelSouth.contents += statusLine
+      } else if (b.name == "confirmPlayer") {
+        panelSouth.contents -= setNamePanel
         addPlayer()
         clearTextFields()
       } else if (b.name == "selectRound") {
-        bp.contents += setRoundsPanel
-        bp.contents -= setNamePanel
-      } else if (b.name == "confirmRound") {
-
-        // todo: build grid here
+        panelSouth.contents += setRoundsPanel
+        panelSouth.contents -= setNamePanel
+      } else if(b.name == "runGame"){
         selectRound()
-        bp.contents -= setRoundsPanel
-
-
-        // todo: hide until #start is pressed
-//        panelCenter.contents += gridPanel
-//        panelCenter.visible = true
-
-        updateStatus
         clearRound()
-      } else if(b.name == "play"){
-        // todo: now unhide grid panel
-         panelCenter.contents += gridPanel
-         panelCenter.visible = true
+        panelSouth.contents -= setRoundsPanel
+        panelCenter.contents += gridPanel
         game_start()
       }
       flushPanel()
