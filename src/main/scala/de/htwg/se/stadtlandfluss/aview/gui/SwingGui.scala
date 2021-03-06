@@ -39,11 +39,12 @@ class SwingGui(controller: Controller) extends Frame {
 
   def selectRound(): Unit = {
     val rounds = setRoundsPanel.textfieldRounds.text
-
-
+    println(rounds.toInt)
+    controller.setUpRandomCharacters(rounds.toInt)
+    controller.createRandomGrid(4, rounds.toInt)
   }
   def cellInput(): Unit ={
-    val input = gridPanel.cells
+//    val input = gridPanel.cells
   }
   def clearTextFields(): Unit = {
     setNamePanel.textfieldFirstName.text = ""
@@ -70,9 +71,7 @@ class SwingGui(controller: Controller) extends Frame {
 
     val btnPlayer1: Button = new Button("Player 1") {
       name = "player1"
-
-
-     // btnPlayer1.background = new Color(5, 25, 100)
+//      btnPlayer1.background = new Color(5, 25, 100)
     }
     val btnPlayer2: Button = new Button("Player 2") {
       name = "player2"
@@ -81,8 +80,9 @@ class SwingGui(controller: Controller) extends Frame {
     // confirm
     val btnConfirm: Button = new Button("Confirm") {
       name = "confirm"
-     // btnConfirm.background = new Color(5, 25, 100)
+//      btnConfirm.background = new Color(5, 25, 100)
     }
+    btnConfirm.background = new Color(5, 25, 100)
     val btnSelectRounds: Button = new Button("Select Rounds") {
       name = "selectRound"
       //btnSelectRounds.background = new Color(5, 25, 100)
@@ -148,33 +148,36 @@ def updateStatus: Unit ={
     updateStatus
   }
  // val rounds = setRoundsPanel.textfieldRounds.text
-  val gridPanel: GridPanel = new GridPanel(controller.getAmountOfRows, controller.getAmountOfColumns) {
+  def gridPanel: GridPanel = new GridPanel(controller.getAmountOfRows, controller.getAmountOfColumns) {
     border = LineBorder(java.awt.Color.BLACK, 2)
     background = new Color(46, 52, 64)
-    controller.setUpRandomCharacters(8)
+//    controller.setUpRandomCharacters(controller.getAmountOfRows)
     val rounds = setRoundsPanel.textfieldRounds.text
-    controller.createRandomGrid(5, 4)
-    val width = 5
-    val height = 4
+//    controller.createRandomGrid(4, controller.getAmountOfRows)
+    val width = 4
+    println("->", controller.getAmountOfRows)
+    val height = controller.getAmountOfRows
     val textfieldLastName = new TextField(" <text here> ", 50)
     for (row <- 0 until height; column <- 0 until width) {
       val cellPanels = new InputField(row, column, controller)
 
-      val label = new Label("<html><font color='#5e81ac'>Last Name:</font></html>") {
+      val label = new Label {
         text = cellPanels.getCellContent(row, column)
+//        text = s"<html><font color='red'>" + cellPanels.getCellContent(row, column) + "</font></html>"
         font = new Font("Verdana", 1, 36)
+//        new Font()
         background = new Color(46, 52, 64)
       }
 
       val cellPanel = new BoxPanel(Orientation.Vertical) {
-        background = new Color(46, 52, 64)
+//        background = new Color(46, 52, 64)
         preferredSize = new Dimension(51, 51)
         border = Swing.BeveledBorder(Swing.Raised)
 
         if (row == 0) {
           contents += label
         } else {
-          val textfieldLastName = new TextField(" <text here> ", 50)
+          val textfieldLastName = new TextField(s"<html><font color='red'>" + "foobar"+ "</font></html>", 50)
           textfieldLastName.background =  new Color(46, 52, 64)
           contents += textfieldLastName
 
@@ -190,7 +193,6 @@ def updateStatus: Unit ={
           }
         }
       }
-
       contents += cellPanel
       updateStatus
     }
@@ -242,20 +244,28 @@ def updateStatus: Unit ={
         bp.contents += setRoundsPanel
         bp.contents -= setNamePanel
       } else if (b.name == "confirmRound") {
+
+        // todo: build grid here
         selectRound()
         bp.contents -= setRoundsPanel
-        panelCenter.contents += gridPanel
-        panelCenter.visible = true
+
+
+        // todo: hide until #start is pressed
+//        panelCenter.contents += gridPanel
+//        panelCenter.visible = true
 
         updateStatus
         clearRound()
       } else if(b.name == "play"){
+        // todo: now unhide grid panel
+         panelCenter.contents += gridPanel
+         panelCenter.visible = true
         game_start()
       }
       flushPanel()
     }
     case event: gameStarted => game_start()
-    case event: CellChanged => redraw
+//    case event: CellChanged => redraw
     case event: CandidatesChanged => redraw
     case event: PlayerAdded => redraw
 
