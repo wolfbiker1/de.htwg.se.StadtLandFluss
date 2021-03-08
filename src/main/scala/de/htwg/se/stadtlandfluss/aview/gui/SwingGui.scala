@@ -191,7 +191,8 @@ def updateStatus: Unit ={
         this.name = column.toString + this.text
         this.reactions +=  {
           case KeyPressed(s, c, _, _) =>
-            if (c.toString == "Enter") {
+            println(c.toString)
+            if (c.toString == "Enter" || c.toString == "⏎") {
               controller.set(row, s.name.toInt, this.text)
             }
           case MouseClicked(s, p, _, _, _) =>
