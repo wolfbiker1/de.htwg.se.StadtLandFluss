@@ -1,8 +1,8 @@
 package de.htwg.se.stadtlandfluss.controller
 
-import de.htwg.se.stadtlandfluss.model.{Builder, EvaluatorCol, EvaluatorRow, Grid, GridCreator, Player, Round, Solver}
+import de.htwg.se.stadtlandfluss.model.{Builder, EvaluatorCol, EvaluatorRow, Grid, GridCreator, Round, Solver}
 import de.htwg.se.stadtlandfluss.controller.GameStatus._
-import de.htwg.se.stadtlandfluss.util.{Observable, UndoManager}
+import de.htwg.se.stadtlandfluss.util.UndoManager
 
 import scala.swing.Publisher
 
@@ -108,10 +108,11 @@ class Controller private(var grid: Grid) extends Publisher {
 
   def getAmountOfRows = grid.height
 
-  def gameIsReady: Boolean = (systemStatus == READY)
+  def gameIsReady: Boolean = systemStatus == READY
 
   def statusText: String = GameStatus.message(gameStatus)
-
+  def inGameStatus: String = GameStatus.playerMessage(playerStatus)
+  def currentLetter: Char = Round.getCharacterForRound(this.getRound())
 }
 
 object Controller {
