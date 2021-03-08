@@ -9,7 +9,7 @@ object GameStatus extends Enumeration {
   READY, NOT_SOLVABLE, ITSP1, ITSP2, PERROR = Value
 
   val map = Map[GameStatus, String](
-    IDLE -> "Willkommen beim Spiel des Jahrtausends, wer das liest ist doof..",
+    IDLE -> "Willkommen",
     NEW -> "A new game was created",
     SET -> "A Cell was set",
     RESIZE -> "Game was resized",

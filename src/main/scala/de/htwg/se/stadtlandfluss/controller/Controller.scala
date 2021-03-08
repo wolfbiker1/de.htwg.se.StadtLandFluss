@@ -23,15 +23,11 @@ class Controller private(var grid: Grid) extends Publisher {
   private val numberOfColumns = 4
 
   def createRandomGrid(width: Int, height: Int): Unit = {
-    // if (Round.playersAreSet()) {
     grid = new GridCreator(width, height).createGrid()
-    //    } else {
-    //      gameStatus = PERROR
-    //    }
     publish(new CellChanged)
   }
 
-  def getNumberOfColumns() = numberOfColumns
+  def getNumberOfColumns: Int = numberOfColumns
 
   def addPlayer(credentials: List[String]): Unit = {
     val builder = Builder()
@@ -66,16 +62,15 @@ class Controller private(var grid: Grid) extends Publisher {
     publish(new CellChanged)
   }
 
-  def isReady(): Unit = {
-    if (Round.getPlayerMap.size < 2) {
-      systemStatus = NOTREADY
-    }
-    systemStatus = READY
+  def isReady: Boolean = {
+    Round.getPlayerMap.size == 2
   }
 
   def getRound(): Int = {
     val currentRound: Int = Round.getRound(grid)
-    if ((currentRound % 2) == 0) {
+    if (!isReady) {
+      playerStatus = NA
+    } else if ((currentRound % 2) == 0) {
       playerStatus = TURNP1
     } else {
       playerStatus = TURNP2
@@ -109,7 +104,6 @@ class Controller private(var grid: Grid) extends Publisher {
   def getAmountOfRows = grid.height
 
   def gameIsReady: Boolean = systemStatus == READY
-
   def statusText: String = GameStatus.message(gameStatus)
   def inGameStatus: String = GameStatus.playerMessage(playerStatus)
   def currentLetter: Char = Round.getCharacterForRound(this.getRound())

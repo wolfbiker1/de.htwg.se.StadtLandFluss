@@ -10,8 +10,8 @@ class SwingGui(controller: Controller) extends Frame {
   listenTo(controller)
   centerOnScreen()
   this.title = "Stadt Land Fluss"
-  val statusLine = new TextField(controller.statusText, 20)
-  statusLine.background = new Color(94, 129, 172)
+  val statusLine = new Label("<html><font color='#bf616a'>" + controller.statusText + "</font></html>")
+  statusLine.background = new Color(59, 66, 82)
 
   override def closeOperation(): Unit = {
     System.exit(-1)
@@ -23,7 +23,7 @@ class SwingGui(controller: Controller) extends Frame {
    */
   def game_start(): Unit = {
     if (controller.gameIsReady) {
-      updateStatus
+      updateStatus()
     }
   }
 
@@ -37,13 +37,8 @@ class SwingGui(controller: Controller) extends Frame {
 
   def selectRound(): Unit = {
     val rounds = setRoundsPanel.textfieldRounds.text
-    println(rounds.toInt)
     controller.setUpRandomCharacters(rounds.toInt)
     controller.createRandomGrid(4, rounds.toInt)
-  }
-
-  def cellInput(): Unit = {
-    //    val input = gridPanel.cells
   }
 
   def clearTextFields(): Unit = {
@@ -82,6 +77,7 @@ class SwingGui(controller: Controller) extends Frame {
       name = "selectRound"
       this.background = new Color(76, 86, 106)
       this.border = BeveledBorder(Swing.Raised)
+      this.enabled = false
     }
     val btnUndo: Button = new Button("<html><font color='#eceff4'> Undo </font></html>") {
       name = "btnUndo"
@@ -131,24 +127,30 @@ class SwingGui(controller: Controller) extends Frame {
     contents += labelRounds
     contents += textfieldRounds
     contents += btnRunGame
-    updateStatus
+    updateStatus()
   }
 
-  def updateStatus: Unit = {
-    statusLine.text = controller.statusText + " --- " + controller.inGameStatus
-    println(controller.gameIsReady)
-    if (controller.gameIsReady) {
-      statusLine.text += " --- " + controller.currentLetter
+  def updateStatus(): Unit = {
+    val statusText: String = controller.statusText + " --- " + controller.inGameStatus
+    val openColorTag: String = "<html><font color='#bf616a'>"
+    val closingColorTag: String = "</font></html>"
+
+    statusLine.text = openColorTag
+    statusLine.text += statusText
+    if (controller.isReady) {
+      statusLine.text += " --- Current Letter: " + controller.currentLetter
     }
+
+    statusLine.text += closingColorTag
   }
 
-  def swapControlButtonsVisbility: Unit = {
+  def swapControlButtonsVisibility(): Unit = {
     controlPanel.btnPlayer1.visible = !controlPanel.btnPlayer1.visible
     controlPanel.btnPlayer2.visible = !controlPanel.btnPlayer2.visible
     controlPanel.btnSelectRounds.visible = !controlPanel.btnSelectRounds.visible
   }
 
-  def swapIngameButtons: Unit = {
+  def swapIngameButtons(): Unit = {
     controlPanel.btnUndo.visible = !controlPanel.btnUndo.visible
     controlPanel.btnRedo.visible = !controlPanel.btnRedo.visible
     controlPanel.btnSolve.visible = !controlPanel.btnSolve.visible
@@ -185,7 +187,7 @@ class SwingGui(controller: Controller) extends Frame {
       this.border = BeveledBorder(Swing.Raised)
     }
     contents += btnConfirmPlayer
-    updateStatus
+    updateStatus()
   }
 
 
@@ -219,7 +221,6 @@ class SwingGui(controller: Controller) extends Frame {
         this.name = column.toString + this.text
         this.reactions += {
           case KeyPressed(s, c, _, _) =>
-            println(c.toString)
             if (c.toString == "Enter" || c.toString == "⏎") {
               controller.set(row, s.name.toInt, this.text)
               updateStatus
@@ -239,7 +240,7 @@ class SwingGui(controller: Controller) extends Frame {
   panelCenter.visible = false
 
 
-  swapIngameButtons
+  swapIngameButtons()
 
   contents = new BorderPanel {
     add(controlPanel, BorderPanel.Position.North)
@@ -276,16 +277,19 @@ class SwingGui(controller: Controller) extends Frame {
         panelSouth.contents -= setNamePanel
         addPlayer()
         clearTextFields()
+
+        // not sure
+        if (controller.isReady) {
+          controlPanel.btnSelectRounds.enabled = true
+        }
       } else if (b.name == "selectRound") {
         panelSouth.contents += setRoundsPanel
         panelSouth.contents -= setNamePanel
       } else if (b.name == "runGame") {
         selectRound()
         clearRound()
-
-        swapIngameButtons
-        swapControlButtonsVisbility
-
+        swapIngameButtons()
+        swapControlButtonsVisibility()
         panelSouth.contents -= setRoundsPanel
         panelCenter.visible = true
       } else if (b.name == "btnUndo") {
@@ -298,19 +302,19 @@ class SwingGui(controller: Controller) extends Frame {
         closeOperation()
       }
 
-    flushPanel()
+      flushPanel()
     case event: gameStarted => game_start()
-    case event: CellChanged => redraw
-    case event: CandidatesChanged => redraw
-    case event: PlayerAdded => redraw
+    case event: CellChanged => redraw()
+    case event: CandidatesChanged => redraw()
+    case event: PlayerAdded => redraw()
 
   }
 
 
   visible = true
-  redraw
+  redraw()
 
-  def redraw = {
+  def redraw(): Unit = {
     statusLine.text = controller.statusText
     panelCenter.contents.clear()
     panelCenter.contents += gridPanel
