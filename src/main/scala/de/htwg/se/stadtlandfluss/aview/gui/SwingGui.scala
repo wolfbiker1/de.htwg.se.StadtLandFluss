@@ -1,12 +1,10 @@
 package de.htwg.se.stadtlandfluss.aview.gui
 
 import java.awt.Color
-
-import de.htwg.se.stadtlandfluss.controller.{CandidatesChanged, CellChanged, Controller, GridSizeChanged, PlayerAdded, gameStarted}
-
-import scala.swing.Swing.LineBorder
+import de.htwg.se.stadtlandfluss.controller.{CandidatesChanged, CellChanged, Controller, PlayerAdded, gameStarted}
+import scala.swing.Swing.{BeveledBorder, LineBorder}
 import scala.swing._
-import scala.swing.event.{ButtonClicked, Event, Key, KeyTyped}
+import scala.swing.event.{ButtonClicked, KeyPressed, MouseClicked}
 
 class SwingGui(controller: Controller) extends Frame {
   listenTo(controller)
@@ -68,22 +66,37 @@ class SwingGui(controller: Controller) extends Frame {
   val controlPanel = new FlowPanel {
     background = new Color(46, 52, 64)
 
-    val btnPlayer1: Button = new Button("<html><font color='#5e81ac'> Player 1 </font></html>") {
+    val btnPlayer1: Button = new Button("<html><font color='#eceff4'> Player 1 </font></html>") {
       name = "player1"
-      this.background = new Color(5, 25, 100)
+      this.background = new Color(76, 86, 106)
+      this.border = BeveledBorder(Swing.Raised)
     }
-    val btnPlayer2: Button = new Button("<html><font color='#5e81ac'> Player 2 </font></html>") {
+    val btnPlayer2: Button = new Button("<html><font color='#eceff4'> Player 2 </font></html>") {
       name = "player2"
-      this.background = new Color(5, 25, 100)
+      this.background = new Color(76, 86, 106)
+      this.border = BeveledBorder(Swing.Raised)
     }
-    val btnSelectRounds: Button = new Button("<html><font color='#5e81ac'> Roundoptions </font></html>") {
+    val btnSelectRounds: Button = new Button("<html><font color='#eceff4'> Roundoptions </font></html>") {
       name = "selectRound"
-      this.background = new Color(5, 25, 100)
+      this.background = new Color(76, 86, 106)
+      this.border = BeveledBorder(Swing.Raised)
+    }
+    val btnUndo: Button = new Button("<html><font color='#eceff4'> Undo </font></html>") {
+      name = "btnUndo"
+      this.background = new Color(76, 86, 106)
+      this.border = BeveledBorder(Swing.Raised)
+    }
+    val btnSolve: Button = new Button("<html><font color='#a3be8c'> Solve </font></html>") {
+      name = "btnSolve"
+      this.background = new Color(76, 86, 106)
+      this.border = BeveledBorder(Swing.Raised)
     }
     contents += btnPlayer1
     contents += btnPlayer2
-//    contents += runGame
+
     contents += btnSelectRounds
+    contents += btnUndo
+    contents += btnSolve
   }
 
 
@@ -93,12 +106,13 @@ class SwingGui(controller: Controller) extends Frame {
     val labelRounds: Label = new Label("Rounds")
     val textfieldRounds = new TextField("", 50)
 
-    textfieldRounds.background = new Color(94, 129, 172)
+    textfieldRounds.background = new Color(216, 222, 233)
 
 
-    val btnRunGame: Button = new Button("Run Game") {
+    val btnRunGame: Button = new Button("<html><font color='#bf616a'> Run Game </font></html>") {
       name = "runGame"
-      this.background = new Color(5, 25, 100)
+      this.background = new Color(76, 86, 106)
+      this.border = BeveledBorder(Swing.Raised)
     }
 
     contents += labelRounds
@@ -115,92 +129,83 @@ def updateStatus: Unit ={
   val setNamePanel = new GridPanel(5, 1) {
     background = new Color(46, 52, 64)
     //  name
-    val labelFirstName: Label = new Label("<html><font color='#5e81ac'>Name:</font></html>")
-    labelFirstName.background = new Color(5, 25, 100)
+    val labelFirstName: Label = new Label("<html><font color='#eceff4'>Name:</font></html>")
+    labelFirstName.background = new Color(216, 222, 233)
     contents += labelFirstName
     val textfieldFirstName = new TextField("", 50)
-    textfieldFirstName.background = new Color(94, 129, 172)
+    textfieldFirstName.background = new Color(216, 222, 233)
     contents += textfieldFirstName
-    updateStatus
 
     //  lastname
-    val labelLastName = new Label("<html><font color='#5e81ac'>Last Name:</font></html>")
+    val labelLastName = new Label("<html><font color='#eceff4'>Last Name:</font></html>")
     contents += labelLastName
     val textfieldLastName = new TextField("", 50)
-    textfieldLastName.background = new Color(94, 129, 172)
+    textfieldLastName.background = new Color(216, 222, 233)
     contents += textfieldLastName
-    updateStatus
 
     //  age
-    val age = new Label("<html><font color='#5e81ac'>Age:</font></html>")
+    val age = new Label("<html><font color='#eceff4'>Age:</font></html>")
     contents += age
     val textfieldAge = new TextField("", 50)
-    textfieldAge.background = new Color(94, 129, 172)
+    textfieldAge.background = new Color(216, 222, 233)
     contents += textfieldAge
 
     // confirm button
-    val btnConfirmPlayer: Button = new Button("<html><font color='#5e81ac'> Confirm </font></html>") {
+    val btnConfirmPlayer: Button = new Button("<html><font color='#eceff4'> Confirm </font></html>") {
       name = "confirmPlayer"
-      this.background = new Color(5, 25, 100)
+      this.background = new Color(76, 86, 106)
+      this.border = BeveledBorder(Swing.Raised)
     }
     contents += btnConfirmPlayer
-
     updateStatus
   }
 
 
+  /*
+   * Main Game Board
+   */
   def gridPanel: GridPanel = new GridPanel(controller.getAmountOfRows, controller.getAmountOfColumns) {
     border = LineBorder(java.awt.Color.BLACK, 2)
-    background = new Color(46, 52, 64)
-//    controller.setUpRandomCharacters(controller.getAmountOfRows)
-    val rounds = setRoundsPanel.textfieldRounds.text
-//    controller.createRandomGrid(4, controller.getAmountOfRows)
     val width = 4
-    println("->", controller.getAmountOfRows)
-    val height = controller.getAmountOfRows
-    val textfieldLastName = new TextField(" <text here> ", 50)
+    val height: Int = controller.getAmountOfRows
+
     for (row <- 0 until height; column <- 0 until width) {
-      val cellPanels = new InputField(row, column, controller)
 
-      val label = new Label {
-        text = cellPanels.getCellContent(row, column)
-//        text = s"<html><font color='red'>" + cellPanels.getCellContent(row, column) + "</font></html>"
-        font = new Font("Verdana", 1, 36)
-//        new Font()
-        background = new Color(46, 52, 64)
-      }
+      val inputField = new InputField(row, column, controller)
 
-      val cellPanel = new BoxPanel(Orientation.Vertical) {
-//        background = new Color(46, 52, 64)
-        preferredSize = new Dimension(51, 51)
+      val boxForTextFields = new BoxPanel(Orientation.Vertical) {
         border = Swing.BeveledBorder(Swing.Raised)
-
-        if (row == 0) {
-          contents += label
-        } else {
-          val textfieldLastName = new TextField(s"<html><font color='red'>" + "foobar"+ "</font></html>", 50)
-          textfieldLastName.background =  new Color(46, 52, 64)
-          contents += textfieldLastName
-
-        }
+      }
+      boxForTextFields.contents += new TextField() {
         listenTo(mouse.clicks)
-        listenTo(controller)
+        listenTo(keys)
+        this.enabled = false
+        this.background =  new Color(59, 66, 82)
 
-        reactions += {
-          case e: CellChanged => {
-            repaint
-          }
+        if (controller.getRound() == row) {
+          this.background =  new Color(76, 86, 106)
+          this.enabled = true
+          this.foreground = new Color(236, 239, 244)
+        }
+        this.text = inputField.getCellContent(row, column)
+        this.name = column.toString + this.text
+        this.reactions +=  {
+          case KeyPressed(s, c, _, _) =>
+            if (c.toString == "Enter") {
+              controller.set(row, s.name.toInt, this.text)
+            }
+          case MouseClicked(s, p, _, _, _) =>
         }
       }
-      contents += cellPanel
+
+      contents += boxForTextFields
       updateStatus
     }
   }
-
   val panelSouth = new BoxPanel(Orientation.Vertical)
   panelSouth.visible = true
   val panelCenter = new BoxPanel(Orientation.Vertical)
-  panelCenter.visible = true
+  panelCenter.visible = false
 
   contents = new BorderPanel {
     add(controlPanel, BorderPanel.Position.North)
@@ -214,6 +219,8 @@ def updateStatus: Unit ={
   listenTo(controlPanel.btnPlayer1)
   listenTo(controlPanel.btnPlayer2)
   listenTo(controlPanel.btnSelectRounds)
+  listenTo(controlPanel.btnUndo)
+  listenTo(controlPanel.btnSolve)
   listenTo(setNamePanel.btnConfirmPlayer)
   listenTo(setNamePanel.textfieldFirstName)
   listenTo(setNamePanel.textfieldLastName)
@@ -223,8 +230,7 @@ def updateStatus: Unit ={
   listenTo(setRoundsPanel.btnRunGame)
 
   reactions += {
-
-    case ButtonClicked(b) => {
+    case ButtonClicked(b) =>
       if (b.name == "player1" || b.name == "player2") {
         panelSouth.contents -= setRoundsPanel
         panelSouth.contents += setNamePanel
@@ -240,13 +246,16 @@ def updateStatus: Unit ={
         selectRound()
         clearRound()
         panelSouth.contents -= setRoundsPanel
-        panelCenter.contents += gridPanel
+        panelCenter.visible = true
         game_start()
+      } else if(b.name == "btnUndo") {
+        controller.undo
+      } else if(b.name == "btnSolve") {
+        controller.solve()
       }
       flushPanel()
-    }
     case event: gameStarted => game_start()
-//    case event: CellChanged => redraw
+    case event: CellChanged => redraw
     case event: CandidatesChanged => redraw
     case event: PlayerAdded => redraw
 
@@ -258,5 +267,8 @@ def updateStatus: Unit ={
 
   def redraw = {
     statusLine.text = controller.statusText
+    panelCenter.contents.clear()
+    panelCenter.contents += gridPanel
+    this.flushPanel()
   }
 }

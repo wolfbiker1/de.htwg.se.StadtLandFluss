@@ -84,7 +84,7 @@ class Controller private(var grid: Grid) extends Publisher {
   }
 
   def solve() = {
-    grid = new Solver().solveGame(grid)
+    grid = Solver().solveGame(grid)
     gameStatus = SOLVED
     publish(new CellChanged)
   }
