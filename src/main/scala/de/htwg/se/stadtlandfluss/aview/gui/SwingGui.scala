@@ -135,7 +135,11 @@ class SwingGui(controller: Controller) extends Frame {
   }
 
   def updateStatus: Unit = {
-    statusLine.text = controller.statusText + " --- " + controller.playerStatus
+    statusLine.text = controller.statusText + " --- " + controller.inGameStatus
+    println(controller.gameIsReady)
+    if (controller.gameIsReady) {
+      statusLine.text += " --- " + controller.currentLetter
+    }
   }
 
   def swapControlButtonsVisbility: Unit = {
