@@ -17,6 +17,7 @@ class SwingGui(controller: Controller) extends Frame {
     System.exit(-1)
   }
 
+
   /*
    * Methods
    *
@@ -99,6 +100,16 @@ class SwingGui(controller: Controller) extends Frame {
       this.background = new Color(76, 86, 106)
       this.border = BeveledBorder(Swing.Raised)
     }
+    val btnEval: Button = new Button("<html><font color='#eceff4'> Evaluate </font></html>") {
+      name = "btnEval"
+      this.background = new Color(76, 86, 106)
+      this.border = BeveledBorder(Swing.Raised)
+    }
+    val dropdownEvaluatingMethod: ComboBox[String] = new ComboBox(List("Column", "Row")) {
+      this.border = BeveledBorder(Swing.Raised)
+      this.background = new Color(76, 86, 106)
+      this.foreground = new Color(236, 239, 244)
+    }
     contents += btnPlayer1
     contents += btnPlayer2
 
@@ -107,6 +118,8 @@ class SwingGui(controller: Controller) extends Frame {
     contents += btnRedo
     contents += btnSolve
     contents += btnExit
+    contents += btnEval
+    contents += dropdownEvaluatingMethod
   }
 
 
@@ -144,6 +157,15 @@ class SwingGui(controller: Controller) extends Frame {
     statusLine.text += closingColorTag
   }
 
+  def evaluateGame(): Unit = {
+    if (this.controlPanel.dropdownEvaluatingMethod.item == "column") {
+      controller.evaluate(true)
+    } else {
+      controller.evaluate(false)
+    }
+    updateStatus()
+  }
+
   def swapControlButtonsVisibility(): Unit = {
     controlPanel.btnPlayer1.visible = !controlPanel.btnPlayer1.visible
     controlPanel.btnPlayer2.visible = !controlPanel.btnPlayer2.visible
@@ -154,6 +176,8 @@ class SwingGui(controller: Controller) extends Frame {
     controlPanel.btnUndo.visible = !controlPanel.btnUndo.visible
     controlPanel.btnRedo.visible = !controlPanel.btnRedo.visible
     controlPanel.btnSolve.visible = !controlPanel.btnSolve.visible
+    controlPanel.btnEval.visible = !controlPanel.btnEval.visible
+    controlPanel.dropdownEvaluatingMethod.visible = !controlPanel.dropdownEvaluatingMethod.visible
   }
 
   val setNamePanel = new GridPanel(5, 1) {
@@ -223,14 +247,14 @@ class SwingGui(controller: Controller) extends Frame {
           case KeyPressed(s, c, _, _) =>
             if (c.toString == "Enter" || c.toString == "⏎") {
               controller.set(row, s.name.toInt, this.text)
-              updateStatus
+              updateStatus()
             }
           case MouseClicked(s, p, _, _, _) =>
         }
       }
 
       contents += boxForTextFields
-      updateStatus
+      updateStatus()
     }
   }
 
@@ -239,8 +263,6 @@ class SwingGui(controller: Controller) extends Frame {
   val panelCenter = new BoxPanel(Orientation.Vertical)
   panelCenter.visible = false
 
-
-  swapIngameButtons()
 
   contents = new BorderPanel {
     add(controlPanel, BorderPanel.Position.North)
@@ -259,6 +281,7 @@ class SwingGui(controller: Controller) extends Frame {
   listenTo(controlPanel.btnRedo)
   listenTo(controlPanel.btnSolve)
   listenTo(controlPanel.btnExit)
+  listenTo(controlPanel.btnEval)
   listenTo(setNamePanel.btnConfirmPlayer)
   listenTo(setNamePanel.textfieldFirstName)
   listenTo(setNamePanel.textfieldLastName)
@@ -298,6 +321,8 @@ class SwingGui(controller: Controller) extends Frame {
         controller.redo
       } else if (b.name == "btnSolve") {
         controller.solve()
+      } else if (b.name == "btnEval") {
+        evaluateGame()
       } else if (b.name == "btnExit") {
         closeOperation()
       }
@@ -310,7 +335,7 @@ class SwingGui(controller: Controller) extends Frame {
 
   }
 
-
+  swapIngameButtons()
   visible = true
   redraw()
 

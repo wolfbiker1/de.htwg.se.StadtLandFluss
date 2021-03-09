@@ -31,7 +31,7 @@ object GameStatus extends Enumeration {
     ITSP1 -> "Player 1 won",
     ITSP2 -> "Player 2 won",
     TURNP1 -> "Player 1 turn",
-    TURNP2 -> "Player2 turn"
+    TURNP2 -> "Player 2 turn"
   )
 
 

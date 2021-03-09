@@ -54,12 +54,14 @@ class Controller private(var grid: Grid) extends Publisher {
   def evaluate(isCol: Boolean): Unit = {
     val evaluator = if (isCol) new EvaluatorCol else new EvaluatorRow
     if (evaluator.evaluateGame(grid, Round.getPlayerMap) == 0) {
+      println("1")
       playerStatus = ITSP1
     } else {
+      println("2")
       playerStatus = ITSP2
     }
     gameStatus = SOLVED
-    publish(new CellChanged)
+//    publish(new CellChanged)
   }
 
   def isReady: Boolean = {
@@ -68,7 +70,7 @@ class Controller private(var grid: Grid) extends Publisher {
 
   def getRound(): Int = {
     val currentRound: Int = Round.getRound(grid)
-    if (!isReady) {
+    if (!isReady || gameStatus == SOLVED) {
       playerStatus = NA
     } else if ((currentRound % 2) == 0) {
       playerStatus = TURNP1
