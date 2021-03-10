@@ -1,12 +1,13 @@
 package de.htwg.se.stadtlandfluss.model.gridComponent.gridBaseImpl
 
 import de.htwg.se.stadtlandfluss.model.Round
+import de.htwg.se.stadtlandfluss.model.gridComponent.GridInterface
 import de.htwg.se.stadtlandfluss.model.playerComponent.Player
 
 class EvaluatorCol extends EvaluateStrategyTemplate {
 
 
-  override def evaluateGame(grid: Grid, playerMap: Map[Int, Player]): Int = {
+  override def evaluateGame(grid: GridInterface, playerMap: Map[Int, Player]): Int = {
   val player0 = playerMap(0)
   val player1 = playerMap(1)
   for (row <- 1 until grid.height; column <- 0 until grid.width) {
