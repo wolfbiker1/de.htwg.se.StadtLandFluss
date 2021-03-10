@@ -3,17 +3,17 @@ package de.htwg.se.stadtlandfluss.controller.controllerBaseImpl
 import de.htwg.se.stadtlandfluss.controller.GameStatus._
 import de.htwg.se.stadtlandfluss.controller.{ControllerInterface, GameStatus}
 import de.htwg.se.stadtlandfluss.model._
-import de.htwg.se.stadtlandfluss.model.gridComponent.gridBaseImpl.{EvaluatorCol, EvaluatorRow, Grid, GridCreator, Solver}
+import de.htwg.se.stadtlandfluss.model.gridComponent.gridBaseImpl.{Cell, EvaluatorCol, EvaluatorRow, Grid, GridCreator, Solver}
 import de.htwg.se.stadtlandfluss.util.UndoManager
 import com.google.inject.name.Names
 import com.google.inject.{Guice, Inject}
 import de.htwg.se.stadtlandfluss.SLFModule
-import de.htwg.se.stadtlandfluss.model.gridComponent.GridInterface
+import de.htwg.se.stadtlandfluss.model.gridComponent.{CellInterface, GridInterface}
 import net.codingwell.scalaguice.InjectorExtensions._
 
 import scala.swing.Publisher
 
-class Controller @Inject() private(var grid: Grid) extends ControllerInterface with Publisher {
+class Controller @Inject() (var grid: GridInterface) extends ControllerInterface with Publisher {
 
   /*
    * Gamestates
@@ -34,9 +34,9 @@ class Controller @Inject() private(var grid: Grid) extends ControllerInterface w
 
     grid.height match {
       case 4 => grid = injector.instance[GridInterface](Names.named("quicky"))
+      case 8 => grid = injector.instance[GridInterface](Names.named("extended"))
+      case _ => grid = new GridCreator(width, height).createGrid()
     }
-
-    grid = new GridCreator(width, height).createGrid()
     publish(new CellChanged)
   }
 
@@ -112,7 +112,7 @@ class Controller @Inject() private(var grid: Grid) extends ControllerInterface w
     publish(new CellChanged)
   }
 
-  def getCell(row: Int, column: Int) = grid.cell(row, column)
+  def getCell(row: Int, column: Int): CellInterface = grid.cell(row, column)
 
   def getAmountOfColumns = grid.width
 
@@ -124,8 +124,8 @@ class Controller @Inject() private(var grid: Grid) extends ControllerInterface w
   def currentLetter: Char = Round.getCharacterForRound(this.getRound())
 }
 
-object Controller {
-  val controller = new Controller(new Grid(4, 4))
-
-  def getController: Controller = controller
-}
+//@Singleton
+//object Controller {
+//  val controller = new Controller(new Grid(4, 4))
+//  def getController: Controller = controller
+//}

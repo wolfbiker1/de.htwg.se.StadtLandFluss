@@ -2,6 +2,7 @@ package de.htwg.se.stadtlandfluss.controller
 
 import de.htwg.se.stadtlandfluss.model.{Builder, Round}
 import de.htwg.se.stadtlandfluss.controller.GameStatus._
+import de.htwg.se.stadtlandfluss.model.gridComponent.CellInterface
 import de.htwg.se.stadtlandfluss.model.gridComponent.gridBaseImpl.Cell
 import de.htwg.se.stadtlandfluss.util.UndoManager
 
@@ -21,7 +22,7 @@ trait ControllerInterface extends Publisher {
   def solve(): Unit
   def undo: Unit
   def redo: Unit
-  def getCell(row: Int, column: Int): Cell
+  def getCell(row: Int, column: Int): CellInterface
   def getAmountOfColumns: Int
   def getAmountOfRows: Int
   def gameIsReady: Boolean

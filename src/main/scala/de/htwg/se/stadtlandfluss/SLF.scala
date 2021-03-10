@@ -1,5 +1,6 @@
 package de.htwg.se.stadtlandfluss
 
+import com.google.inject.Guice
 import de.htwg.se.stadtlandfluss.aview.Tui
 import de.htwg.se.stadtlandfluss.aview.gui.SwingGui
 import de.htwg.se.stadtlandfluss.controller.controllerBaseImpl.Controller
@@ -8,7 +9,13 @@ import de.htwg.se.stadtlandfluss.controller.controllerBaseImpl.{CellChanged, gam
 import scala.io.StdIn.readLine
 
 object SLF {
-  val controller = Controller.getController
+  val injector = Guice.createInjector(new SLFModule)
+//  val s = Controller.getController
+  val controller = injector.getInstance(classOf[Controller])
+//  val controller: Controller = injector.getInstance(s.getClass)
+
+
+
   controller.publish(new CellChanged)
 
   val tui = new Tui(controller)
