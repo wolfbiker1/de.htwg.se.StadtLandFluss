@@ -1,6 +1,7 @@
 package de.htwg.se.stadtlandfluss.model
 
 import de.htwg.se.stadtlandfluss.controller.GameStatus
+import de.htwg.se.stadtlandfluss.model.gridComponent.GridInterface
 import de.htwg.se.stadtlandfluss.model.gridComponent.gridBaseImpl.Grid
 import de.htwg.se.stadtlandfluss.model.playerComponent.Player
 
@@ -36,7 +37,7 @@ object Round {
     }
   }
 
-  def getRound(grid: Grid): Int = {
+  def getRound(grid: GridInterface): Int = {
     for (row <- 1 until grid.height; column <- 0 until grid.width) {
       if (!grid.cell(row, column).isSet) {
         return row

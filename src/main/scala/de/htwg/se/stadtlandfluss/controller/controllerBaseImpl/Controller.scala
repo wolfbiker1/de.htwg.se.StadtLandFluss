@@ -3,12 +3,13 @@ package de.htwg.se.stadtlandfluss.controller.controllerBaseImpl
 import de.htwg.se.stadtlandfluss.controller.GameStatus._
 import de.htwg.se.stadtlandfluss.controller.GameStatus
 import de.htwg.se.stadtlandfluss.model._
+import de.htwg.se.stadtlandfluss.model.gridComponent.GridInterface
 import de.htwg.se.stadtlandfluss.model.gridComponent.gridBaseImpl.{EvaluatorCol, EvaluatorRow, Grid, GridCreator, Solver}
 import de.htwg.se.stadtlandfluss.util.UndoManager
 
 import scala.swing.Publisher
 
-class Controller private(var grid: Grid) extends Publisher {
+class Controller private(var grid: GridInterface) extends Publisher {
 
   /*
    * Gamestates

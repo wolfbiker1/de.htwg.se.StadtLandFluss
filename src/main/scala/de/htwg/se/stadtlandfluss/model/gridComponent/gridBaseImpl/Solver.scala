@@ -1,6 +1,7 @@
 package de.htwg.se.stadtlandfluss.model.gridComponent.gridBaseImpl
 
 import de.htwg.se.stadtlandfluss.model.Round
+import de.htwg.se.stadtlandfluss.model.gridComponent.GridInterface
 
 case class Solver() {
 
@@ -40,8 +41,8 @@ case class Solver() {
   }
 
 
-  def solveGame(grid: Grid): Grid = {
-    var solvedGrid = grid
+  def solveGame(grid: GridInterface): Grid = {
+    var solvedGrid = new GridCreator(grid.height, grid.width).createGrid()
     for (row <- 1 until grid.height; column <- 0 until grid.width) {
       val category: String = grid.cell(0, column).toString
 
