@@ -1,14 +1,19 @@
 package de.htwg.se.stadtlandfluss.controller.controllerBaseImpl
 
 import de.htwg.se.stadtlandfluss.controller.GameStatus._
-import de.htwg.se.stadtlandfluss.controller.GameStatus
+import de.htwg.se.stadtlandfluss.controller.{ControllerInterface, GameStatus}
 import de.htwg.se.stadtlandfluss.model._
 import de.htwg.se.stadtlandfluss.model.gridComponent.gridBaseImpl.{EvaluatorCol, EvaluatorRow, Grid, GridCreator, Solver}
 import de.htwg.se.stadtlandfluss.util.UndoManager
+import com.google.inject.name.Names
+import com.google.inject.{Guice, Inject}
+import de.htwg.se.stadtlandfluss.SLFModule
+import de.htwg.se.stadtlandfluss.model.gridComponent.GridInterface
+import net.codingwell.scalaguice.InjectorExtensions._
 
 import scala.swing.Publisher
 
-class Controller private(var grid: Grid) extends Publisher {
+class Controller @Inject() private(var grid: Grid) extends ControllerInterface with Publisher {
 
   /*
    * Gamestates
@@ -23,8 +28,14 @@ class Controller private(var grid: Grid) extends Publisher {
    */
   private val undoManager = new UndoManager
   private val numberOfColumns = 4
+  val injector = Guice.createInjector(new SLFModule)
 
   def createRandomGrid(width: Int, height: Int): Unit = {
+
+    grid.height match {
+      case 4 => grid = injector.instance[GridInterface](Names.named("quicky"))
+    }
+
     grid = new GridCreator(width, height).createGrid()
     publish(new CellChanged)
   }

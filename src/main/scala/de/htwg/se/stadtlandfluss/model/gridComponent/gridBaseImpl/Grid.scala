@@ -1,5 +1,6 @@
 package de.htwg.se.stadtlandfluss.model.gridComponent.gridBaseImpl
 
+
 import de.htwg.se.stadtlandfluss.model.Round
 import de.htwg.se.stadtlandfluss.model.gridComponent.GridInterface
 
