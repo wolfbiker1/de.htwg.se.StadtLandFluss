@@ -1,5 +1,6 @@
 package de.htwg.se.stadtlandfluss.model.gridComponent.gridBaseImpl
 
+import de.htwg.se.stadtlandfluss.model.gridComponent.GridInterface
 import de.htwg.se.stadtlandfluss.model.playerComponent.Player
 
 trait EvaluateStrategyTemplate {
@@ -38,5 +39,5 @@ trait EvaluateStrategyTemplate {
     }
   }
 
-  def evaluateGame(grid: Grid, playerMap: Map[Int, Player]): Int
+  def evaluateGame(grid: GridInterface, playerMap: Map[Int, Player]): Int
 }
