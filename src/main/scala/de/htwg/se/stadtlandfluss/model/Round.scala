@@ -32,7 +32,6 @@ object Round {
       }
       randomCharacters = randomCharacters.updated(i, charToInsert)
     }
-    println(randomCharacters)
   }
 
   def getRound(grid: Grid): Int = {

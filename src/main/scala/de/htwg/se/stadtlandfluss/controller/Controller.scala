@@ -1,8 +1,8 @@
 package de.htwg.se.stadtlandfluss.controller
 
-import de.htwg.se.stadtlandfluss.model.{Builder, EvaluatorCol, EvaluatorRow, Grid, GridCreator, Player, Round, Solver}
+import de.htwg.se.stadtlandfluss.model.{Builder, EvaluatorCol, EvaluatorRow, Grid, GridCreator, Round, Solver}
 import de.htwg.se.stadtlandfluss.controller.GameStatus._
-import de.htwg.se.stadtlandfluss.util.{Observable, UndoManager}
+import de.htwg.se.stadtlandfluss.util.UndoManager
 
 import scala.swing.Publisher
 
@@ -23,15 +23,11 @@ class Controller private(var grid: Grid) extends Publisher {
   private val numberOfColumns = 4
 
   def createRandomGrid(width: Int, height: Int): Unit = {
-    // if (Round.playersAreSet()) {
     grid = new GridCreator(width, height).createGrid()
-    //    } else {
-    //      gameStatus = PERROR
-    //    }
     publish(new CellChanged)
   }
 
-  def getNumberOfColumns() = numberOfColumns
+  def getNumberOfColumns: Int = numberOfColumns
 
   def addPlayer(credentials: List[String]): Unit = {
     val builder = Builder()
@@ -58,24 +54,25 @@ class Controller private(var grid: Grid) extends Publisher {
   def evaluate(isCol: Boolean): Unit = {
     val evaluator = if (isCol) new EvaluatorCol else new EvaluatorRow
     if (evaluator.evaluateGame(grid, Round.getPlayerMap) == 0) {
+      println("1")
       playerStatus = ITSP1
     } else {
+      println("2")
       playerStatus = ITSP2
     }
     gameStatus = SOLVED
-    publish(new CellChanged)
+//    publish(new CellChanged)
   }
 
-  def isReady(): Unit = {
-    if (Round.getPlayerMap.size < 2) {
-      systemStatus = NOTREADY
-    }
-    systemStatus = READY
+  def isReady: Boolean = {
+    Round.getPlayerMap.size == 2
   }
 
   def getRound(): Int = {
     val currentRound: Int = Round.getRound(grid)
-    if ((currentRound % 2) == 0) {
+    if (!isReady || gameStatus == SOLVED) {
+      playerStatus = NA
+    } else if ((currentRound % 2) == 0) {
       playerStatus = TURNP1
     } else {
       playerStatus = TURNP2
@@ -108,10 +105,10 @@ class Controller private(var grid: Grid) extends Publisher {
 
   def getAmountOfRows = grid.height
 
-  def gameIsReady: Boolean = (systemStatus == READY)
-
+  def gameIsReady: Boolean = systemStatus == READY
   def statusText: String = GameStatus.message(gameStatus)
-
+  def inGameStatus: String = GameStatus.playerMessage(playerStatus)
+  def currentLetter: Char = Round.getCharacterForRound(this.getRound())
 }
 
 object Controller {
