@@ -1,4 +1,4 @@
-package de.htwg.se.stadtlandfluss.controller
+package de.htwg.se.stadtlandfluss.controller.controllerBaseImpl
 
 import de.htwg.se.stadtlandfluss.util.Command
 

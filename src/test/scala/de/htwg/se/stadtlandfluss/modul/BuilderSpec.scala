@@ -1,5 +1,6 @@
 package de.htwg.se.stadtlandfluss.modul
-import de.htwg.se.stadtlandfluss.model.{Builder, Player}
+import de.htwg.se.stadtlandfluss.model.Builder
+import de.htwg.se.stadtlandfluss.model.playerComponent.Player
 import org.scalatest.{Matchers, WordSpec}
 
 class BuilderSpec extends WordSpec with Matchers {

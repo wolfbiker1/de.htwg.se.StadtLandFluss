@@ -1,4 +1,4 @@
-package de.htwg.se.stadtlandfluss.model
+package de.htwg.se.stadtlandfluss.model.gridComponent.gridBaseImpl
 
 class GridCreator(width: Int, height: Int) {
   val categories: List[String] = List("automarke", "land", "fluss", "farbe")

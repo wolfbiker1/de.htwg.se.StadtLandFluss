@@ -1,6 +1,6 @@
 package de.htwg.se.stadtlandfluss.modul
 
-import de.htwg.se.stadtlandfluss.model.{Cell, Matrix}
+import de.htwg.se.stadtlandfluss.model.gridComponent.gridBaseImpl.{Cell, Matrix}
 import org.scalatest.{Matchers, WordSpec}
 
 class MatrixSpec extends WordSpec with Matchers {

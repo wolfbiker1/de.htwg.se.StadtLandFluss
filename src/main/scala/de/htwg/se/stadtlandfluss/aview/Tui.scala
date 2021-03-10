@@ -1,7 +1,8 @@
 package de.htwg.se.stadtlandfluss.aview
 
 import de.htwg.se.stadtlandfluss.controller._
-import de.htwg.se.stadtlandfluss.model.{Grid, GridCreator, Solver}
+import de.htwg.se.stadtlandfluss.controller.controllerBaseImpl.{CellChanged, Controller, GridSizeChanged}
+import de.htwg.se.stadtlandfluss.model.gridComponent.gridBaseImpl.GridCreator
 import de.htwg.se.stadtlandfluss.util.Observer
 
 import scala.swing.Reactor

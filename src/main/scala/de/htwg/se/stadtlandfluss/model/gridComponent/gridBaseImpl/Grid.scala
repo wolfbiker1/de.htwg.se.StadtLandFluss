@@ -1,7 +1,9 @@
-package de.htwg.se.stadtlandfluss.model
+package de.htwg.se.stadtlandfluss.model.gridComponent.gridBaseImpl
 
+import de.htwg.se.stadtlandfluss.model.Round
+import de.htwg.se.stadtlandfluss.model.gridComponent.GridInterface
 
-case class Grid(private val cells: Matrix[Cell]) {
+case class Grid(private val cells: Matrix[Cell]) extends GridInterface {
   def this(height: Int, width: Int) = this(new Matrix[Cell](height, width, Cell("")))
 
   val width: Int = cells.width

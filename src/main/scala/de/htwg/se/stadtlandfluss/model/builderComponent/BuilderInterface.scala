@@ -1,11 +1,8 @@
-package de.htwg.se.stadtlandfluss.model
+package de.htwg.se.stadtlandfluss.model.builderComponent
 
+trait BuilderInterface {
 
-import de.htwg.se.stadtlandfluss.model.playerComponent.Player
-import de.htwg.se.stadtlandfluss.util.PlayerPlan
-
-import scala.util.Try
-
+}
 case class Builder() extends PlayerPlan {
   var firstname: String = ""
   var lastname: String = ""
@@ -41,4 +38,3 @@ case class Builder() extends PlayerPlan {
     Player(firstname, lastname, age,points)
   }
 
-}

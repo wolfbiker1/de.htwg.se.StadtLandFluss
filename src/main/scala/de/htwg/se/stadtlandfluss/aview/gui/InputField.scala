@@ -1,10 +1,9 @@
 package de.htwg.se.stadtlandfluss.aview.gui
 
-import de.htwg.se.stadtlandfluss.controller.{CellChanged, Controller}
+import de.htwg.se.stadtlandfluss.controller.controllerBaseImpl.{CellChanged, Controller}
 
 import scala.swing._
 import javax.swing.table._
-
 import scala.swing.event._
 
 class InputField(row: Int, column: Int, controller: Controller) extends FlowPanel {

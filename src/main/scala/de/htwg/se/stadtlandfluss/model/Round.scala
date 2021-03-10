@@ -1,6 +1,8 @@
 package de.htwg.se.stadtlandfluss.model
 
 import de.htwg.se.stadtlandfluss.controller.GameStatus
+import de.htwg.se.stadtlandfluss.model.gridComponent.gridBaseImpl.Grid
+import de.htwg.se.stadtlandfluss.model.playerComponent.Player
 
 import scala.util.Random
 

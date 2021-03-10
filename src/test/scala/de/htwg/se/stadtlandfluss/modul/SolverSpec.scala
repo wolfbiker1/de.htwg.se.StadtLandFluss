@@ -1,6 +1,6 @@
 package de.htwg.se.stadtlandfluss.modul
 
-import de.htwg.se.stadtlandfluss.model.{GridCreator, Solver}
+import de.htwg.se.stadtlandfluss.model.gridComponent.gridBaseImpl.{GridCreator, Solver}
 import org.scalatest.{Matchers, WordSpec}
 
 class SolverSpec extends WordSpec with Matchers {

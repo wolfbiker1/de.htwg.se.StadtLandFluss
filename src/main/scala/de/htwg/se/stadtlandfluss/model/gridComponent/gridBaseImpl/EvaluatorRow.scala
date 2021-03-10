@@ -1,4 +1,7 @@
-package de.htwg.se.stadtlandfluss.model
+package de.htwg.se.stadtlandfluss.model.gridComponent.gridBaseImpl
+
+import de.htwg.se.stadtlandfluss.model.Round
+import de.htwg.se.stadtlandfluss.model.playerComponent.Player
 
 class EvaluatorRow extends EvaluateStrategyTemplate {
 

@@ -1,7 +1,8 @@
 package de.htwg.se.stadtlandfluss.aview
 
-import de.htwg.se.stadtlandfluss.controller.{Controller, GameStatus}
-import de.htwg.se.stadtlandfluss.model.Grid
+import de.htwg.se.stadtlandfluss.controller.GameStatus
+import de.htwg.se.stadtlandfluss.controller.controllerBaseImpl.Controller
+import de.htwg.se.stadtlandfluss.model.gridComponent.gridBaseImpl.Grid
 import org.scalatest.{Matchers, WordSpec}
 
 class TuiSpec  extends WordSpec with Matchers{
@@ -19,7 +20,7 @@ class TuiSpec  extends WordSpec with Matchers{
       tui.processInputLine("p-hans-g-14")
       tui.processInputLine("p-hansi-h-11")
       tui.processInputLine("n-8")
-      controller.getNumberOfColumns() should be (4)
+      controller.getAmountOfColumns should be (4)
     }
 
     "solve a Sudoku on input 'eRow'" in {

@@ -1,6 +1,6 @@
 package de.htwg.se.stadtlandfluss.modul
 
-import de.htwg.se.stadtlandfluss.model.Cell
+import de.htwg.se.stadtlandfluss.model.gridComponent.gridBaseImpl.Cell
 import org.scalatest._
 
 class CellSpec extends WordSpec with Matchers {

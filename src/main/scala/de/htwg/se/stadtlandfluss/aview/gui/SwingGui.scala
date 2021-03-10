@@ -1,7 +1,8 @@
 package de.htwg.se.stadtlandfluss.aview.gui
 
+import de.htwg.se.stadtlandfluss.controller.controllerBaseImpl.{CellChanged, Controller, PlayerAdded, gameStarted}
+
 import java.awt.Color
-import de.htwg.se.stadtlandfluss.controller.{CandidatesChanged, CellChanged, Controller, PlayerAdded, gameStarted}
 import scala.swing.Swing.{BeveledBorder, LineBorder}
 import scala.swing._
 import scala.swing.event.{ButtonClicked, KeyPressed, MouseClicked}
@@ -330,7 +331,6 @@ class SwingGui(controller: Controller) extends Frame {
       flushPanel()
     case event: gameStarted => game_start()
     case event: CellChanged => redraw()
-    case event: CandidatesChanged => redraw()
     case event: PlayerAdded => redraw()
 
   }

@@ -2,7 +2,8 @@ package de.htwg.se.stadtlandfluss
 
 import de.htwg.se.stadtlandfluss.aview.Tui
 import de.htwg.se.stadtlandfluss.aview.gui.SwingGui
-import de.htwg.se.stadtlandfluss.controller._
+import de.htwg.se.stadtlandfluss.controller.controllerBaseImpl.Controller
+import de.htwg.se.stadtlandfluss.controller.controllerBaseImpl.{CellChanged, gameStarted}
 
 import scala.io.StdIn.readLine
 

@@ -1,7 +1,9 @@
-package de.htwg.se.stadtlandfluss.controller
+package de.htwg.se.stadtlandfluss.controller.controllerBaseImpl
 
-import de.htwg.se.stadtlandfluss.model.{Builder, EvaluatorCol, EvaluatorRow, Grid, GridCreator, Round, Solver}
 import de.htwg.se.stadtlandfluss.controller.GameStatus._
+import de.htwg.se.stadtlandfluss.controller.GameStatus
+import de.htwg.se.stadtlandfluss.model._
+import de.htwg.se.stadtlandfluss.model.gridComponent.gridBaseImpl.{EvaluatorCol, EvaluatorRow, Grid, GridCreator, Solver}
 import de.htwg.se.stadtlandfluss.util.UndoManager
 
 import scala.swing.Publisher
@@ -61,7 +63,7 @@ class Controller private(var grid: Grid) extends Publisher {
       playerStatus = ITSP2
     }
     gameStatus = SOLVED
-//    publish(new CellChanged)
+    //    publish(new CellChanged)
   }
 
   def isReady: Boolean = {
@@ -80,7 +82,7 @@ class Controller private(var grid: Grid) extends Publisher {
     currentRound
   }
 
-  def solve() = {
+  def solve(): Unit = {
     grid = Solver().solveGame(grid)
     gameStatus = SOLVED
     publish(new CellChanged)
