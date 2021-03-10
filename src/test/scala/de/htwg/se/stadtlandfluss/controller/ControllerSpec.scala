@@ -13,7 +13,7 @@ class ControllerSpec extends WordSpec with Matchers {
 
   "A Controller" when {
     val controller = Controller.getController
-    val name = "heinrich" :: ("hans" :: "14" :: Nil)
+    val name = List("","heinrich","hans","14")
     "a new grid" should {
       val smallGrid = new Grid(4, 4)
       controller.createRandomGrid(4, 4)
@@ -30,11 +30,27 @@ class ControllerSpec extends WordSpec with Matchers {
     }
 
     " a grid with player" should {
-      controller.addPlayer(name)
-      controller.addPlayer(name)
+      val controller = Controller.getController
+      controller.createRandomGrid(4, 4)
+
+
       " should be ready" in {
+        controller.isReady should be ( false)
+      }
+      "should have a status" in{
+        controller.inGameStatus should be("Player not set")
+      }
+      "add player" in {
+        controller.addPlayer(name)
+        controller.addPlayer(name)
+      }
+      "be ready" in{
         controller.isReady should be ( true)
       }
+      "have a turn" in{
+        controller.getRound should be ( 1)
+      }
+
     }
 
   }
