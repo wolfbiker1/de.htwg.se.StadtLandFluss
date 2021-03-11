@@ -52,4 +52,10 @@ case class  Grid(private val cells: Matrix[Cell]) extends GridInterface {
     box += "\n"
     box
   }
+
 }
+//object Grid {
+//  import play.api.libs.json._
+//  implicit val gridWrites = Json.writes[Grid]
+//  implicit val gridReads = Json.reads[Grid]
+//}
