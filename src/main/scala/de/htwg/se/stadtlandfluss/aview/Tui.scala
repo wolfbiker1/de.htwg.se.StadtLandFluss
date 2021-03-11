@@ -24,6 +24,7 @@ class Tui(controller: Controller) extends Reactor {
           // fail silently...
         }
       }
+      case "s" => controller.saveGame()
       case "z" => controller.undo
       case "eCol" => controller.setupEvaluator(true)
       case "eRow" => controller.setupEvaluator(false)

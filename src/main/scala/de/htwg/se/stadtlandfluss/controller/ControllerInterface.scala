@@ -4,6 +4,7 @@ import de.htwg.se.stadtlandfluss.model.{Builder, Round}
 import de.htwg.se.stadtlandfluss.controller.GameStatus._
 import de.htwg.se.stadtlandfluss.model.gridComponent.CellInterface
 import de.htwg.se.stadtlandfluss.model.gridComponent.gridBaseImpl.{Cell, EvaluateStrategyTemplate}
+import de.htwg.se.stadtlandfluss.model.playerComponent.Player
 import de.htwg.se.stadtlandfluss.util.UndoManager
 
 import scala.swing.Publisher
@@ -29,5 +30,6 @@ trait ControllerInterface extends Publisher {
   def gameIsReady: Boolean
   def statusText: String
   def inGameStatus: String
+  def getPlayer: Map[Int, Player]
   def currentLetter: Char
 }
