@@ -30,6 +30,9 @@ trait ControllerInterface extends Publisher {
   def gameIsReady: Boolean
   def statusText: String
   def inGameStatus: String
+  def getStaticNumberOfColumns: Int
   def getPlayer: Map[Int, Player]
+  def getCharacterForRow(pos: Int): Char
+  def setCharacterForRow(pos: Int, char: Character): Unit
   def currentLetter: Char
 }

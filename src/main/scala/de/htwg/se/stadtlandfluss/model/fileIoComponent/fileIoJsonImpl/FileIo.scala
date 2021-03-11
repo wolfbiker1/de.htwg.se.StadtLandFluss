@@ -2,22 +2,57 @@ package de.htwg.se.stadtlandfluss.model.fileIoComponent.fileIoJsonImpl
 
 import com.google.inject.Guice
 import com.google.inject.name.Names
+import de.htwg.se.stadtlandfluss.SLFModule
 import de.htwg.se.stadtlandfluss.controller.ControllerInterface
 import de.htwg.se.stadtlandfluss.model.fileIoComponent.FileIOInterface
+import de.htwg.se.stadtlandfluss.model.gridComponent.gridBaseImpl.GridCreator
 import de.htwg.se.stadtlandfluss.model.gridComponent.{CellInterface, GridInterface}
+import de.htwg.se.stadtlandfluss.model.playerComponent.Player
 import net.codingwell.scalaguice.InjectorExtensions._
+import play.api.libs.json.Format.GenericFormat
 import play.api.libs.json._
 
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.io._
+import scala.io.Source
+
+
 class FileIo extends FileIOInterface {
-
-
   implicit val cellWrites = new Writes[CellInterface] {
-    def writes(cell: CellInterface) = Json.obj(
-      "text" -> cell.value,
+    def writes(cell: CellInterface) = Json.toJson(
+      cell.value
     )
+  }
+
+  implicit val cellWrites1 = new Writes[Char] {
+    def writes(o: Char): JsValue = JsString(o.toString)
+  }
+
+  override def restoreSnapshot(controller: ControllerInterface): GridInterface = {
+    val snapShot: String = Source.fromFile("snapshot.json").getLines.mkString
+    val json: JsValue = Json.parse(snapShot)
+    val rounds: Int = (json \ "field" \ "rounds").get.toString.toInt
+    val player1 = (json \ "player" \ "player1")
+    val player2 = (json \ "player" \ "player2")
+//    really messy, sorry..
+    val p1AsList: List[String] = List("p", player1.get("firstName").toString(), player1.get("lastName").toString(), player1.get("age").toString())
+    val p2AsList: List[String] = List("p", player2.get("firstName").toString(), player2.get("lastName").toString(), player2.get("age").toString())
+    controller.addPlayer(p1AsList)
+    controller.addPlayer(p2AsList)
+
+    var grid: GridInterface =  new GridCreator(controller.getStaticNumberOfColumns, rounds).createGrid()
+
+    for (blockNumber <- 0 until rounds * controller.getStaticNumberOfColumns) {
+      val row = (json \\ "row")(blockNumber).as[Int]
+      val col = (json \\ "col")(blockNumber).as[Int]
+      val content = (json \\ "text")(blockNumber).as[String]
+      val character = (json \\ "character")(blockNumber).as[String]
+      controller.setCharacterForRow(row, character.charAt(0))
+      grid = grid.set(row, col, content)
+    }
+
+    grid
   }
 
   def createJsonSnapshot(grid: GridInterface, controller: ControllerInterface): JsValue = {
@@ -45,7 +80,8 @@ class FileIo extends FileIOInterface {
             Json.obj(
               "row" -> row,
               "col" -> col,
-              "text" -> controller.getCell(row, col)
+              "text" -> controller.getCell(row, col),
+              "character" -> Json.toJson(controller.getCharacterForRow(row))
             )
           }
         )
@@ -54,14 +90,8 @@ class FileIo extends FileIOInterface {
   }
 
   override def save(grid: GridInterface, controller: ControllerInterface): Unit = {
-    println("saving...")
-    val w = new PrintWriter(new File("save.json"))
+    val w = new PrintWriter(new File("snapshot.json"))
     w.write(Json.prettyPrint(createJsonSnapshot(grid, controller)))
-    w.close
-  }
-
-  override def load: GridInterface = {
-    var grid: GridInterface = null
-    grid
+    w.close()
   }
 }

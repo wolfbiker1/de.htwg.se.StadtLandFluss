@@ -98,6 +98,11 @@ class Controller @Inject private (var grid: GridInterface) extends ControllerInt
     publish(new CellChanged)
   }
 
+  def loadGame(): Unit = {
+    grid = fileIo.restoreSnapshot(this)
+    publish(new CellChanged)
+  }
+
   def getRound(): Int = {
     val currentRound: Int = Round.getRound(grid)
     if (!isReady || gameStatus == SOLVED) {
@@ -135,10 +140,17 @@ class Controller @Inject private (var grid: GridInterface) extends ControllerInt
 
   def getAmountOfRows = grid.height
 
+  def getStaticNumberOfColumns: Int = numberOfColumns
   def gameIsReady: Boolean = systemStatus == READY
   def statusText: String = GameStatus.message(gameStatus)
   def inGameStatus: String = GameStatus.playerMessage(playerStatus)
   def currentLetter: Char = Round.getCharacterForRound(this.getRound())
+  def getCharacterForRow(pos: Int): Char = {
+    Round.getCharacterForRound(pos)
+  }
+  def setCharacterForRow(pos: Int, char: Character): Unit = {
+    Round.storeCharacters(pos, char)
+  }
 }
 
 object Controller {
