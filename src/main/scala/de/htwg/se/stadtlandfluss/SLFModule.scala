@@ -20,6 +20,6 @@ class SLFModule extends AbstractModule with ScalaModule {
     bind[GridInterface].annotatedWithName("quicky").toInstance(new GridCreator(4,4 ).createGrid())
     bind[GridInterface].annotatedWithName("extended").toInstance(new GridCreator(4,8 ).createGrid())
     bind[EvaluateStrategyTemplate].annotatedWithName("row").toInstance(new EvaluatorRow)
-    bind[EvaluateStrategyTemplate].annotatedWithName("row").toInstance(new EvaluatorCol)
+    bind[EvaluateStrategyTemplate].annotatedWithName("col").toInstance(new EvaluatorCol)
   }
 }
