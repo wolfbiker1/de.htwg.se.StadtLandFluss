@@ -160,9 +160,9 @@ class SwingGui(controller: Controller) extends Frame {
 
   def evaluateGame(): Unit = {
     if (this.controlPanel.dropdownEvaluatingMethod.item == "column") {
-      controller.evaluate(true)
+      controller.setupEvaluator(true)
     } else {
-      controller.evaluate(false)
+      controller.setupEvaluator(false)
     }
     updateStatus()
   }

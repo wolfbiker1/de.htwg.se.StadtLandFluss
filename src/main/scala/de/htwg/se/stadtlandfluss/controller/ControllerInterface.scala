@@ -3,7 +3,7 @@ package de.htwg.se.stadtlandfluss.controller
 import de.htwg.se.stadtlandfluss.model.{Builder, Round}
 import de.htwg.se.stadtlandfluss.controller.GameStatus._
 import de.htwg.se.stadtlandfluss.model.gridComponent.CellInterface
-import de.htwg.se.stadtlandfluss.model.gridComponent.gridBaseImpl.Cell
+import de.htwg.se.stadtlandfluss.model.gridComponent.gridBaseImpl.{Cell, EvaluateStrategyTemplate}
 import de.htwg.se.stadtlandfluss.util.UndoManager
 
 import scala.swing.Publisher
@@ -16,7 +16,8 @@ trait ControllerInterface extends Publisher {
   def gridToString: String
   def set(row: Int, col: Int, value: String): Unit
   def setUpRandomCharacters(numOfRounds: Int): Unit
-  def evaluate(isCol: Boolean): Unit
+  def evaluate(evaluator: EvaluateStrategyTemplate): Unit
+  def setupEvaluator(isCol: Boolean): Unit
   def isReady: Boolean
   def getRound(): Int
   def solve(): Unit

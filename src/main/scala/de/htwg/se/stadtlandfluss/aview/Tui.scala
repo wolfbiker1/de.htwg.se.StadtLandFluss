@@ -25,8 +25,8 @@ class Tui(controller: Controller) extends Reactor {
         }
       }
       case "z" => controller.undo
-      case "eCol" => controller.evaluate(true)
-      case "eRow" => controller.evaluate(false)
+      case "eCol" => controller.setupEvaluator(true)
+      case "eRow" => controller.setupEvaluator(false)
       case "s" =>
         controller.solve()
       case s"p-$firstName-$lastName-$age" => {

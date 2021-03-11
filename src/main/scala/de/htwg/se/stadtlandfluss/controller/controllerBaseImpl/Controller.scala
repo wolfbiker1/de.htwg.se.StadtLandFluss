@@ -3,7 +3,7 @@ package de.htwg.se.stadtlandfluss.controller.controllerBaseImpl
 import de.htwg.se.stadtlandfluss.controller.GameStatus._
 import de.htwg.se.stadtlandfluss.controller.{ControllerInterface, GameStatus}
 import de.htwg.se.stadtlandfluss.model._
-import de.htwg.se.stadtlandfluss.model.gridComponent.gridBaseImpl.{EvaluatorCol, EvaluatorRow, Grid, GridCreator, Solver}
+import de.htwg.se.stadtlandfluss.model.gridComponent.gridBaseImpl.{EvaluateStrategyTemplate, EvaluatorCol, EvaluatorRow, Grid, GridCreator, Solver}
 import de.htwg.se.stadtlandfluss.util.UndoManager
 import com.google.inject.name.Names
 import com.google.inject.{Guice, Inject}
@@ -63,17 +63,22 @@ class Controller @Inject private (var grid: GridInterface) extends ControllerInt
     Round.setUpRandomCharacters(numOfRounds)
   }
 
-  def evaluate(isCol: Boolean): Unit = {
-    val evaluator = if (isCol) new EvaluatorCol else new EvaluatorRow
+  def setupEvaluator(isCol: Boolean): Unit = {
+    val evaluator = if (isCol) {
+      injector.instance[EvaluateStrategyTemplate](Names.named("row"))
+    } else {
+      injector.instance[EvaluateStrategyTemplate](Names.named("col"))
+    }
+    evaluate(evaluator)
+  }
+
+  def evaluate(evaluator: EvaluateStrategyTemplate): Unit = {
     if (evaluator.evaluateGame(grid, Round.getPlayerMap) == 0) {
-      println("1")
       playerStatus = ITSP1
     } else {
-      println("2")
       playerStatus = ITSP2
     }
     gameStatus = SOLVED
-    //    publish(new CellChanged)
   }
 
   def isReady: Boolean = {

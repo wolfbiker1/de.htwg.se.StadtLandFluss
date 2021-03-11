@@ -9,7 +9,7 @@ class TuiSpec  extends WordSpec with Matchers{
 
 
   "A Sudoku Tui" should {
-    val controller = new Controller(new Grid(1,1))
+    val controller = Controller.getController
     val tui = new Tui(controller)
 
     //   "create a Sudoku on input s'n-$i'" in {// todo ändern logik
@@ -26,13 +26,13 @@ class TuiSpec  extends WordSpec with Matchers{
     "solve a Sudoku on input 'eRow'" in {
 
       tui.processInputLine("eRow")
-      controller.evaluate(false) should be(controller.evaluate(false))
+      controller.setupEvaluator(false) should be(controller.setupEvaluator(false))
 
     }
     "solve a Sudoku on input 'z'" in {
 
       tui.processInputLine("z")
-      controller.undo should be(controller.evaluate(false))
+      controller.undo should be(controller.setupEvaluator(false))
 
     }
     "solve a Sudoku on input 'eCol'" in {
@@ -40,7 +40,7 @@ class TuiSpec  extends WordSpec with Matchers{
       tui.processInputLine("p-hansi-h-11")
       tui.processInputLine("n-8")
       tui.processInputLine("eCol")
-      controller.evaluate(false) should be(controller.evaluate(true))
+      controller.setupEvaluator(false) should be(controller.setupEvaluator(true))
 
 
 
