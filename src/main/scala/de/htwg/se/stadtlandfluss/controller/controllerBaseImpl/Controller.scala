@@ -3,7 +3,7 @@ package de.htwg.se.stadtlandfluss.controller.controllerBaseImpl
 import de.htwg.se.stadtlandfluss.controller.GameStatus._
 import de.htwg.se.stadtlandfluss.controller.{ControllerInterface, GameStatus}
 import de.htwg.se.stadtlandfluss.model._
-import de.htwg.se.stadtlandfluss.model.gridComponent.gridBaseImpl.{Cell, EvaluatorCol, EvaluatorRow, Grid, GridCreator, Solver}
+import de.htwg.se.stadtlandfluss.model.gridComponent.gridBaseImpl.{EvaluatorCol, EvaluatorRow, Grid, GridCreator, Solver}
 import de.htwg.se.stadtlandfluss.util.UndoManager
 import com.google.inject.name.Names
 import com.google.inject.{Guice, Inject}
@@ -13,7 +13,7 @@ import net.codingwell.scalaguice.InjectorExtensions._
 
 import scala.swing.Publisher
 
-class Controller @Inject() (var grid: GridInterface) extends ControllerInterface with Publisher {
+class Controller @Inject private (var grid: GridInterface) extends ControllerInterface with Publisher {
 
   /*
    * Gamestates
@@ -31,8 +31,7 @@ class Controller @Inject() (var grid: GridInterface) extends ControllerInterface
   val injector = Guice.createInjector(new SLFModule)
 
   def createRandomGrid(width: Int, height: Int): Unit = {
-
-    grid.height match {
+    height match {
       case 4 => grid = injector.instance[GridInterface](Names.named("quicky"))
       case 8 => grid = injector.instance[GridInterface](Names.named("extended"))
       case _ => grid = new GridCreator(width, height).createGrid()
@@ -124,8 +123,7 @@ class Controller @Inject() (var grid: GridInterface) extends ControllerInterface
   def currentLetter: Char = Round.getCharacterForRound(this.getRound())
 }
 
-//@Singleton
-//object Controller {
-//  val controller = new Controller(new Grid(4, 4))
-//  def getController: Controller = controller
-//}
+object Controller {
+  val controller = new Controller(new Grid(4, 4))
+  def getController: Controller = controller
+}

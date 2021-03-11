@@ -10,8 +10,8 @@ import scala.io.StdIn.readLine
 
 object SLF {
   val injector = Guice.createInjector(new SLFModule)
-//  val s = Controller.getController
-  val controller = injector.getInstance(classOf[Controller])
+  val controller = Controller.getController
+//  val controller = injector.getInstance(classOf[Controller])
 //  val controller: Controller = injector.getInstance(s.getClass)
 
 
