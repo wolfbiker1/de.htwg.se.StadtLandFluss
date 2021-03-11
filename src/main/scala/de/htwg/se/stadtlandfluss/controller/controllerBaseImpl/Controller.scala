@@ -65,9 +65,9 @@ class Controller @Inject private (var grid: GridInterface) extends ControllerInt
 
   def setupEvaluator(isCol: Boolean): Unit = {
     val evaluator = if (isCol) {
-      injector.instance[EvaluateStrategyTemplate](Names.named("row"))
-    } else {
       injector.instance[EvaluateStrategyTemplate](Names.named("col"))
+    } else {
+      injector.instance[EvaluateStrategyTemplate](Names.named("row"))
     }
     evaluate(evaluator)
   }
