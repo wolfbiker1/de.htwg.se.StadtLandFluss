@@ -8,7 +8,9 @@ import de.htwg.se.stadtlandfluss.util.UndoManager
 import com.google.inject.name.Names
 import com.google.inject.{Guice, Inject}
 import de.htwg.se.stadtlandfluss.SLFModule
+import de.htwg.se.stadtlandfluss.model.fileIoComponent.FileIOInterface
 import de.htwg.se.stadtlandfluss.model.gridComponent.{CellInterface, GridInterface}
+import de.htwg.se.stadtlandfluss.model.playerComponent.Player
 import net.codingwell.scalaguice.InjectorExtensions._
 
 import scala.swing.Publisher
@@ -28,7 +30,9 @@ class Controller @Inject private (var grid: GridInterface) extends ControllerInt
    */
   private val undoManager = new UndoManager
   private val numberOfColumns = 4
+
   val injector = Guice.createInjector(new SLFModule)
+  val fileIo = injector.instance[FileIOInterface]
 
   def createRandomGrid(width: Int, height: Int): Unit = {
     height match {
@@ -40,6 +44,10 @@ class Controller @Inject private (var grid: GridInterface) extends ControllerInt
   }
 
   def getNumberOfColumns: Int = numberOfColumns
+
+  def getPlayer: Map[Int, Player] = {
+    Round.getPlayerMap
+  }
 
   def addPlayer(credentials: List[String]): Unit = {
     val builder = Builder()
@@ -85,6 +93,16 @@ class Controller @Inject private (var grid: GridInterface) extends ControllerInt
     Round.getPlayerMap.size == 2
   }
 
+  def saveGame(): Unit = {
+    fileIo.save(grid, this)
+    publish(new CellChanged)
+  }
+
+  def loadGame(): Unit = {
+    grid = fileIo.restoreSnapshot(this)
+    publish(new CellChanged)
+  }
+
   def getRound(): Int = {
     val currentRound: Int = Round.getRound(grid)
     if (!isReady || gameStatus == SOLVED) {
@@ -122,10 +140,17 @@ class Controller @Inject private (var grid: GridInterface) extends ControllerInt
 
   def getAmountOfRows = grid.height
 
+  def getStaticNumberOfColumns: Int = numberOfColumns
   def gameIsReady: Boolean = systemStatus == READY
   def statusText: String = GameStatus.message(gameStatus)
   def inGameStatus: String = GameStatus.playerMessage(playerStatus)
   def currentLetter: Char = Round.getCharacterForRound(this.getRound())
+  def getCharacterForRow(pos: Int): Char = {
+    Round.getCharacterForRound(pos)
+  }
+  def setCharacterForRow(pos: Int, char: Character): Unit = {
+    Round.storeCharacters(pos, char)
+  }
 }
 
 object Controller {

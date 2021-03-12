@@ -25,6 +25,10 @@ object Round {
     randomCharacters(currentRound)
   }
 
+  def storeCharacters(row: Int, character: Character): Unit = {
+    randomCharacters = randomCharacters.updated(row, character)
+  }
+
   def setUpRandomCharacters(numOfRounds: Int): Unit = {
     val r = scala.util.Random
     val chars = ('A' to 'Z').toList
@@ -35,6 +39,7 @@ object Round {
       }
       randomCharacters = randomCharacters.updated(i, charToInsert)
     }
+    randomCharacters = randomCharacters.updated(0, '?')
   }
 
   def getRound(grid: GridInterface): Int = {

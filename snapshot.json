@@ -1,0 +1,159 @@
+{
+  "date" : "2021-03-11_16-27-26",
+  "player" : {
+    "player1" : {
+      "firstName" : "\"asd\"",
+      "lastName" : "\"asd\"",
+      "age" : 3
+    },
+    "player2" : {
+      "firstName" : "\"fds\"",
+      "lastName" : "\"fsd\"",
+      "age" : 4
+    }
+  },
+  "field" : {
+    "rounds" : 7,
+    "textFields" : [ {
+      "row" : 0,
+      "col" : 0,
+      "text" : "automarke",
+      "character" : "?"
+    }, {
+      "row" : 0,
+      "col" : 1,
+      "text" : "land",
+      "character" : "?"
+    }, {
+      "row" : 0,
+      "col" : 2,
+      "text" : "fluss",
+      "character" : "?"
+    }, {
+      "row" : 0,
+      "col" : 3,
+      "text" : "farbe",
+      "character" : "?"
+    }, {
+      "row" : 1,
+      "col" : 0,
+      "text" : "SCHWEDEN",
+      "character" : "S"
+    }, {
+      "row" : 1,
+      "col" : 1,
+      "text" : "",
+      "character" : "S"
+    }, {
+      "row" : 1,
+      "col" : 2,
+      "text" : "",
+      "character" : "S"
+    }, {
+      "row" : 1,
+      "col" : 3,
+      "text" : "",
+      "character" : "S"
+    }, {
+      "row" : 2,
+      "col" : 0,
+      "text" : "",
+      "character" : "Q"
+    }, {
+      "row" : 2,
+      "col" : 1,
+      "text" : "",
+      "character" : "Q"
+    }, {
+      "row" : 2,
+      "col" : 2,
+      "text" : "",
+      "character" : "Q"
+    }, {
+      "row" : 2,
+      "col" : 3,
+      "text" : "",
+      "character" : "Q"
+    }, {
+      "row" : 3,
+      "col" : 0,
+      "text" : "",
+      "character" : "L"
+    }, {
+      "row" : 3,
+      "col" : 1,
+      "text" : "",
+      "character" : "L"
+    }, {
+      "row" : 3,
+      "col" : 2,
+      "text" : "",
+      "character" : "L"
+    }, {
+      "row" : 3,
+      "col" : 3,
+      "text" : "",
+      "character" : "L"
+    }, {
+      "row" : 4,
+      "col" : 0,
+      "text" : "",
+      "character" : "U"
+    }, {
+      "row" : 4,
+      "col" : 1,
+      "text" : "",
+      "character" : "U"
+    }, {
+      "row" : 4,
+      "col" : 2,
+      "text" : "",
+      "character" : "U"
+    }, {
+      "row" : 4,
+      "col" : 3,
+      "text" : "",
+      "character" : "U"
+    }, {
+      "row" : 5,
+      "col" : 0,
+      "text" : "",
+      "character" : "W"
+    }, {
+      "row" : 5,
+      "col" : 1,
+      "text" : "",
+      "character" : "W"
+    }, {
+      "row" : 5,
+      "col" : 2,
+      "text" : "",
+      "character" : "W"
+    }, {
+      "row" : 5,
+      "col" : 3,
+      "text" : "",
+      "character" : "W"
+    }, {
+      "row" : 6,
+      "col" : 0,
+      "text" : "",
+      "character" : "L"
+    }, {
+      "row" : 6,
+      "col" : 1,
+      "text" : "",
+      "character" : "L"
+    }, {
+      "row" : 6,
+      "col" : 2,
+      "text" : "",
+      "character" : "L"
+    }, {
+      "row" : 6,
+      "col" : 3,
+      "text" : "",
+      "character" : "L"
+    } ]
+  }
+}
