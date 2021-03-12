@@ -8,7 +8,10 @@ import de.htwg.se.stadtlandfluss.util.UndoManager
 import com.google.inject.name.Names
 import com.google.inject.{Guice, Inject}
 import de.htwg.se.stadtlandfluss.SLFModule
+import de.htwg.se.stadtlandfluss.model.fileIOComponent.FileIOInterface
+import de.htwg.se.stadtlandfluss.model.fileIOComponent.fileIOXMLImpl.FileIO
 import de.htwg.se.stadtlandfluss.model.gridComponent.{CellInterface, GridInterface}
+import de.htwg.se.stadtlandfluss.model.playerComponent.Player
 import net.codingwell.scalaguice.InjectorExtensions._
 
 import scala.swing.Publisher
@@ -29,7 +32,7 @@ class Controller @Inject private (var grid: GridInterface) extends ControllerInt
   private val undoManager = new UndoManager
   private val numberOfColumns = 4
   val injector = Guice.createInjector(new SLFModule)
-
+  val fileIo = injector.instance[FileIO]
   def createRandomGrid(width: Int, height: Int): Unit = {
     height match {
       case 4 => grid = injector.instance[GridInterface](Names.named("quicky"))
@@ -84,7 +87,16 @@ class Controller @Inject private (var grid: GridInterface) extends ControllerInt
   def isReady: Boolean = {
     Round.getPlayerMap.size == 2
   }
-
+  def save(player:  List[Player]): Unit = {
+    fileIo.save(player)
+    gameStatus = SAVED
+    publish(new CellChanged)
+  }
+  def load(controller: ControllerInterface): Unit = {
+    fileIo.load(controller)
+    gameStatus = LOADED
+    publish(new CellChanged)
+  }
   def getRound(): Int = {
     val currentRound: Int = Round.getRound(grid)
     if (!isReady || gameStatus == SOLVED) {

@@ -6,7 +6,7 @@ object GameStatus extends Enumeration {
   type SystemStatus = Value
   val IDLE, RESIZE, SET, NEW, UNDO, REDO, CANDIDATES,
   SOLVED, NOTREADY, ERROR, TURNP1, TURNP2, NA,
-  READY, NOT_SOLVABLE, ITSP1, ITSP2, PERROR = Value
+  READY, NOT_SOLVABLE, ITSP1, ITSP2, PERROR,LOADED,SAVED = Value
 
   val map = Map[GameStatus, String](
     IDLE -> "Willkommen",
@@ -18,7 +18,9 @@ object GameStatus extends Enumeration {
     REDO -> "Redone one step",
     SOLVED -> "Game successfully solved. Goodbye",
     ERROR -> "Error in Game",
-    PERROR -> "Did you forgt to assign Playernames?"
+    PERROR -> "Did you forgt to assign Playernames?",
+      LOADED -> "A new Game was loaded",
+  SAVED -> "The Game was saved"
   )
 
   val systemMap = Map[SystemStatus, String](
