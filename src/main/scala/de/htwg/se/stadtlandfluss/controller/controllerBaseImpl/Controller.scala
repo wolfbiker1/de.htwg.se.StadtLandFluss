@@ -97,7 +97,15 @@ class Controller @Inject private (var grid: GridInterface) extends ControllerInt
     fileIo.save(grid, this)
     publish(new CellChanged)
   }
+  def load():Unit = {
+    fileIo.save(grid, this)
+    publish(new CellChanged)
+  }
 
+  def save():Unit = {
+    fileIo.save(grid, this)
+    publish(new CellChanged)
+  }
   def loadGame(): Unit = {
     grid = fileIo.restoreSnapshot(this)
     publish(new CellChanged)
