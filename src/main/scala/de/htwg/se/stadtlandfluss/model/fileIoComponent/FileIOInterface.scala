@@ -5,6 +5,6 @@ import de.htwg.se.stadtlandfluss.model.gridComponent.GridInterface
 
 trait FileIOInterface {
   def restoreSnapshot(controller: ControllerInterface): GridInterface
-  def save(grid: GridInterface, controller: ControllerInterface): Unit
+  def save(controller: ControllerInterface): Unit
 
 }

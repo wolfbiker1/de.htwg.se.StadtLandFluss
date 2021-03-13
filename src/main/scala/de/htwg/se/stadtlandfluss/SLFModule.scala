@@ -6,6 +6,7 @@ import com.google.inject.name.Names
 import de.htwg.se.stadtlandfluss.model.fileIoComponent._
 import de.htwg.se.stadtlandfluss.model.gridComponent.GridInterface
 import de.htwg.se.stadtlandfluss.model.gridComponent.gridBaseImpl.{EvaluateStrategyTemplate, EvaluatorCol, EvaluatorRow, Grid, GridCreator}
+
 class SLFModule extends AbstractModule with ScalaModule {
 
   override def configure(): Unit = {
@@ -17,6 +18,7 @@ class SLFModule extends AbstractModule with ScalaModule {
     bind[EvaluateStrategyTemplate].annotatedWithName("col").toInstance(new EvaluatorCol)
 
 
-    bind[FileIOInterface].to[fileIoJsonImpl.FileIo]
+//    bind[FileIOInterface].to[fileIoJsonImpl.FileIo]
+    bind[FileIOInterface].to[fileIoXMLImpl.FileIo]
   }
 }

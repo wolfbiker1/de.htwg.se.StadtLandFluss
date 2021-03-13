@@ -94,7 +94,7 @@ class Controller @Inject private (var grid: GridInterface) extends ControllerInt
   }
 
   def saveGame(): Unit = {
-    fileIo.save(grid, this)
+    fileIo.save(this)
     publish(new CellChanged)
   }
 

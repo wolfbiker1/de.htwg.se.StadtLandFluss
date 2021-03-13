@@ -55,7 +55,7 @@ class FileIo extends FileIOInterface {
     grid
   }
 
-  def createJsonSnapshot(grid: GridInterface, controller: ControllerInterface): JsValue = {
+  def createJsonSnapshot(controller: ControllerInterface): JsValue = {
     val playerMap = controller.getPlayer
     val p1 = playerMap(0)
     val p2 = playerMap(1)
@@ -74,7 +74,7 @@ class FileIo extends FileIOInterface {
         )
       ),
       "field" -> Json.obj(
-        "rounds" -> JsNumber(grid.height),
+        "rounds" -> JsNumber(controller.getAmountOfRows),
         "textFields" -> Json.toJson(
           for (row <- 0 until controller.getAmountOfRows; col <- 0 until controller.getAmountOfColumns) yield {
             Json.obj(
@@ -89,9 +89,9 @@ class FileIo extends FileIOInterface {
     )
   }
 
-  override def save(grid: GridInterface, controller: ControllerInterface): Unit = {
+  override def save(controller: ControllerInterface): Unit = {
     val w = new PrintWriter(new File("snapshot.json"))
-    w.write(Json.prettyPrint(createJsonSnapshot(grid, controller)))
+    w.write(Json.prettyPrint(createJsonSnapshot(controller)))
     w.close()
   }
 }
