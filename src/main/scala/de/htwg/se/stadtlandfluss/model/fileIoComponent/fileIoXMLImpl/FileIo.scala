@@ -20,28 +20,21 @@ class FileIo extends FileIOInterface {
     for (p <- players) {
       controller.addPlayer(List("p", (p \ "firstname").text, (p \ "lastname").text, (p \ "age").text))
     }
-//
-//
-//
-//    val player2F= (file \\ "Player" \ "@player2")
-//    val player2 = player2F.text
-//    val rounds: Int = (file \ "Game" \ "rounds").text.trim().replace("\n", "").toInt
-//    val injector = Guice.createInjector(new SLFModule)
-//
-//    val cellNodes = (file \\ "cell")
 
     val field = file \\ "grid"
     var grid: GridInterface = new GridCreator(controller.getStaticNumberOfColumns, (field \ "@height").text.toInt).createGrid()
-    for (fieldElement <- field) {
+    val cells = field \ "cell"
+    for (cellElement <- cells) {
+      val row = (cellElement \ "@row").text.toInt
+      val col = (cellElement \ "@col").text.toInt
+      val content = (cellElement \\ "content").text
 
+      val character = (cellElement \\ "character").text
+      controller.setCharacterForRow(row, character.charAt(1))
+      grid = grid.set(row, col, content)
     }
-//    println(field)
     grid
   }
-
-//  override def save(controller: ControllerInterface): Unit = scala.xml.XML.save("player.xml", collect(controller))
-
-//  def save(player:  List[Player]): Unit = scala.xml.XML.save("player.xml", players_toXML(player))
 
   override def save(controller: ControllerInterface): Unit = {
     import java.io._
