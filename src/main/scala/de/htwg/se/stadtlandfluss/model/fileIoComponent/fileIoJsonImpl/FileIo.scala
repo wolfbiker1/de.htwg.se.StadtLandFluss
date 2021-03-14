@@ -41,7 +41,7 @@ class FileIo extends FileIOInterface {
     controller.addPlayer(p1AsList)
     controller.addPlayer(p2AsList)
 
-    var grid: GridInterface =  new GridCreator(controller.getStaticNumberOfColumns, rounds).createGrid()
+    var grid: GridInterface = new GridCreator(controller.getStaticNumberOfColumns, rounds).createGrid()
 
     for (blockNumber <- 0 until rounds * controller.getStaticNumberOfColumns) {
       val row = (json \\ "row")(blockNumber).as[Int]

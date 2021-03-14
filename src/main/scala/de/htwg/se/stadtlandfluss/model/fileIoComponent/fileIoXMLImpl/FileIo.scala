@@ -15,46 +15,50 @@ import scala.xml.{Elem, NodeSeq, PrettyPrinter, XML}
 class FileIo extends FileIOInterface {
 
   override def restoreSnapshot(controller: ControllerInterface): GridInterface = {
-    var grid: GridInterface = null
-    val file = scala.xml.XML.loadFile("game.xml")
+    val file = scala.xml.XML.loadFile("snapshot.xml")
     val players = file \\ "Player"
-    var pList = List[Player]()
-    for (p <- players.indices) {
-      val firstName = (players(p)\ "firstname").text
-      val lastName = (players(p)\ "firstname").text
-      val age = (players(p)\ "age").text
-
-      pList.appended(Player(firstName, lastName ,age.toInt))
-      // controller.addPlayer(pList)
+    for (p <- players) {
+      controller.addPlayer(List("p", (p \ "firstname").text, (p \ "lastname").text, (p \ "age").text))
     }
+//
+//
+//
+//    val player2F= (file \\ "Player" \ "@player2")
+//    val player2 = player2F.text
+//    val rounds: Int = (file \ "Game" \ "rounds").text.trim().replace("\n", "").toInt
+//    val injector = Guice.createInjector(new SLFModule)
+//
+//    val cellNodes = (file \\ "cell")
 
+    val field = file \\ "grid"
+    var grid: GridInterface = new GridCreator(controller.getStaticNumberOfColumns, (field \ "@height").text.toInt).createGrid()
+    for (fieldElement <- field) {
 
-
-    val player2F= (file \\ "Player" \ "@player2")
-    val player2 = player2F.text
-    val rounds: Int = (file \ "Game" \ "rounds").text.trim().replace("\n", "").toInt
-    val injector = Guice.createInjector(new SLFModule)
-
-    val cellNodes = (file \\ "cell")
+    }
+//    println(field)
     grid
   }
 
-  override def save(controller: ControllerInterface): Unit = scala.xml.XML.save("player.xml", players_toXML())
-
-
-
+//  override def save(controller: ControllerInterface): Unit = scala.xml.XML.save("player.xml", collect(controller))
 
 //  def save(player:  List[Player]): Unit = scala.xml.XML.save("player.xml", players_toXML(player))
 
-
-
-  def saveString(player:  List[Player]): Unit = {
+  override def save(controller: ControllerInterface): Unit = {
     import java.io._
-    val pw = new PrintWriter(new File("player.xml"))
+    val pw = new PrintWriter(new File("snapshot.xml"))
     val prettyPrinter = new PrettyPrinter(120,6)
-    val xml = prettyPrinter.format(players_toXML())
+
+    val xml = prettyPrinter.format(saveGame(controller))
     pw.write(xml)
     pw.close
+  }
+
+
+  def saveGame(controller: ControllerInterface): Elem = {
+    <game>
+      {players_toXML()}
+      {gridToXml(controller)}
+    </game>
   }
 
   //In Liste
@@ -73,20 +77,24 @@ class FileIo extends FileIOInterface {
       <points>{player.getPoints()}</points>
     </Player>
   }
-  def gridToXml(grid: GridInterface):Elem = {
-    <grid height={ grid.height.toString } width={grid.width.toString} >
+  def gridToXml(controller: ControllerInterface):Elem = {
+    <grid height={ controller.getAmountOfRows.toString } width={ controller.getAmountOfColumns.toString} >
       {
-      for {
-        row <- 0 until grid.height
-        col <- 0 until grid.width
-      } yield cellToXml(grid, row, col)
+      for (row <- 0 until controller.getAmountOfRows; col <- 0 until controller.getAmountOfColumns)
+        yield cellToXml(controller, row, col, controller.getCharacterForRow(row))
       }
     </grid>
   }
 
-  def cellToXml(grid: GridInterface, row: Int, col: Int):Elem = {
-    <cell row={ row.toString } col={ col.toString }  >
-      { grid.cell(row, col).value }
+  def cellToXml(controller: ControllerInterface, row: Int, col: Int, character: Char):Elem = {
+    <cell row={ row.toString } col={ col.toString } >
+      <content>
+        { controller.getCell(row, col).value }
+      </content>
+
+      <character>
+        { controller.getCharacterForRow(row) }
+      </character>
     </cell>
   }
 

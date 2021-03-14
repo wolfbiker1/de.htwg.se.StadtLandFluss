@@ -1,0 +1,130 @@
+<game>
+      <Players>
+            <Player>
+                  <firstname>dsa</firstname>
+                  <lastname>asd</lastname>
+                  <age>4</age>
+                  <points>0</points>
+            </Player>
+            <Player>
+                  <firstname>fsd</firstname>
+                  <lastname>fsd</lastname>
+                  <age>2</age>
+                  <points>0</points>
+            </Player>
+      </Players>
+      <grid height="7" width="4">
+            <cell row="0" col="0">
+                  <content> automarke </content>
+                  <character> ? </character>
+            </cell>
+            <cell row="0" col="1">
+                  <content> land </content>
+                  <character> ? </character>
+            </cell>
+            <cell row="0" col="2">
+                  <content> fluss </content>
+                  <character> ? </character>
+            </cell>
+            <cell row="0" col="3">
+                  <content> farbe </content>
+                  <character> ? </character>
+            </cell>
+            <cell row="1" col="0">
+                  <content> CHEVROLET </content>
+                  <character> C </character>
+            </cell>
+            <cell row="1" col="1">
+                  <content> </content>
+                  <character> C </character>
+            </cell>
+            <cell row="1" col="2">
+                  <content> </content>
+                  <character> C </character>
+            </cell>
+            <cell row="1" col="3">
+                  <content> </content>
+                  <character> C </character>
+            </cell>
+            <cell row="2" col="0">
+                  <content> </content>
+                  <character> R </character>
+            </cell>
+            <cell row="2" col="1">
+                  <content> </content>
+                  <character> R </character>
+            </cell>
+            <cell row="2" col="2">
+                  <content> </content>
+                  <character> R </character>
+            </cell>
+            <cell row="2" col="3">
+                  <content> </content>
+                  <character> R </character>
+            </cell>
+            <cell row="3" col="0">
+                  <content> </content>
+                  <character> N </character>
+            </cell>
+            <cell row="3" col="1">
+                  <content> </content>
+                  <character> N </character>
+            </cell>
+            <cell row="3" col="2">
+                  <content> </content>
+                  <character> N </character>
+            </cell>
+            <cell row="3" col="3">
+                  <content> </content>
+                  <character> N </character>
+            </cell>
+            <cell row="4" col="0">
+                  <content> </content>
+                  <character> Y </character>
+            </cell>
+            <cell row="4" col="1">
+                  <content> </content>
+                  <character> Y </character>
+            </cell>
+            <cell row="4" col="2">
+                  <content> </content>
+                  <character> Y </character>
+            </cell>
+            <cell row="4" col="3">
+                  <content> </content>
+                  <character> Y </character>
+            </cell>
+            <cell row="5" col="0">
+                  <content> </content>
+                  <character> W </character>
+            </cell>
+            <cell row="5" col="1">
+                  <content> </content>
+                  <character> W </character>
+            </cell>
+            <cell row="5" col="2">
+                  <content> </content>
+                  <character> W </character>
+            </cell>
+            <cell row="5" col="3">
+                  <content> </content>
+                  <character> W </character>
+            </cell>
+            <cell row="6" col="0">
+                  <content> </content>
+                  <character> U </character>
+            </cell>
+            <cell row="6" col="1">
+                  <content> </content>
+                  <character> U </character>
+            </cell>
+            <cell row="6" col="2">
+                  <content> </content>
+                  <character> U </character>
+            </cell>
+            <cell row="6" col="3">
+                  <content> </content>
+                  <character> U </character>
+            </cell>
+      </grid>
+</game>
